@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc2b6d11e7a1bd46b8492bc6e03da8a, type: 3}
   m_Name: 003
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  cardName: Angela
-  artwork: {fileID: 21300000, guid: 7cb4a5c2a013be14abcf0cd4560fec5d, type: 3}
+  cardName: Jasmine
+  artwork: {fileID: 21300000, guid: 599b319cae58bdf44b1263f64ed42d61, type: 3}
   top: 1
   right: 5
   bottom: 5

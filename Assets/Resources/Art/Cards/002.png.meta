@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7cb4a5c2a013be14abcf0cd4560fec5d
+guid: 3a35da1445a7bde4b8eb95b1219c9918
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2905433704722455886
-    second: 01_angela_0
+      213: 7417498029127908629
+    second: 002_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 01_angela_0
+      name: 002_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 750
-        height: 865
+        width: 1365
+        height: 2048
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e4ddd609f8c225820800000000000000
-      internalID: 2905433704722455886
+      spriteID: 51d345c682f30f660800000000000000
+      internalID: 7417498029127908629
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      01_angela_0: 2905433704722455886
+      002_0: 7417498029127908629
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

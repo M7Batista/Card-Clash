@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4dc2b6d11e7a1bd46b8492bc6e03da8a, type: 3}
-  m_Name: 004
+  m_Name: 008
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  cardName: Bonie
-  artwork: {fileID: 21300000, guid: 219955825c7dabf45b2eb55d9c496ff8, type: 3}
+  cardName: Rachel
+  artwork: {fileID: 21300000, guid: e84f7d47fd221d848acf5ab604633375, type: 3}
   top: 3
-  right: 3
-  bottom: 3
-  left: 3
+  right: 2
+  bottom: 6
+  left: 5
