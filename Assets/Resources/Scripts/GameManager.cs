@@ -39,7 +39,8 @@ public class GameManager : MonoBehaviour
         {
             var cardObj = Instantiate(cardPrefab, playerHandArea);
             var cardUI = cardObj.GetComponent<CardUI>();
-            cardUI.SetCard(cardData);
+            cardUI.SetCard(cardData, Owner.Player);
+
 
             var drag = cardObj.AddComponent<DraggableCard>();
             drag.OnCardPlaced += OnPlayerCardPlaced; // evento quando o jogador joga
@@ -49,7 +50,7 @@ public class GameManager : MonoBehaviour
         {
             var cardObj = Instantiate(cardPrefab, enemyHandArea);
             var cardUI = cardObj.GetComponent<CardUI>();
-            cardUI.SetCard(cardData);
+            cardUI.SetCard(cardData,Owner.Enemy);
 
             // inimigo não arrasta
             var drag = cardObj.GetComponent<DraggableCard>();
@@ -129,8 +130,14 @@ public class GameManager : MonoBehaviour
 
         // instancia no slot escolhido
         var cardObj = Instantiate(cardPrefab, bestSlot);
+        //var cardUI = cardObj.GetComponent<CardUI>();
+        //cardUI.SetCard(bestCard);
+
+
         var cardUI = cardObj.GetComponent<CardUI>();
-        cardUI.SetCard(bestCard);
+        cardUI.SetCard(bestCard, turn == 0 ? Owner.Player : Owner.Enemy);
+        CheckCaptures(cardUI, bestSlot);
+        //micdsba
 
         var rect = cardObj.GetComponent<RectTransform>();
         rect.anchorMin = new Vector2(0.5f, 0.5f);
@@ -225,4 +232,45 @@ int EvaluateMove(CardData card, Transform slot)
         Debug.Log("Fim de jogo!");
         // aqui futuramente: lógica de pontuação/vencedor
     }
+    void CheckCaptures(CardUI placedCard, Transform slot)
+{
+    int index = slot.GetSiblingIndex();
+    int row = index / 3;
+    int col = index % 3;
+
+    // Cima
+    if (row > 0) CaptureCheck(placedCard, slot, index - 3, placedCard.cardData.top, "bottom");
+    // Baixo
+    if (row < 2) CaptureCheck(placedCard, slot, index + 3, placedCard.cardData.bottom, "top");
+    // Esquerda
+    if (col > 0) CaptureCheck(placedCard, slot, index - 1, placedCard.cardData.left, "right");
+    // Direita
+    if (col < 2) CaptureCheck(placedCard, slot, index + 1, placedCard.cardData.right, "left");
+}
+
+void CaptureCheck(CardUI placedCard, Transform slot, int neighborIndex, int placedValue, string neighborSide)
+{
+    var neighborSlot = boardArea.GetChild(neighborIndex);
+    if (neighborSlot.childCount == 0) return;
+
+    var neighborCard = neighborSlot.GetChild(0).GetComponent<CardUI>();
+    if (neighborCard == null || neighborCard.owner == placedCard.owner) return;
+
+    int neighborValue = 0;
+    switch (neighborSide)
+    {
+        case "top": neighborValue = neighborCard.cardData.top; break;
+        case "bottom": neighborValue = neighborCard.cardData.bottom; break;
+        case "left": neighborValue = neighborCard.cardData.left; break;
+        case "right": neighborValue = neighborCard.cardData.right; break;
+    }
+
+    // Captura
+    if (placedValue > neighborValue)
+    {
+        neighborCard.SetOwner(placedCard.owner);
+        Debug.Log($"{placedCard.owner} capturou {neighborCard.cardData.cardName}!");
+    }
+}
+
 }

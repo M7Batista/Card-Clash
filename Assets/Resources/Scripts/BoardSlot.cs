@@ -2,20 +2,20 @@ using UnityEngine;
 
 public class BoardSlot : MonoBehaviour
 {
-    public CardUI placedCard;
+    public bool isOccupied = false;
 
-    public bool IsEmpty => placedCard == null;
-
-    public void PlaceCard(CardData cardData, GameObject cardPrefab)
+    public void PlaceCard(GameObject card, Owner owner)
     {
-        if (!IsEmpty)
-            return; // já ocupado
+        if (isOccupied) return;
 
-        var cardObj = Instantiate(cardPrefab, transform);
-        placedCard = cardObj.GetComponent<CardUI>();
-        placedCard.SetCard(cardData);
+        card.transform.SetParent(transform, false);
+        card.transform.localPosition = Vector3.zero;
+        isOccupied = true;
 
-        // Centraliza dentro do slot
-        cardObj.transform.localPosition = Vector3.zero;
+        var cardUI = card.GetComponent<CardUI>();
+        if (cardUI != null)
+        {
+            cardUI.SetCard(cardUI.cardData, owner);
+        }
     }
 }

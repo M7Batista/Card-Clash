@@ -357,10 +357,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardUI
   artworkImage: {fileID: 64414298158590307}
+  cardName: 
   numTop: {fileID: 5543833970220433166}
   numRight: {fileID: 7545459003491615049}
   numBottom: {fileID: 471193076043084338}
   numLeft: {fileID: 5458255916319707451}
+  frameImage: {fileID: 0}
+  cardData: {fileID: 0}
+  owner: 0
+  playerColor: {r: 0, g: 0, b: 1, a: 1}
+  enemyColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &9219788522265058803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -624,7 +630,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.48496294, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
