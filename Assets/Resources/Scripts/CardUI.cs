@@ -5,25 +5,26 @@ using UnityEngine.UI;
 public class CardUI : MonoBehaviour
 {
     public Image artworkImage;
-
+    public string cardName;
     public Text numTop;
     public Text numRight;
     public Text numBottom;
     public Text numLeft;
 
-    private CardData data;
+    public CardData cardData;
 
     public void SetCard(CardData card)
     {
-        data = card;
+        cardData = card;
 
-        artworkImage.sprite = data.artwork;
+        artworkImage.sprite = cardData.artwork;
 
-        numTop.text    = data.top.ToString();
-        numRight.text  = data.right.ToString();
-        numBottom.text = data.bottom.ToString();
-        numLeft.text   = data.left.ToString();
+        numTop.text    = cardData.top.ToString();
+        numRight.text  = cardData.right.ToString();
+        numBottom.text = cardData.bottom.ToString();
+        numLeft.text   = cardData.left.ToString();
     }
 
-    public CardData GetData() => data;
+    public CardData GetCardData() => cardData;
+
 }

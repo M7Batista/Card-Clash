@@ -1,57 +1,57 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using System.Collections.Generic;
+using System;
 
 public class DraggableCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    private RectTransform rt;
-    private Canvas canvas;
-    private CanvasGroup cg;
-    private Vector3 startPos;
+    public Action<CardUI> OnCardPlaced;
+
+    private CanvasGroup canvasGroup;
+    private RectTransform rectTransform;
+    private Transform originalParent;
 
     void Awake()
     {
-        rt = GetComponent<RectTransform>();
-        cg = GetComponent<CanvasGroup>();
-        canvas = GetComponentInParent<Canvas>();
+        canvasGroup = GetComponent<CanvasGroup>();
+        rectTransform = GetComponent<RectTransform>();
     }
 
-    public void OnBeginDrag(PointerEventData e)
+    public void OnBeginDrag(PointerEventData eventData)
     {
-        startPos = rt.position;
-        cg.blocksRaycasts = false; // permite que os cells recebam o drop
+        originalParent = transform.parent;
+        transform.SetParent(transform.root); // move para o topo da UI
+        canvasGroup.blocksRaycasts = false;
     }
 
-    public void OnDrag(PointerEventData e)
+    public void OnDrag(PointerEventData eventData)
     {
-        RectTransformUtility.ScreenPointToWorldPointInRectangle(rt, e.position, e.pressEventCamera, out var worldPos);
-        rt.position = worldPos;
+        rectTransform.anchoredPosition += eventData.delta;
     }
 
-    public void OnEndDrag(PointerEventData e)
+    public void OnEndDrag(PointerEventData eventData)
     {
-        cg.blocksRaycasts = true;
+        canvasGroup.blocksRaycasts = true;
 
-        // Verifica se soltou em uma célula
-        var results = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(e, results);
-
-        foreach (var r in results)
+        // se for solto no tabuleiro, "fixa"
+        if (eventData.pointerEnter != null && eventData.pointerEnter.CompareTag("BoardSlot"))
         {
-            var cell = r.gameObject.GetComponent<Cell>();
-            if (cell != null && cell.IsEmpty)
-            {
-                // Coloca a carta no tabuleiro
-                cell.PlaceCard(GetComponent<Image>().sprite);
+            transform.SetParent(eventData.pointerEnter.transform, false);
 
-                // Destroi a carta da mão (simples por enquanto)
-                Destroy(gameObject);
-                return;
-            }
+            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            rectTransform.anchoredPosition = Vector2.zero;
+
+            var cardUI = GetComponent<CardUI>();
+            OnCardPlaced?.Invoke(cardUI);
+
+            Destroy(this); // não pode ser arrastada de novo
         }
-
-        // Se não caiu em célula, volta pro lugar original
-        rt.position = startPos;
+        else
+        {
+            // volta para a mão se não foi jogada
+            transform.SetParent(originalParent, false);
+            rectTransform.anchoredPosition = Vector2.zero;
+        }
     }
 }

@@ -1,17 +1,33 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HandManager : MonoBehaviour
 {
-    public GameObject cardPrefab;
-    public CardData[] startingHand; // Defina no Inspector quais cartas iniciais
+    public Transform handArea;       // referência ao layout da mão (UI)
+    public GameObject cardPrefab;    // prefab da carta
+    public List<CardUI> cardsInHand = new List<CardUI>();
 
-    void Start()
+    public void AddCard(CardData cardData, bool isDraggable = true)
     {
-        foreach (CardData card in startingHand)
+        Debug.Log("adicionando as cartas");
+        var cardObj = Instantiate(cardPrefab, handArea);
+        var cardUI = cardObj.GetComponent<CardUI>();
+        cardUI.SetCard(cardData);
+
+        if (isDraggable)
         {
-            var cardObj = Instantiate(cardPrefab, transform);
-            var cardUI = cardObj.GetComponent<CardUI>();
-            cardUI.SetCard(card);
+            cardObj.AddComponent<DraggableCard>();
         }
+
+        cardsInHand.Add(cardUI);
+    }
+
+    public void ClearHand()
+    {
+        foreach (var card in cardsInHand)
+        {
+            Destroy(card.gameObject);
+        }
+        cardsInHand.Clear();
     }
 }
