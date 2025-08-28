@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,12 +17,15 @@ public class GameManager : MonoBehaviour
     private List<CardData> enemyHand = new List<CardData>();
 
     private int turn = 0; // 0 = jogador, 1 = inimigo
-    private int boardSlots = 9; 
+    private int boardSlots = 9;
     private int filledSlots = 0;
+
+    public GameObject endGameUI;
 
     void Start()
     {
         StartGame();
+
     }
 
     void StartGame()
@@ -34,7 +38,7 @@ public class GameManager : MonoBehaviour
             playerHand.Add(shuffledDeck[i]);
             enemyHand.Add(shuffledDeck[i + 5]);
         }
-
+        //distribui as cartas do jogador (com drag)
         foreach (var cardData in playerHand)
         {
             var cardObj = Instantiate(cardPrefab, playerHandArea);
@@ -42,9 +46,10 @@ public class GameManager : MonoBehaviour
             cardUI.SetCard(cardData, Owner.Player);
 
             var drag = cardObj.AddComponent<DraggableCard>();
-            drag.OnCardPlaced += OnPlayerCardPlaced; 
+            drag.OnCardPlaced += OnPlayerCardPlaced;
+            cardObj.GetComponent<CardFlip>().FlipCard(Owner.Player);
         }
-
+        //distribui as cartas do inimigo (sem drag)
         foreach (var cardData in enemyHand)
         {
             var cardObj = Instantiate(cardPrefab, enemyHandArea);
@@ -53,6 +58,7 @@ public class GameManager : MonoBehaviour
 
             var drag = cardObj.GetComponent<DraggableCard>();
             if (drag != null) drag.enabled = false;
+            cardObj.GetComponent<CardFlip>().FlipCard(Owner.Enemy);
         }
 
         Debug.Log("Jogo iniciado. Turno do jogador.");
@@ -95,7 +101,9 @@ public class GameManager : MonoBehaviour
         CardData bestCard = null;
         Transform bestSlot = null;
         int bestScore = -1;
+        CardUI bestCardUI = null;
 
+        // Escolhe a melhor carta e slot
         foreach (var card in enemyHand)
         {
             foreach (Transform slot in boardArea)
@@ -108,36 +116,36 @@ public class GameManager : MonoBehaviour
                     bestScore = score;
                     bestCard = card;
                     bestSlot = slot;
+
+                    // pega a referência do objeto real na mão inimiga
+                    foreach (Transform c in enemyHandArea)
+                    {
+                        var ui = c.GetComponent<CardUI>();
+                        if (ui != null && ui.cardData == bestCard)
+                        {
+                            bestCardUI = ui;
+                            break;
+                        }
+                    }
                 }
             }
         }
 
-        if (bestCard != null && bestSlot != null)
+        if (bestCard != null && bestSlot != null && bestCardUI != null)
         {
             enemyHand.Remove(bestCard);
 
-            for (int i = 0; i < enemyHandArea.childCount; i++)
-            {
-                var child = enemyHandArea.GetChild(i).GetComponent<CardUI>();
-                if (child != null && child.cardData == bestCard)
-                {
-                    Destroy(child.gameObject);
-                    break;
-                }
-            }
+            // move a carta real para o slot escolhido
+            bestCardUI.transform.SetParent(bestSlot, false);
 
-            var cardObj = Instantiate(cardPrefab, bestSlot);
-            var cardUI = cardObj.GetComponent<CardUI>();
-            cardUI.SetCard(bestCard, Owner.Enemy);
-
-            int index = bestSlot.GetSiblingIndex();
-            CheckCaptures(index);
-
-            var rect = cardObj.GetComponent<RectTransform>();
+            var rect = bestCardUI.GetComponent<RectTransform>();
             rect.anchorMin = new Vector2(0.5f, 0.5f);
             rect.anchorMax = new Vector2(0.5f, 0.5f);
             rect.pivot = new Vector2(0.5f, 0.5f);
             rect.anchoredPosition = Vector2.zero;
+
+            int index = bestSlot.GetSiblingIndex();
+            CheckCaptures(index);
 
             Debug.Log("Inimigo jogou: " + bestCard.cardName + " no slot " + index + " (score " + bestScore + ")");
         }
@@ -145,6 +153,7 @@ public class GameManager : MonoBehaviour
         filledSlots++;
         NextTurn();
     }
+
 
     int EvaluateMove(CardData card, Transform slot)
     {
@@ -214,11 +223,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void EndGame()
-    {
-        Debug.Log("Fim de jogo!");
-    }
-
     // ===============================
     // 🔹 Nova versão de CheckCaptures com index
     // ===============================
@@ -237,26 +241,71 @@ public class GameManager : MonoBehaviour
     }
 
     void CaptureCheck(CardUI placedCard, int neighborIndex, int placedValue, string neighborSide)
+{
+    var neighborSlot = boardArea.GetChild(neighborIndex);
+    if (neighborSlot.childCount == 0) return;
+
+    var neighborCard = neighborSlot.GetChild(0).GetComponent<CardUI>();
+    if (neighborCard == null || neighborCard.owner == placedCard.owner) return;
+
+    int neighborValue = 0;
+    switch (neighborSide)
     {
-        var neighborSlot = boardArea.GetChild(neighborIndex);
-        if (neighborSlot.childCount == 0) return;
-
-        var neighborCard = neighborSlot.GetChild(0).GetComponent<CardUI>();
-        if (neighborCard == null || neighborCard.owner == placedCard.owner) return;
-
-        int neighborValue = 0;
-        switch (neighborSide)
-        {
-            case "top": neighborValue = neighborCard.cardData.top; break;
-            case "bottom": neighborValue = neighborCard.cardData.bottom; break;
-            case "left": neighborValue = neighborCard.cardData.left; break;
-            case "right": neighborValue = neighborCard.cardData.right; break;
-        }
-
-        if (placedValue > neighborValue)
-        {
-            neighborCard.SetOwner(placedCard.owner);
-            Debug.Log($"{placedCard.owner} capturou {neighborCard.cardData.cardName}!");
-        }
+        case "top": neighborValue = neighborCard.cardData.top; break;
+        case "bottom": neighborValue = neighborCard.cardData.bottom; break;
+        case "left": neighborValue = neighborCard.cardData.left; break;
+        case "right": neighborValue = neighborCard.cardData.right; break;
     }
+
+    if (placedValue > neighborValue)
+    {
+        neighborCard.SetOwner(placedCard.owner);
+        Debug.Log($"{placedCard.owner} capturou {neighborCard.cardData.cardName}!");
+
+        // chama a animação de flip com o novo dono
+        neighborCard.GetComponent<CardFlip>().FlipCard(placedCard.owner);
+    }
+}
+
+    void EndGame()
+    {
+        int playerCount = 0;
+        int enemyCount = 0;
+
+        // percorre todos os slots do tabuleiro
+        for (int i = 0; i < boardArea.childCount; i++)
+        {
+            var slot = boardArea.GetChild(i);
+            if (slot.childCount > 0)
+            {
+                var cardUI = slot.GetChild(0).GetComponent<CardUI>();
+                if (cardUI != null)
+                {
+                    if (cardUI.owner == Owner.Player)
+                        playerCount++;
+                    else if (cardUI.owner == Owner.Enemy)
+                        enemyCount++;
+                }
+            }
+        }
+
+        // decidir o vencedor
+        if (playerCount > enemyCount)
+        {
+            Debug.Log($"Fim de jogo! Jogador venceu ({playerCount} x {enemyCount})");
+            endGameUI.GetComponent<EndGameUI>().ShowEndGame(true);
+
+        }
+        else if (enemyCount > playerCount)
+        {
+            Debug.Log($"Fim de jogo! Inimigo venceu ({enemyCount} x {playerCount})");
+            endGameUI.GetComponent<EndGameUI>().ShowEndGame(false);
+        }
+        else
+        {
+            Debug.Log($"Fim de jogo! Empate ({playerCount} x {enemyCount})");
+        }
+
+    }
+
 }

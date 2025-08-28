@@ -1,38 +1,51 @@
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
 
 public class DraggableCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    private Canvas canvas;
+    private RectTransform rectTransform;
+    private CanvasGroup canvasGroup;
+    private Transform parentBeforeDrag;
     public Action<CardUI> OnCardPlaced;
 
-    private CanvasGroup canvasGroup;
-    private RectTransform rectTransform;
-    private Transform originalParent;
 
-    void Awake()
+    private void Awake()
     {
-        canvasGroup = GetComponent<CanvasGroup>();
         rectTransform = GetComponent<RectTransform>();
+        canvasGroup = GetComponent<CanvasGroup>();
+        canvas = GetComponentInParent<Canvas>();
+        parentBeforeDrag = transform.parent;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        originalParent = transform.parent;
-        transform.SetParent(transform.root); // move para o topo da UI
+       
+        transform.SetParent(canvas.transform, true); // move pro topo do canvas durante o drag
         canvasGroup.blocksRaycasts = false;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        rectTransform.anchoredPosition += eventData.delta;
+        Vector2 localPoint;
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvas.transform as RectTransform,
+            eventData.position,
+            eventData.pressEventCamera,
+            out localPoint))
+        {
+            rectTransform.localPosition = localPoint;
+        }
     }
+
 
     public void OnEndDrag(PointerEventData eventData)
     {
         canvasGroup.blocksRaycasts = true;
 
-        // se for solto no tabuleiro, "fixa"
+        // se for solto no tabuleiro
         if (eventData.pointerEnter != null && eventData.pointerEnter.CompareTag("BoardSlot"))
         {
             transform.SetParent(eventData.pointerEnter.transform, false);
@@ -49,9 +62,14 @@ public class DraggableCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
         else
         {
-            // volta para a mão se não foi jogada
-            transform.SetParent(originalParent, false);
-            rectTransform.anchoredPosition = Vector2.zero;
+            Debug.Log("Card returned to hand");
+
+            // volta para a mão corretamente
+            transform.SetParent(parentBeforeDrag, false); // false = reposiciona relativo ao novo parent
+            rectTransform.localScale = Vector3.one;       // garante escala correta
+            rectTransform.anchoredPosition = Vector2.zero; // centraliza no slot da mão
         }
     }
+
+
 }

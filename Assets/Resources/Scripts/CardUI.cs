@@ -12,16 +12,9 @@ public class CardUI : MonoBehaviour
     public Text numRight;
     public Text numBottom;
     public Text numLeft;
-
     public Image frameImage;
-
     public CardData cardData;
     public Owner owner;
-
-    public Color playerColor = Color.blue;
-    public Color enemyColor = Color.red;
-
-
 
 
     public void SetCard(CardData data, Owner newOwner)
@@ -32,7 +25,7 @@ public class CardUI : MonoBehaviour
         numRight.text = data.right.ToString();
         numBottom.text = data.bottom.ToString();
         numLeft.text = data.left.ToString();
-        
+
 
         SetOwner(newOwner);
     }
@@ -40,14 +33,15 @@ public class CardUI : MonoBehaviour
     public void SetOwner(Owner newOwner)
     {
         owner = newOwner;
-        frameImage = transform.GetChild(1).GetComponent<Image>();
-        if (frameImage != null)
-        {
-
-            frameImage.color = (newOwner == Owner.Player) ? playerColor :
-                              (newOwner == Owner.Enemy) ? enemyColor :
-                             Color.white;
-        }
+        //gameObject.GetComponent<CardFlip>().FlipCard();
+        //frameImage = transform.GetChild(1).GetComponent<Image>();
+        //if (frameImage != null)
+       // {
+         //   frameImage.color =
+          //  (newOwner == Owner.Player) ? new Color32(52, 125, 255, 255) :
+          //  (newOwner == Owner.Enemy) ? new Color32(255, 71, 71, 255) :
+           // Color.white;
+        //}
     }
 
 }
