@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: 67a8c7e33cea5ee46885c86aa7891dbe
+guid: df5b2695efa7bdc489a77c816c598a81
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -445189602233881614
-    second: 011_0
+      213: 6405304087840931424
+    second: pusn_and_arrow_0
+  - first:
+      213: -8450926993133602606
+    second: pusn_and_arrow_1
+  - first:
+      213: 8400151580894728623
+    second: pusn_and_arrow_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +52,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 0
   alignment: 0
@@ -113,23 +119,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 011_0
+      name: pusn_and_arrow_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 768
-        height: 1152
+        x: 179
+        y: 298
+        width: 666
+        height: 648
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2fbe62d5a6e52d9f0800000000000000
-      internalID: -445189602233881614
+      spriteID: 06ebd12912634e850800000000000000
+      internalID: 6405304087840931424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pusn_and_arrow_1
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 948
+        width: 260
+        height: 330
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d8f287bca648ba80800000000000000
+      internalID: -8450926993133602606
       vertices: []
       indices: 
       edges: []
@@ -138,7 +166,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: fc7d70493c553bf4abc28def8e971ceb
     internalID: 0
     vertices: []
     indices: 
@@ -146,9 +174,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":128.0,"y":128.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      011_0: -445189602233881614
+      pusn_and_arrow_0: 6405304087840931424
+      pusn_and_arrow_1: -8450926993133602606
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

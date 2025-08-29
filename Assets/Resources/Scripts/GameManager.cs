@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -32,38 +31,8 @@ public class GameManager : MonoBehaviour
 
     void StartGame()
     {
-        List<CardData> shuffledDeck = new List<CardData>(deck);
-        Shuffle(shuffledDeck);
-
-        for (int i = 0; i < 5; i++)
-        {
-            playerHand.Add(shuffledDeck[i]);
-            enemyHand.Add(shuffledDeck[i + 5]);
-        }
-        foreach (var cardData in playerHand)
-        {
-            var cardObj = Instantiate(cardPrefab, playerHandArea);
-            var cardUI = cardObj.GetComponent<CardUI>();
-            cardUI.SetCard(cardData, Owner.Player);
-
-            var drag = cardObj.AddComponent<DraggableCard>();
-            drag.OnCardPlaced += OnPlayerCardPlaced;
-            cardObj.GetComponent<CardFlip>().FlipCard(Owner.Player);
-            DraggableCard.CanDrag = false;
-        }
-        foreach (var cardData in enemyHand)
-        {
-            var cardObj = Instantiate(cardPrefab, enemyHandArea);
-            var cardUI = cardObj.GetComponent<CardUI>();
-            cardUI.SetCard(cardData, Owner.Enemy);
-
-            var drag = cardObj.GetComponent<DraggableCard>();
-            if (drag != null) drag.enabled = false;
-            cardObj.GetComponent<CardFlip>().FlipCard(Owner.Enemy);
-        }
-
-
-
+        
+        StartCoroutine(CardDealer.Instance.DealCards(deck, playerHand, enemyHand, playerHandArea, enemyHandArea, cardPrefab));
     }
     public void StartPlayerTurn()
     {
@@ -92,7 +61,7 @@ public class GameManager : MonoBehaviour
     // 🔹 Lógica de Turnos
     // ===============================
 
-    void OnPlayerCardPlaced(CardUI cardUI)
+    public void OnPlayerCardPlaced(CardUI cardUI)
     {
         if (turn != 0) return;
 
