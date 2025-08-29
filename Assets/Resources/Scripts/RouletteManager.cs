@@ -9,6 +9,7 @@ public class RouletteController : MonoBehaviour
     public float spinSpeed = 500f; // Velocidade inicial do giro
 
     private bool isSpinning = false;
+    public Text resultText; // Texto para mostrar o resultado
 
     public void StartRoulette()
     {
@@ -52,22 +53,26 @@ public class RouletteController : MonoBehaviour
         if (angle >= 0 && angle < 90)
         {
             Debug.Log("Vermelho → Inimigo começa!");
+            resultText.text = "Inimigo começa!";
             GameManager.Instance.StartEnemyTurn();
 
         }
         else if (angle >= 90 && angle < 180)
         {
+            resultText.text = "Player começa!";
             Debug.Log("Azul → Player começa!");
             GameManager.Instance.StartPlayerTurn();
         }
         else if (angle >= 180 && angle < 270)
         {
+            resultText.text = "Inimigo começa!";
             Debug.Log("Vermelho → Inimigo começa!");
             GameManager.Instance.StartEnemyTurn();
 
         }
         else
         {
+            resultText.text = "Player começa!";
             Debug.Log("Azul → Player começa!");
             GameManager.Instance.StartPlayerTurn();
         }

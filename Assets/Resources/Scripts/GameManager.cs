@@ -40,7 +40,6 @@ public class GameManager : MonoBehaviour
             playerHand.Add(shuffledDeck[i]);
             enemyHand.Add(shuffledDeck[i + 5]);
         }
-        //distribui as cartas do jogador (com drag)
         foreach (var cardData in playerHand)
         {
             var cardObj = Instantiate(cardPrefab, playerHandArea);
@@ -52,7 +51,6 @@ public class GameManager : MonoBehaviour
             cardObj.GetComponent<CardFlip>().FlipCard(Owner.Player);
             DraggableCard.CanDrag = false;
         }
-        //distribui as cartas do inimigo (sem drag)
         foreach (var cardData in enemyHand)
         {
             var cardObj = Instantiate(cardPrefab, enemyHandArea);
@@ -69,12 +67,12 @@ public class GameManager : MonoBehaviour
     }
     public void StartPlayerTurn()
     {
-        Debug.Log("Player ganhou no cara ou coroa e começa!");
+        Debug.Log("Player começa!");
         turn = 0; // Player
     }
     public void StartEnemyTurn()
     {
-        Debug.Log("Inimigo ganhou no cara ou coroa e começa!");
+        Debug.Log("Inimigo começa!");
         turn = 1; // Enemy
         Invoke(nameof(EnemyPlay), 1f);
 
