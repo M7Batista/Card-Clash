@@ -10,6 +10,7 @@ public class DraggableCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private CanvasGroup canvasGroup;
     private Transform parentBeforeDrag;
     public Action<CardUI> OnCardPlaced;
+    public static bool CanDrag = false; // 🔑 Controle global
 
 
     private void Awake()
@@ -22,13 +23,14 @@ public class DraggableCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-       
+       if (!CanDrag) return; // Bloqueia até a roleta acabar
         transform.SetParent(canvas.transform, true); // move pro topo do canvas durante o drag
         canvasGroup.blocksRaycasts = false;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (!CanDrag) return; // Bloqueia até a roleta acabar
         Vector2 localPoint;
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
             canvas.transform as RectTransform,
@@ -43,6 +45,7 @@ public class DraggableCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (!CanDrag) return; // Bloqueia até a roleta acabar
         canvasGroup.blocksRaycasts = true;
 
         // se for solto no tabuleiro

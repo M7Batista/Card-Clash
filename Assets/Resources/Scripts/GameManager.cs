@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -19,11 +20,12 @@ public class GameManager : MonoBehaviour
     private int turn = 0; // 0 = jogador, 1 = inimigo
     private int boardSlots = 9;
     private int filledSlots = 0;
-
     public GameObject endGameUI;
+    public static GameManager Instance;
 
     void Start()
     {
+        Instance = this;
         StartGame();
 
     }
@@ -48,6 +50,7 @@ public class GameManager : MonoBehaviour
             var drag = cardObj.AddComponent<DraggableCard>();
             drag.OnCardPlaced += OnPlayerCardPlaced;
             cardObj.GetComponent<CardFlip>().FlipCard(Owner.Player);
+            DraggableCard.CanDrag = false;
         }
         //distribui as cartas do inimigo (sem drag)
         foreach (var cardData in enemyHand)
@@ -61,9 +64,21 @@ public class GameManager : MonoBehaviour
             cardObj.GetComponent<CardFlip>().FlipCard(Owner.Enemy);
         }
 
-        Debug.Log("Jogo iniciado. Turno do jogador.");
-    }
 
+
+    }
+    public void StartPlayerTurn()
+    {
+        Debug.Log("Player ganhou no cara ou coroa e começa!");
+        turn = 0; // Player
+    }
+    public void StartEnemyTurn()
+    {
+        Debug.Log("Inimigo ganhou no cara ou coroa e começa!");
+        turn = 1; // Enemy
+        Invoke(nameof(EnemyPlay), 1f);
+
+    }
     void Shuffle(List<CardData> list)
     {
         for (int i = 0; i < list.Count; i++)
@@ -215,11 +230,13 @@ public class GameManager : MonoBehaviour
         if (turn == 0)
         {
             Debug.Log("Turno do jogador.");
+            DraggableCard.CanDrag = true;
         }
         else
         {
             Debug.Log("Turno do inimigo...");
             Invoke(nameof(EnemyPlay), 1f);
+            DraggableCard.CanDrag = false;
         }
     }
 
@@ -241,31 +258,31 @@ public class GameManager : MonoBehaviour
     }
 
     void CaptureCheck(CardUI placedCard, int neighborIndex, int placedValue, string neighborSide)
-{
-    var neighborSlot = boardArea.GetChild(neighborIndex);
-    if (neighborSlot.childCount == 0) return;
-
-    var neighborCard = neighborSlot.GetChild(0).GetComponent<CardUI>();
-    if (neighborCard == null || neighborCard.owner == placedCard.owner) return;
-
-    int neighborValue = 0;
-    switch (neighborSide)
     {
-        case "top": neighborValue = neighborCard.cardData.top; break;
-        case "bottom": neighborValue = neighborCard.cardData.bottom; break;
-        case "left": neighborValue = neighborCard.cardData.left; break;
-        case "right": neighborValue = neighborCard.cardData.right; break;
-    }
+        var neighborSlot = boardArea.GetChild(neighborIndex);
+        if (neighborSlot.childCount == 0) return;
 
-    if (placedValue > neighborValue)
-    {
-        neighborCard.SetOwner(placedCard.owner);
-        Debug.Log($"{placedCard.owner} capturou {neighborCard.cardData.cardName}!");
+        var neighborCard = neighborSlot.GetChild(0).GetComponent<CardUI>();
+        if (neighborCard == null || neighborCard.owner == placedCard.owner) return;
 
-        // chama a animação de flip com o novo dono
-        neighborCard.GetComponent<CardFlip>().FlipCard(placedCard.owner);
+        int neighborValue = 0;
+        switch (neighborSide)
+        {
+            case "top": neighborValue = neighborCard.cardData.top; break;
+            case "bottom": neighborValue = neighborCard.cardData.bottom; break;
+            case "left": neighborValue = neighborCard.cardData.left; break;
+            case "right": neighborValue = neighborCard.cardData.right; break;
+        }
+
+        if (placedValue > neighborValue)
+        {
+            neighborCard.SetOwner(placedCard.owner);
+            Debug.Log($"{placedCard.owner} capturou {neighborCard.cardData.cardName}!");
+
+            // chama a animação de flip com o novo dono
+            neighborCard.GetComponent<CardFlip>().FlipCard(placedCard.owner);
+        }
     }
-}
 
     void EndGame()
     {
