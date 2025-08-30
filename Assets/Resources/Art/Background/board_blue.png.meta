@@ -1,16 +1,10 @@
 fileFormatVersion: 2
-guid: df5b2695efa7bdc489a77c816c598a81
+guid: c1deb612b44161943bdffa396672d33d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6405304087840931424
-    second: pusn_and_arrow_0
-  - first:
-      213: -8450926993133602606
-    second: pusn_and_arrow_1
-  - first:
-      213: 8400151580894728623
-    second: pusn_and_arrow_2
+      213: 5259743922079592260
+    second: board_blue_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,9 +46,9 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -119,45 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pusn_and_arrow_0
+      name: board_blue_0
       rect:
         serializedVersion: 2
-        x: 179
-        y: 298
-        width: 666
-        height: 648
+        x: 0
+        y: 0
+        width: 1472
+        height: 704
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 06ebd12912634e850800000000000000
-      internalID: 6405304087840931424
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: pusn_and_arrow_1
-      rect:
-        serializedVersion: 2
-        x: 383
-        y: 948
-        width: 260
-        height: 330
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2d8f287bca648ba80800000000000000
-      internalID: -8450926993133602606
+      spriteID: 44fe215da3d5ef840800000000000000
+      internalID: 5259743922079592260
       vertices: []
       indices: 
       edges: []
@@ -166,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: fc7d70493c553bf4abc28def8e971ceb
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -174,12 +146,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":128.0,"y":128.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
-      pusn_and_arrow_0: 6405304087840931424
-      pusn_and_arrow_1: -8450926993133602606
+      board_blue_0: 5259743922079592260
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

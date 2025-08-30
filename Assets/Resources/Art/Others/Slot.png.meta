@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 6837facab41b62942addeb54a802aed9
+guid: 53e0a8a141ed0934d840ff6ce795dfcd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 243713248227103360
-    second: roullet_0
+      213: 8417420941954122440
+    second: Slot_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: roullet_0
+      name: Slot_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 500
-        height: 500
+        width: 200
+        height: 300
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 08212a378e7d16300800000000000000
-      internalID: 243713248227103360
+      spriteID: 8c20c12dfbfa0d470800000000000000
+      internalID: 8417420941954122440
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      roullet_0: 243713248227103360
+      Slot_0: 8417420941954122440
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
