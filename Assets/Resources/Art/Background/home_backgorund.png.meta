@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: de662ad10c29b0643b8f797fd6a1e439
+guid: 9bdb8ba3c3e13484295c5b9ce92509b2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 545875093725613961
-    second: 003_0
+      213: 4037052930769174251
+    second: home_backgorund_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,7 +100,7 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 50
+    textureFormat: 47
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 003_0
+      name: home_backgorund_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1365
-        height: 2048
+        x: 97
+        y: 33
+        width: 1105
+        height: 1247
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 98f8f3d6186539700800000000000000
-      internalID: 545875093725613961
+      spriteID: bee32f5504e760830800000000000000
+      internalID: 4037052930769174251
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      003_0: 545875093725613961
+      home_backgorund_0: 4037052930769174251
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

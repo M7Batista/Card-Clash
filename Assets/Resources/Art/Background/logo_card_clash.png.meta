@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: de662ad10c29b0643b8f797fd6a1e439
+guid: 08232dfe08240d243bf71813b961ef89
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 545875093725613961
-    second: 003_0
+      213: 3207174905003704624
+    second: logo_card_clash_0
+  - first:
+      213: -2768815539473408046
+    second: logo_card_clash_1
+  - first:
+      213: -1338196590674155280
+    second: logo_card_clash_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,7 +54,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -98,9 +104,9 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: Android
-    maxTextureSize: 2048
+    maxTextureSize: 1024
     resizeAlgorithm: 0
-    textureFormat: 50
+    textureFormat: 47
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -113,13 +119,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 003_0
+      name: logo_card_clash_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1365
-        height: 2048
+        x: 69
+        y: 644
+        width: 414
+        height: 208
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +134,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 98f8f3d6186539700800000000000000
-      internalID: 545875093725613961
+      spriteID: 0310b41759c228c20800000000000000
+      internalID: 3207174905003704624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: logo_card_clash_1
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 246
+        width: 592
+        height: 420
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2df1b19cfe03399d0800000000000000
+      internalID: -2768815539473408046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: logo_card_clash_2
+      rect:
+        serializedVersion: 2
+        x: 492
+        y: 608
+        width: 498
+        height: 252
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f86a357a45cd6de0800000000000000
+      internalID: -1338196590674155280
       vertices: []
       indices: 
       edges: []
@@ -148,7 +198,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      003_0: 545875093725613961
+      logo_card_clash_0: 3207174905003704624
+      logo_card_clash_1: -2768815539473408046
+      logo_card_clash_2: -1338196590674155280
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
