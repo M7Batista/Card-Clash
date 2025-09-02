@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc2b6d11e7a1bd46b8492bc6e03da8a, type: 3}
   m_Name: 001
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  cardName: Makina
-  artwork: {fileID: 21300000, guid: a48ef6eab0bbcbc47b545c820d41d731, type: 3}
-  top: 5
-  right: 2
-  bottom: 5
-  left: 1
+  cardName: Marine
+  artwork: {fileID: 21300000, guid: 33b779af39a5ecb44b7c172020ff55ba, type: 3}
+  top: 1
+  right: 3
+  bottom: 3
+  left: 5

@@ -11,11 +11,12 @@ public class EndGameUI : MonoBehaviour
     public float fadeDuration = 1.5f;
     public Sprite spriteVictory;
     public Sprite spriteDefeat;
-
-    void Start()
+    public static EndGameUI instance;
+    private void Awake()
     {
-        restartButton.onClick.AddListener(ReloadGame);
+        instance = this;
     }
+
 
     // Chame esse método quando o jogo terminar
     public void ShowEndGame(bool victory)
@@ -44,16 +45,16 @@ public class EndGameUI : MonoBehaviour
             corAtual.a = Mathf.Clamp01(elapsedTime / fadeDuration);
             resultImage.color = corAtual;
             yield return null;
-            
+
         }
 
         //resultImage.GetComponent<Image>().alpha = 1f; // garante que fica 100% visível
     }
-
-    public void ReloadGame()
+    public void CloseEndGame()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        panel.SetActive(false);
     }
+
 }
 
 

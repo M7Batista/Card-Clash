@@ -33,15 +33,6 @@ public class CardUI : MonoBehaviour
     public void SetOwner(Owner newOwner)
     {
         owner = newOwner;
-        //gameObject.GetComponent<CardFlip>().FlipCard();
-        //frameImage = transform.GetChild(1).GetComponent<Image>();
-        //if (frameImage != null)
-       // {
-         //   frameImage.color =
-          //  (newOwner == Owner.Player) ? new Color32(52, 125, 255, 255) :
-          //  (newOwner == Owner.Enemy) ? new Color32(255, 71, 71, 255) :
-           // Color.white;
-        //}
     }
 
 }

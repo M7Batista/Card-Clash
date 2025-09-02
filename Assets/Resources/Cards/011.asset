@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc2b6d11e7a1bd46b8492bc6e03da8a, type: 3}
   m_Name: 011
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  cardName: Ramiler
-  artwork: {fileID: 21300000, guid: 67a8c7e33cea5ee46885c86aa7891dbe, type: 3}
-  top: 6
-  right: 4
-  bottom: 6
-  left: 5
+  cardName: Weni
+  artwork: {fileID: 21300000, guid: f83cd4a22c591f14894a446366a4e4a5, type: 3}
+  top: 2
+  right: 1
+  bottom: 2
+  left: 6

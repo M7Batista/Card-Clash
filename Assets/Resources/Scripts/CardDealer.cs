@@ -30,14 +30,18 @@ public class CardDealer : MonoBehaviour
             playerHand.Add(pCard);
             CreateCard(pCard, playerHandArea, Owner.Player);
 
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.2f);
 
+           
+        }
+        for (int i = 0; i < 5; i++)
+        {
             // Enemy recebe carta
             CardData eCard = shuffledDeck[i + 5];
             enemyHand.Add(eCard);
             CreateCard(eCard, enemyHandArea, Owner.Enemy);
 
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.2f);
         }
 
         // desativa drag até começar o turno real
@@ -69,7 +73,7 @@ public class CardDealer : MonoBehaviour
         if (owner == Owner.Player)
         {
             var drag = cardObj.AddComponent<DraggableCard>();
-            drag.OnCardPlaced += GameManager.Instance.OnPlayerCardPlaced;
+            drag.OnCardPlaced += BattleCardScreen.Instance.OnPlayerCardPlaced;
             //cardObj.GetComponent<CardFlip>().FlipCard(Owner.Player);
         }
         else

@@ -7,9 +7,20 @@ public class RouletteController : MonoBehaviour
     public RectTransform roulette; // Objeto da roleta (UI)
     public float spinDuration = 4f; // Duração do giro
     public float spinSpeed = 500f; // Velocidade inicial do giro
+    public float idleSpinSpeed = 30f; // Velocidade lenta quando não usada
 
     private bool isSpinning = false;
+    private bool finishedSpinning = false;
     public Text resultText; // Texto para mostrar o resultado
+
+    void Update()
+    {
+        // 🔹 Gira lentamente quando não está sendo usada
+        if (!isSpinning && !finishedSpinning && roulette != null)
+        {
+            roulette.Rotate(0, 0, -idleSpinSpeed * Time.deltaTime);
+        }
+    }
 
     public void StartRoulette()
     {
@@ -43,6 +54,7 @@ public class RouletteController : MonoBehaviour
         DecideWinner(finalZ);
 
         isSpinning = false;
+        finishedSpinning = true;
     }
 
     private void DecideWinner(float angle)
@@ -54,29 +66,28 @@ public class RouletteController : MonoBehaviour
         {
             Debug.Log("Vermelho → Inimigo começa!");
             resultText.text = "Inimigo começa!";
-            GameManager.Instance.StartEnemyTurn();
-
+            BattleCardScreen.Instance.StartEnemyTurn();
         }
         else if (angle >= 90 && angle < 180)
         {
             resultText.text = "Player começa!";
             Debug.Log("Azul → Player começa!");
-            GameManager.Instance.StartPlayerTurn();
+            BattleCardScreen.Instance.StartPlayerTurn();
         }
         else if (angle >= 180 && angle < 270)
         {
             resultText.text = "Inimigo começa!";
             Debug.Log("Vermelho → Inimigo começa!");
-            GameManager.Instance.StartEnemyTurn();
-
+            BattleCardScreen.Instance.StartEnemyTurn();
         }
         else
         {
             resultText.text = "Player começa!";
             Debug.Log("Azul → Player começa!");
-            GameManager.Instance.StartPlayerTurn();
+            BattleCardScreen.Instance.StartPlayerTurn();
         }
-         // ✅ Ativa as cartas
+
+        // ✅ Ativa as cartas
         DraggableCard.CanDrag = true;
 
         // ✅ Destroi a roleta

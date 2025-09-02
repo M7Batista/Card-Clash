@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc2b6d11e7a1bd46b8492bc6e03da8a, type: 3}
   m_Name: 010
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  cardName: Angela
-  artwork: {fileID: 21300000, guid: 9ecf62acda21e0a49929f566b7f41609, type: 3}
-  top: 3
-  right: 4
+  cardName: Tayumi
+  artwork: {fileID: 21300000, guid: 9c04d19b2d16f5d47a066de1767a8d53, type: 3}
+  top: 4
+  right: 2
   bottom: 4
-  left: 5
+  left: 3
