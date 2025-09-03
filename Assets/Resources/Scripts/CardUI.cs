@@ -7,11 +7,12 @@ public enum Owner { None, Player, Enemy }
 public class CardUI : MonoBehaviour
 {
     public Image artworkImage;
-    public string cardName;
-    public Text numTop;
-    public Text numRight;
-    public Text numBottom;
-    public Text numLeft;
+    public TextMeshProUGUI numTop;
+    public TextMeshProUGUI numRight;
+    public TextMeshProUGUI numBottom;
+    public TextMeshProUGUI numLeft;
+    public TextMeshProUGUI txtName;
+    public GameObject panelTextName;
     public Image frameImage;
     public CardData cardData;
     public Owner owner;
@@ -21,11 +22,11 @@ public class CardUI : MonoBehaviour
     {
         cardData = data;
         artworkImage.sprite = data.artwork;
+        txtName.text = data.cardName;
         numTop.text = data.top.ToString();
         numRight.text = data.right.ToString();
         numBottom.text = data.bottom.ToString();
         numLeft.text = data.left.ToString();
-
 
         SetOwner(newOwner);
     }
@@ -33,6 +34,10 @@ public class CardUI : MonoBehaviour
     public void SetOwner(Owner newOwner)
     {
         owner = newOwner;
+    }
+    public void ShowName(bool show)
+    {
+        panelTextName.SetActive(show);
     }
 
 }

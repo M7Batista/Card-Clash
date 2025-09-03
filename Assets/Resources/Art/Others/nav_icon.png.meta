@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: ab3acce9ca0bcfc49968f5ca86a452ce
+guid: 91df0c117688717438756e765356c65a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7501387830980884940
-    second: frame_0
+      213: -9112727301118051196
+    second: nav_icon_0
+  - first:
+      213: 5892841473057772149
+    second: nav_icon_1
+  - first:
+      213: -1229097566553952508
+    second: nav_icon_2
+  - first:
+      213: 5356393624106044879
+    second: nav_icon_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,9 +55,9 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -100,12 +109,12 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 47
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 0
+    overridden: 1
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
@@ -113,23 +122,89 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: frame_0
+      name: nav_icon_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 250
-        height: 300
+        y: 392
+        width: 239
+        height: 247
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cc9bd0cfc784a1860800000000000000
-      internalID: 7501387830980884940
+      spriteID: 48cbad90dc6198180800000000000000
+      internalID: -9112727301118051196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nav_icon_1
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 379
+        width: 288
+        height: 273
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5725c4f191497c150800000000000000
+      internalID: 5892841473057772149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nav_icon_2
+      rect:
+        serializedVersion: 2
+        x: 792
+        y: 360
+        width: 235
+        height: 308
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40f2147764e51fee0800000000000000
+      internalID: -1229097566553952508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nav_icon_3
+      rect:
+        serializedVersion: 2
+        x: 1178
+        y: 391
+        width: 215
+        height: 270
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcd020a2f9bb55a40800000000000000
+      internalID: 5356393624106044879
       vertices: []
       indices: 
       edges: []
@@ -138,7 +213,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: edbdcd7e760b99c46a685a48a076ebc6
     internalID: 0
     vertices: []
     indices: 
@@ -146,9 +221,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      frame_0: 7501387830980884940
+      nav_icon_0: -9112727301118051196
+      nav_icon_1: 5892841473057772149
+      nav_icon_2: -1229097566553952508
+      nav_icon_3: 5356393624106044879
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

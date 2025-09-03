@@ -68,7 +68,7 @@ public class CardDealer : MonoBehaviour
         var cardObj = Instantiate(cardPrefab, parent);
         var cardUI = cardObj.GetComponent<CardUI>();
         cardUI.SetCard(cardData, owner);
-
+        cardUI.ShowName(false);
         // comportamento diferente entre Player e Enemy
         if (owner == Owner.Player)
         {

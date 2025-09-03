@@ -18,7 +18,7 @@ public class BottomNavController : MonoBehaviour
     private Color selectedColor = Color.green; // Cor do botão ativo
     private float transitionDuration = 0.4f;
 
-    // 🔹 Guardar todos botões e telas para facilitar
+    // 🔹 Guardar todos botões e telas
     private Dictionary<Button, RectTransform> buttonToScreen;
 
     void Start()
@@ -56,7 +56,7 @@ public class BottomNavController : MonoBehaviour
         nextScreen = targetScreen;
         nextScreen.gameObject.SetActive(true);
 
-        // Direção do slide → se a nova tela está "à direita" no fluxo
+        // Direção do slide
         bool slideLeft = IsSlideLeft(currentScreen, nextScreen);
 
         StartCoroutine(SlideTransition(currentScreen, nextScreen, slideLeft));
@@ -66,40 +66,46 @@ public class BottomNavController : MonoBehaviour
     }
 
     IEnumerator SlideTransition(RectTransform fromScreen, RectTransform toScreen, bool slideLeft)
+{
+    float elapsed = 0f;
+
+    // Usa localPosition em vez de anchoredPosition
+    Vector3 startFrom = fromScreen.localPosition;
+    Vector3 startTo = new Vector3(slideLeft ? Screen.width : -Screen.width, 0, 0);
+    Vector3 endFrom = new Vector3(slideLeft ? -Screen.width : Screen.width, 0, 0);
+    Vector3 endTo = Vector3.zero;
+
+    toScreen.localPosition = startTo;
+
+    while (elapsed < transitionDuration)
     {
-        float elapsed = 0f;
-        Vector2 startFrom = fromScreen.anchoredPosition;
-        Vector2 startTo = new Vector2(slideLeft ? Screen.width : -Screen.width, 0);
-        Vector2 endFrom = new Vector2(slideLeft ? -Screen.width : Screen.width, 0);
-        Vector2 endTo = Vector2.zero;
+        elapsed += Time.deltaTime;
+        float t = Mathf.Clamp01(elapsed / transitionDuration);
 
-        toScreen.anchoredPosition = startTo;
+        // 🔹 Ease in-out cúbico (mais suave que linear)
+        float easedT = t * t * (3f - 2f * t);
 
-        while (elapsed < transitionDuration)
+        fromScreen.localPosition = Vector3.Lerp(startFrom, endFrom, easedT);
+        toScreen.localPosition = Vector3.Lerp(startTo, endTo, easedT);
+
+        yield return null;
+    }
+
+    fromScreen.gameObject.SetActive(false);
+    currentScreen = toScreen;
+
+    // 🔹 Chama método especial "OnScreenOpened" se existir
+    var screenLogic = currentScreen.GetComponent<MonoBehaviour>();
+    if (screenLogic != null)
+    {
+        var method = screenLogic.GetType().GetMethod("OnScreenOpened");
+        if (method != null)
         {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / transitionDuration);
-
-            fromScreen.anchoredPosition = Vector2.Lerp(startFrom, endFrom, t);
-            toScreen.anchoredPosition = Vector2.Lerp(startTo, endTo, t);
-
-            yield return null;
-        }
-
-        fromScreen.gameObject.SetActive(false);
-        currentScreen = toScreen;
-
-        // 🔹 Chama método especial "OnScreenOpened" se existir
-        var screenLogic = currentScreen.GetComponent<MonoBehaviour>();
-        if (screenLogic != null)
-        {
-            var method = screenLogic.GetType().GetMethod("OnScreenOpened");
-            if (method != null)
-            {
-                method.Invoke(screenLogic, null);
-            }
+            method.Invoke(screenLogic, null);
         }
     }
+}
+
 
     void UpdateAllButtons(Button selectedButton)
     {
@@ -128,13 +134,12 @@ public class BottomNavController : MonoBehaviour
 
         button.colors = colors;
 
-        // 🔹 força o botão a redesenhar o estado visual
+        // 🔹 força atualização do estado visual
         var selectable = button as Selectable;
         selectable.OnDeselect(null);
     }
 
-
-    // 🔹 Decide direção do slide baseado na ordem das telas
+    // 🔹 Decide direção do slide
     bool IsSlideLeft(RectTransform from, RectTransform to)
     {
         List<RectTransform> order = new List<RectTransform>()
