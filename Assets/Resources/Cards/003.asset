@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc2b6d11e7a1bd46b8492bc6e03da8a, type: 3}
   m_Name: 003
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  cardName: Krista
+  cardName: Gobhime
   artwork: {fileID: 21300000, guid: de662ad10c29b0643b8f797fd6a1e439, type: 3}
   top: 2
   right: 3

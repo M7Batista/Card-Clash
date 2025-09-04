@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc2b6d11e7a1bd46b8492bc6e03da8a, type: 3}
   m_Name: 002
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  cardName: Viola
+  cardName: Nadia
   artwork: {fileID: 21300000, guid: 700551b23775e654abb6b18f1677f523, type: 3}
   top: 5
   right: 1

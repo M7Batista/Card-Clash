@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc2b6d11e7a1bd46b8492bc6e03da8a, type: 3}
   m_Name: 011
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  cardName: Weni
+  cardName: Elenaria
   artwork: {fileID: 21300000, guid: f83cd4a22c591f14894a446366a4e4a5, type: 3}
   top: 2
   right: 1

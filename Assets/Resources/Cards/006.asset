@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc2b6d11e7a1bd46b8492bc6e03da8a, type: 3}
   m_Name: 006
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  cardName: Amara
+  cardName: Viola
   artwork: {fileID: 21300000, guid: 73220deba03bf2e44be48dd6ec540e36, type: 3}
   top: 2
   right: 1

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 4fc0238a83f14124d8cd589d24a9e456
+guid: 3800e11ab89e9bc44b085cd91ac6aa26
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7417498029127908629
-    second: 002_0
+      213: 2828752034792214267
+    second: poligon_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -98,7 +98,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: Android
-    maxTextureSize: 2048
+    maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: 50
     textureCompression: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 002_0
+      name: poligon_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1365
-        height: 2048
+        width: 492
+        height: 492
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 51d345c682f30f660800000000000000
-      internalID: 7417498029127908629
+      spriteID: bfe047ffcfeb14720800000000000000
+      internalID: 2828752034792214267
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      002_0: 7417498029127908629
+      poligon_0: 2828752034792214267
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
