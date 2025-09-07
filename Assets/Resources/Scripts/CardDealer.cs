@@ -13,37 +13,51 @@ public class CardDealer : MonoBehaviour
     }
 
     /// <summary>
-    /// Distribui cartas alternadamente para Player e Enemy com delay.
+    /// Distribui as cartas do jogador (deck fixo) e inimigo para suas áreas na UI.
     /// </summary>
-    public IEnumerator DealCards(List<CardData> deck, List<CardData> playerHand, List<CardData> enemyHand,
-                                Transform playerHandArea, Transform enemyHandArea, GameObject cardPrefab)
+    public IEnumerator DealCards(
+        List<CardData> playerDeck,
+        List<CardData> enemyHand,
+        Transform playerHandArea,
+        Transform enemyHandArea,
+        GameObject cardPrefab
+    )
     {
-        // embaralhar deck
-        List<CardData> shuffledDeck = new List<CardData>(deck);
-        Shuffle(shuffledDeck);
-
-        // pega as 10 primeiras cartas (5 para cada)
-        for (int i = 0; i < 5; i++)
+        // 🔹 Distribui cartas do jogador
+        for (int i = 0; i < playerDeck.Count; i++)
         {
-            // Player recebe carta
-            CardData pCard = shuffledDeck[i];
-            playerHand.Add(pCard);
-            CreateCard(pCard, playerHandArea, Owner.Player);
+            CardData card = playerDeck[i];
 
-            yield return new WaitForSeconds(0.2f);
+            GameObject cardGO = GameObject.Instantiate(cardPrefab, playerHandArea);
+            CardUI cardUI = cardGO.GetComponent<CardUI>();
+            cardUI.SetCard(card, Owner.Player);
+            var drag = cardGO.GetComponent<DraggableCard>();
+            if (drag != null)
+            {
+                drag.OnCardPlaced += (placedCard) =>
+                {
+                    BattleCardScreen.Instance.OnPlayerCardPlaced(placedCard);
+                };
+            }
 
-           
-        }
-        for (int i = 0; i < 5; i++)
-        {
-            // Enemy recebe carta
-            CardData eCard = shuffledDeck[i + 5];
-            enemyHand.Add(eCard);
-            CreateCard(eCard, enemyHandArea, Owner.Enemy);
-
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
         }
 
+        // 🔹 Distribui cartas do inimigo
+        for (int i = 0; i < enemyHand.Count; i++)
+        {
+            CardData card = enemyHand[i];
+
+            GameObject cardGO = GameObject.Instantiate(cardPrefab, enemyHandArea);
+            CardUI cardUI = cardGO.GetComponent<CardUI>();
+            cardUI.SetCard(card, Owner.Enemy);
+
+            // inimigo não pode arrastar
+            var drag = cardGO.GetComponent<DraggableCard>();
+            if (drag != null) Destroy(drag);
+
+            yield return new WaitForSeconds(0.1f);
+        }
         // desativa drag até começar o turno real
         DraggableCard.CanDrag = false;
 
@@ -60,7 +74,6 @@ public class CardDealer : MonoBehaviour
             var flip = enemyCard.GetComponent<CardFlip>();
             if (flip != null) flip.FlipCard(Owner.Enemy);
         }
-        
     }
 
     void CreateCard(CardData cardData, Transform parent, Owner owner)

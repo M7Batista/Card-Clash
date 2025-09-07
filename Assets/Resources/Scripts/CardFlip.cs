@@ -31,10 +31,6 @@ public class CardFlip : MonoBehaviour
             yield return null;
         }
 
-        // Troca de dono (muda a cor do frame)
-        //isPlayerOwner = !isPlayerOwner;
-        //frameImage.color = isPlayerOwner ? new Color32(52, 125, 255, 255) : new Color32(255, 71, 71, 255);
-        //Owner newOwner = gameObject.GetComponent<CardUI>().owner;
         frameImage.color =
             (newOwner == Owner.Player) ? new Color32(52, 125, 255, 255) : new Color32(255, 71, 71, 255);
 

@@ -3,10 +3,10 @@ using UnityEngine.UI;
 
 public class RadarPolygon : Graphic
 {
-    [Range(0, 10)] public float top = 3f;
-    [Range(0, 10)] public float right = 7f;
-    [Range(0, 10)] public float bottom = 3f;
-    [Range(0, 10)] public float left = 9f;
+    [Range(0, 10)] public float top = 0f;
+    [Range(0, 10)] public float right = 0f;
+    [Range(0, 10)] public float bottom = 0f;
+    [Range(0, 10)] public float left = 0f;
 
     float maxValue = 10f;
 

@@ -59,52 +59,103 @@ public class BottomNavController : MonoBehaviour
         // Direção do slide
         bool slideLeft = IsSlideLeft(currentScreen, nextScreen);
 
-        StartCoroutine(SlideTransition(currentScreen, nextScreen, slideLeft));
+        //StartCoroutine(SlideTransition(currentScreen, nextScreen, slideLeft));
+        StartCoroutine(FadeTransition(currentScreen, nextScreen));
+
 
         // Atualiza botões
         UpdateAllButtons(clickedButton);
     }
-
-    IEnumerator SlideTransition(RectTransform fromScreen, RectTransform toScreen, bool slideLeft)
-{
-    float elapsed = 0f;
-
-    // Usa localPosition em vez de anchoredPosition
-    Vector3 startFrom = fromScreen.localPosition;
-    Vector3 startTo = new Vector3(slideLeft ? Screen.width : -Screen.width, 0, 0);
-    Vector3 endFrom = new Vector3(slideLeft ? -Screen.width : Screen.width, 0, 0);
-    Vector3 endTo = Vector3.zero;
-
-    toScreen.localPosition = startTo;
-
-    while (elapsed < transitionDuration)
+    IEnumerator FadeTransition(RectTransform fromScreen, RectTransform toScreen)
     {
-        elapsed += Time.deltaTime;
-        float t = Mathf.Clamp01(elapsed / transitionDuration);
+        CanvasGroup fromGroup = fromScreen.GetComponent<CanvasGroup>();
+        CanvasGroup toGroup = toScreen.GetComponent<CanvasGroup>();
 
-        // 🔹 Ease in-out cúbico (mais suave que linear)
-        float easedT = t * t * (3f - 2f * t);
+        if (fromGroup == null) fromGroup = fromScreen.gameObject.AddComponent<CanvasGroup>();
+        if (toGroup == null) toGroup = toScreen.gameObject.AddComponent<CanvasGroup>();
 
-        fromScreen.localPosition = Vector3.Lerp(startFrom, endFrom, easedT);
-        toScreen.localPosition = Vector3.Lerp(startTo, endTo, easedT);
+        float elapsed = 0f;
 
-        yield return null;
-    }
+        // Inicializa estados
+        toGroup.alpha = 0f;
+        toGroup.interactable = false;
+        toGroup.blocksRaycasts = false;
+        toScreen.gameObject.SetActive(true);
 
-    fromScreen.gameObject.SetActive(false);
-    currentScreen = toScreen;
-
-    // 🔹 Chama método especial "OnScreenOpened" se existir
-    var screenLogic = currentScreen.GetComponent<MonoBehaviour>();
-    if (screenLogic != null)
-    {
-        var method = screenLogic.GetType().GetMethod("OnScreenOpened");
-        if (method != null)
+        while (elapsed < transitionDuration)
         {
-            method.Invoke(screenLogic, null);
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / transitionDuration);
+
+            fromGroup.alpha = 1f - t;
+            toGroup.alpha = t;
+
+            yield return null;
+        }
+
+        // Finaliza estados
+        fromGroup.alpha = 0f;
+        fromGroup.interactable = false;
+        fromGroup.blocksRaycasts = false;
+        fromScreen.gameObject.SetActive(false);
+
+        toGroup.alpha = 1f;
+        toGroup.interactable = true;
+        toGroup.blocksRaycasts = true;
+
+        currentScreen = toScreen;
+        // 🔹 Verifica se a nova tela tem algum script de "screen"
+        var screenLogic = currentScreen.GetComponent<MonoBehaviour>();
+        if (screenLogic != null)
+        {
+            // Chama o método se existir
+            var method = screenLogic.GetType().GetMethod("OnScreenOpened");
+            Debug.Log("Chamando OnScreenOpened em " + screenLogic.GetType().Name);
+            if (method != null)
+            {
+                method.Invoke(screenLogic, null);
+            }
         }
     }
-}
+
+    IEnumerator SlideTransition(RectTransform fromScreen, RectTransform toScreen, bool slideLeft)
+    {
+        float elapsed = 0f;
+        Vector2 startFrom = fromScreen.anchoredPosition;
+        Vector2 startTo = new Vector2(slideLeft ? Screen.width : -Screen.width, 0);
+        Vector2 endFrom = new Vector2(slideLeft ? -Screen.width : Screen.width, 0);
+        Vector2 endTo = Vector2.zero;
+
+        toScreen.anchoredPosition = startTo;
+
+        while (elapsed < transitionDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / transitionDuration);
+
+            fromScreen.anchoredPosition = Vector2.Lerp(startFrom, endFrom, t);
+            toScreen.anchoredPosition = Vector2.Lerp(startTo, endTo, t);
+
+            yield return null;
+        }
+
+        fromScreen.gameObject.SetActive(false);
+        currentScreen = toScreen;
+
+        // 🔹 Verifica se a nova tela tem algum script de "screen"
+        var screenLogic = currentScreen.GetComponent<MonoBehaviour>();
+        if (screenLogic != null)
+        {
+            // Chama o método se existir
+            var method = screenLogic.GetType().GetMethod("OnScreenOpened");
+            Debug.Log("Chamando OnScreenOpened em " + screenLogic.GetType().Name);
+            if (method != null)
+            {
+                method.Invoke(screenLogic, null);
+            }
+        }
+    }
+
 
 
     void UpdateAllButtons(Button selectedButton)

@@ -1,12 +1,18 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewCard", menuName = "Cards/Card Data")]
+[CreateAssetMenu(fileName = "NewCard", menuName = "Card Game/Card Data")]
 public class CardData : ScriptableObject
 {
-    public string cardName;
-    public Sprite artwork;
-    [Range(1, 9)] public int top;
-    [Range(1, 9)] public int right;
-    [Range(1, 9)] public int bottom;
-    [Range(1, 9)] public int left;
+    [Header("Identificação")]
+    public int cardId;         // ID único do card
+    public string cardName;    // Nome exibido
+
+    [Header("Arte")]
+    public Sprite artwork;     // Imagem do card
+
+    [Header("Atributos")]
+    public int top;
+    public int right;
+    public int bottom;
+    public int left;
 }

@@ -1,18 +1,29 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.EventSystems;
 
 public class CardGallery : MonoBehaviour
 {
     [Header("Galeria")]
-    public Transform gridParent;      // GridLayoutGroup (filho de Viewport/Content)
-    public GameObject cardPrefab;     // Prefab do card (tem CardUI)
-    public ScrollRect scrollRect;     // ScrollRect vertical da galeria
+    public Transform gridParent;
+    public GameObject cardPrefab;
+    public ScrollRect scrollRect;
 
     [Header("Preview")]
-    public GameObject previewPanel;   // Painel overlay (fullscreen)
-    public Image previewImage;        // Imagem grande
-    public Button closeButton;        // Botão para fechar
+    public GameObject previewPanel;
+    public Image previewImage;
+    public Button closeButton;
+    public Button statusButton;
+
+    [Header("Preview Status")]
+    public GameObject statusPanel;
+    public TextMeshProUGUI numTop, numRight, numBottom, numLeft;
+    public TextMeshProUGUI characterName;
+    public RadarPolygon radarPolygon;   // 🔹 Referência ao RadarPolygon no painel de preview
+
+    [Header("UI Extra")]
+    public TextMeshProUGUI totalCardsText;
 
     [Header("Mobile")]
     [Tooltip("Pixels de movimento para o tap ser considerado clique (menor = mais sensível)")]
@@ -20,14 +31,17 @@ public class CardGallery : MonoBehaviour
     [Tooltip("Tempo máx (segundos) para considerar um tap")]
     public float tapTimeThreshold = 0.3f;
 
+    private int totalCards = 0;
+
     private void Start()
     {
+        if (statusButton != null)
+            statusButton.onClick.AddListener(ToggleStatusPanel);
         if (closeButton != null)
             closeButton.onClick.AddListener(ClosePreview);
 
         previewPanel.SetActive(false);
 
-        // Garante Scroll só vertical
         if (scrollRect != null)
         {
             scrollRect.horizontal = false;
@@ -40,6 +54,7 @@ public class CardGallery : MonoBehaviour
     private void LoadCards()
     {
         CardData[] allCards = Resources.LoadAll<CardData>("cards");
+        totalCards = allCards.Length;
 
         foreach (CardData data in allCards)
         {
@@ -53,20 +68,40 @@ public class CardGallery : MonoBehaviour
             Image img = cardGO.GetComponent<Image>();
             if (img == null) img = cardGO.AddComponent<Image>();
             img.raycastTarget = true;
-            if (img.sprite == null) img.color = Color.white; // visível se não houver sprite base
+            if (img.sprite == null) img.color = Color.white;
 
-            // Adiciona o handler que encaminha drag ao ScrollRect e detecta tap
+            // 🔹 Passa o CardData para o handler (não só o sprite)
             var touch = cardGO.AddComponent<CardTouchHandler>();
-            touch.Setup(this, scrollRect, data.artwork, tapMoveThreshold, tapTimeThreshold);
+            touch.Setup(this, scrollRect, data, tapMoveThreshold, tapTimeThreshold);
         }
+
+        if (totalCardsText != null)
+            totalCardsText.text = $"Characters {totalCards}";
     }
 
-    public void ShowCard(Sprite cardSprite)
+    // 🔹 Agora recebe o CardData completo
+    public void ShowCard(CardData cardData)
     {
-        previewImage.sprite = cardSprite;
+        previewImage.sprite = cardData.artwork;
         previewPanel.SetActive(true);
 
-        // Reinicia o zoom (se houver CardZoom no 1º filho)
+        // Atualiza os textos
+        if (numTop) numTop.text = cardData.top.ToString();
+        if (numRight) numRight.text = cardData.right.ToString();
+        if (numBottom) numBottom.text = cardData.bottom.ToString();
+        if (numLeft) numLeft.text = cardData.left.ToString();
+        if (characterName) characterName.text = cardData.cardName;
+
+        // Atualiza RadarPolygon
+        if (radarPolygon != null)
+        {
+            radarPolygon.top = cardData.top;
+            radarPolygon.right = cardData.right;
+            radarPolygon.bottom = cardData.bottom;
+            radarPolygon.left = cardData.left;
+            radarPolygon.SetVerticesDirty(); // 🔹 Força redesenho
+        }
+
         var zoom = previewPanel.transform.GetChild(0).GetComponent<CardZoom>();
         if (zoom != null) zoom.ResetZoom();
     }
@@ -75,30 +110,35 @@ public class CardGallery : MonoBehaviour
     {
         previewPanel.SetActive(false);
     }
+
+    public void ToggleStatusPanel()
+    {
+        if (statusPanel != null)
+        {
+            statusPanel.SetActive(!statusPanel.activeSelf);
+        }
+    }
 }
 
-/// <summary>
-/// Encaminha drag para o ScrollRect pai e abre o preview somente em TAP (não-drag).
-/// </summary>
 public class CardTouchHandler : MonoBehaviour,
     IInitializePotentialDragHandler, IBeginDragHandler, IDragHandler, IEndDragHandler,
     IPointerDownHandler, IPointerUpHandler
 {
     private ScrollRect parentScroll;
     private CardGallery gallery;
-    private Sprite artwork;
+    private CardData cardData;   // 🔹 Agora guarda o CardData completo
 
     private bool dragging;
     private Vector2 downPos;
     private float downTime;
-    private float moveThreshold = 20f;   // px
-    private float timeThreshold = 0.3f;  // s
+    private float moveThreshold = 20f;
+    private float timeThreshold = 0.3f;
 
-    public void Setup(CardGallery gallery, ScrollRect scroll, Sprite artwork, float movePx, float timeSecs)
+    public void Setup(CardGallery gallery, ScrollRect scroll, CardData cardData, float movePx, float timeSecs)
     {
         this.gallery = gallery;
         this.parentScroll = scroll != null ? scroll : GetComponentInParent<ScrollRect>();
-        this.artwork = artwork;
+        this.cardData = cardData;
         this.moveThreshold = movePx;
         this.timeThreshold = timeSecs;
     }
@@ -112,42 +152,36 @@ public class CardTouchHandler : MonoBehaviour,
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (dragging) return; // se arrastou, não é clique
+        if (dragging) return;
 
         float dist = Vector2.Distance(downPos, eventData.position);
         float dt = Time.unscaledTime - downTime;
 
         if (dist <= moveThreshold && dt <= timeThreshold)
         {
-            // TAP → abre preview
-            if (gallery != null && artwork != null)
-                gallery.ShowCard(artwork);
+            if (gallery != null && cardData != null)
+                gallery.ShowCard(cardData);
         }
     }
 
-    // Encaminha eventos de drag para o ScrollRect (isso faz o scroll funcionar em mobile)
     public void OnInitializePotentialDrag(PointerEventData eventData)
     {
-        if (parentScroll != null)
-            parentScroll.OnInitializePotentialDrag(eventData);
+        parentScroll?.OnInitializePotentialDrag(eventData);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         dragging = true;
-        if (parentScroll != null)
-            parentScroll.OnBeginDrag(eventData);
+        parentScroll?.OnBeginDrag(eventData);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (parentScroll != null)
-            parentScroll.OnDrag(eventData);
+        parentScroll?.OnDrag(eventData);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (parentScroll != null)
-            parentScroll.OnEndDrag(eventData);
+        parentScroll?.OnEndDrag(eventData);
     }
 }

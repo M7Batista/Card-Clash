@@ -1,30 +1,39 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-
+using TMPro;
 public class RouletteController : MonoBehaviour
 {
     public RectTransform roulette; // Objeto da roleta (UI)
     public float spinDuration = 4f; // Duração do giro
     public float spinSpeed = 500f; // Velocidade inicial do giro
-    public float idleSpinSpeed = 30f; // Velocidade lenta quando não usada
+    //public float idleSpinSpeed = 30f; // Velocidade lenta quando não usada
 
     private bool isSpinning = false;
-    private bool finishedSpinning = false;
-    public Text resultText; // Texto para mostrar o resultado
+    //private bool finishedSpinning = false;
+    public TextMeshProUGUI resultText; // Texto para mostrar o resultado
 
     void Update()
     {
         // 🔹 Gira lentamente quando não está sendo usada
-        if (!isSpinning && !finishedSpinning && roulette != null)
+        //if (!isSpinning && !finishedSpinning && roulette != null)
+        //{
+        //    roulette.Rotate(0, 0, -idleSpinSpeed * Time.deltaTime);
+        //}
+    }
+    void Start()
+    {
+        // Inicializa o texto do resultado
+        if (resultText != null)
         {
-            roulette.Rotate(0, 0, -idleSpinSpeed * Time.deltaTime);
+            resultText.text = "Spinning...";
         }
+        StartRoulette();
     }
 
     public void StartRoulette()
     {
-        spinDuration = UnityEngine.Random.Range(3f, 5f);
+        spinDuration = UnityEngine.Random.Range(2f, 3f);
         spinSpeed = UnityEngine.Random.Range(500f, 800f);
         if (!isSpinning)
             StartCoroutine(SpinRoulette());
@@ -50,11 +59,11 @@ public class RouletteController : MonoBehaviour
 
         // Normaliza o ângulo entre 0 e 360
         float finalZ = roulette.eulerAngles.z % 360;
-
+        
         DecideWinner(finalZ);
-
+        //yield return new WaitForSeconds(1f);
         isSpinning = false;
-        finishedSpinning = true;
+        //finishedSpinning = true;
     }
 
     private void DecideWinner(float angle)
@@ -64,25 +73,25 @@ public class RouletteController : MonoBehaviour
 
         if (angle >= 0 && angle < 90)
         {
+            resultText.text = "Enemy starts!";
             Debug.Log("Vermelho → Inimigo começa!");
-            resultText.text = "Inimigo começa!";
             BattleCardScreen.Instance.StartEnemyTurn();
         }
         else if (angle >= 90 && angle < 180)
         {
-            resultText.text = "Player começa!";
+            resultText.text = "You starts!";
             Debug.Log("Azul → Player começa!");
             BattleCardScreen.Instance.StartPlayerTurn();
         }
         else if (angle >= 180 && angle < 270)
         {
-            resultText.text = "Inimigo começa!";
+            resultText.text = "Enemy starts!";
             Debug.Log("Vermelho → Inimigo começa!");
             BattleCardScreen.Instance.StartEnemyTurn();
         }
         else
         {
-            resultText.text = "Player começa!";
+            resultText.text = "You starts!";
             Debug.Log("Azul → Player começa!");
             BattleCardScreen.Instance.StartPlayerTurn();
         }
@@ -91,6 +100,6 @@ public class RouletteController : MonoBehaviour
         DraggableCard.CanDrag = true;
 
         // ✅ Destroi a roleta
-        Destroy(gameObject, 1f);
+        Destroy(gameObject, 2f);
     }
 }

@@ -6,54 +6,123 @@ using UnityEngine.UI;
 public class BattleCardScreen : MonoBehaviour
 {
     [Header("Configurações do Deck")]
-    public List<CardData> deck;
+    public List<CardData> allAvailableCards;    // 🔹 Todas as cartas existentes no jogo
     public GameObject cardPrefab;
 
     [Header("Referências na UI")]
-    public Transform playerHandArea, enemyHandArea;
-    public Transform boardArea; // container do tabuleiro (grid 3x3)
+    public Transform playerHandArea;
+    public Transform enemyHandArea;
+    public Transform boardArea;
     public Text playerCountText, enemyCountText;
     public GameObject roulletPrefab;
 
-    private List<CardData> playerHand = new List<CardData>();
-    private List<CardData> enemyHand = new List<CardData>();
+    [Header("Listas de Cartas")]
+    public List<CardData> playerOwnedCards = new List<CardData>();   // 🔹 Todas as cartas que o jogador possui
+    public List<CardData> playerActiveDeck = new List<CardData>();   // 🔹 As 5 cartas escolhidas pelo jogador para a partida
+    public List<CardData> enemyActiveDeck = new List<CardData>();    // 🔹 As 5 cartas que o inimigo usará na partida
 
     private int turn = 0; // 0 = jogador, 1 = inimigo
     private int boardSlots = 9;
     private int filledSlots = 0;
     private bool hasStarted = false;
+
     public static BattleCardScreen Instance;
 
+    [Header("Painel do Deck")]
+    public GameObject deckPanel;
+    public Transform PanelDeckArea;
+    public Button startBattleButton;
+    public Button editDeckButton;
 
-    // Chamado quando a tela é aberta pelo controlador
     public void OnScreenOpened()
     {
+        Debug.Log("BattleCardScreen: OnScreenOpened chamado.");
         if (!hasStarted)
         {
             hasStarted = true;
-            StartGame();
             Debug.Log("Tela de Batalha de Cartas aberta!");
+
+            // 🔹 Carregar todas as cartas que o jogador possui
+            List<int> playerDeckIds = PlayerDeckManager.GetOrCreateDeck(allAvailableCards);
+            playerOwnedCards = PlayerDeckManager.ConvertToCards(playerDeckIds, allAvailableCards);
+
+            // 🔹 Se o jogador tiver menos de 5 cartas, preenche com aleatórias do total
+            playerActiveDeck.Clear();
+            if (playerOwnedCards.Count >= 5)
+            {
+                // pega as 5 primeiras do que ele possui (depois editor permitirá escolher)
+                for (int i = 0; i < 5; i++)
+                    playerActiveDeck.Add(playerOwnedCards[i]);
+            }
+            else
+            {
+                Debug.LogWarning("Jogador não possui 5 cartas, completando com cartas aleatórias.");
+                playerActiveDeck.AddRange(playerOwnedCards);
+
+                Shuffle(allAvailableCards);
+                for (int i = playerActiveDeck.Count; i < 5; i++)
+                    playerActiveDeck.Add(allAvailableCards[i]);
+            }
+
+            // 🔹 Exibir deck atual na UI
+            ShowPlayerDeck(playerActiveDeck);
         }
     }
 
     void Start()
     {
         Instance = this;
-        
-        
+        startBattleButton.onClick.AddListener(StartGame);
+
+        if (editDeckButton != null)
+            editDeckButton.onClick.AddListener(OpenDeckEditor);
+    }
+
+    void ShowPlayerDeck(List<CardData> deckCards)
+    {
+        // Limpa painel antes
+        foreach (Transform child in PanelDeckArea)
+            Destroy(child.gameObject);
+
+        // Instancia cartas no painel
+        foreach (CardData card in deckCards)
+        {
+            GameObject cardGO = Instantiate(cardPrefab, PanelDeckArea);
+            CardUI cardUI = cardGO.GetComponent<CardUI>();
+            cardUI.SetCard(card, Owner.Player);
+
+            // 🔹 Deck é só exibição, sem drag
+            var drag = cardGO.GetComponent<DraggableCard>();
+            if (drag != null) Destroy(drag);
+        }
     }
 
     void StartGame()
     {
-        // inicializa os contadores (provavelmente 0)
-        //UpdateBoardCounts();
+        deckPanel.SetActive(false);
+
+        // 🔹 Prepara mão inimiga (5 cartas aleatórias do total de cartas)
+        enemyActiveDeck.Clear();
+        Shuffle(allAvailableCards);
+        for (int i = 0; i < 5 && i < allAvailableCards.Count; i++)
+            enemyActiveDeck.Add(allAvailableCards[i]);
+
+        // 🔹 Criar roleta
         Instantiate(roulletPrefab, this.transform);
-        StartCoroutine(CardDealer.Instance.DealCards(deck, playerHand, enemyHand, playerHandArea, enemyHandArea, cardPrefab));
+
+        // 🔹 Distribuir cartas na mão
+        StartCoroutine(CardDealer.Instance.DealCards(
+            playerActiveDeck,
+            enemyActiveDeck,
+            playerHandArea,
+            enemyHandArea,
+            cardPrefab
+        ));
     }
 
-    public void GoToGalleryScene()
+    void OpenDeckEditor()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Gallery");
+        Debug.Log("Abrir tela de edição de deck (futuro).");
     }
 
     public void StartPlayerTurn()
@@ -92,9 +161,12 @@ public class BattleCardScreen : MonoBehaviour
         Debug.Log("Jogador jogou: " + cardUI.cardData.cardName + " no slot " + index);
 
         filledSlots++;
-        playerHand.Remove(cardUI.cardData);
+        playerActiveDeck.Remove(cardUI.cardData);
 
-        // Checa capturas (retorna true se houve captura)
+        // 🔹 garante que é do jogador
+        //cardUI.SetOwner(Owner.Player);
+
+        // Checa capturas
         bool anyCapture = CheckCaptures(index);
 
         // Atualiza contadores no UI
@@ -103,9 +175,10 @@ public class BattleCardScreen : MonoBehaviour
         NextTurn();
     }
 
+
     void EnemyPlay()
     {
-        if (enemyHand.Count == 0) return;
+        if (enemyActiveDeck.Count == 0) return;
 
         CardData bestCard = null;
         Transform bestSlot = null;
@@ -113,7 +186,7 @@ public class BattleCardScreen : MonoBehaviour
         CardUI bestCardUI = null;
 
         // Escolhe a melhor carta e slot
-        foreach (var card in enemyHand)
+        foreach (var card in enemyActiveDeck)
         {
             foreach (Transform slot in boardArea)
             {
@@ -126,7 +199,6 @@ public class BattleCardScreen : MonoBehaviour
                     bestCard = card;
                     bestSlot = slot;
 
-                    // pega a referência do objeto real na mão inimiga
                     foreach (Transform c in enemyHandArea)
                     {
                         var ui = c.GetComponent<CardUI>();
@@ -142,9 +214,8 @@ public class BattleCardScreen : MonoBehaviour
 
         if (bestCard != null && bestSlot != null && bestCardUI != null)
         {
-            enemyHand.Remove(bestCard);
+            enemyActiveDeck.Remove(bestCard);
 
-            // move a carta real para o slot escolhido
             bestCardUI.transform.SetParent(bestSlot, false);
 
             var rect = bestCardUI.GetComponent<RectTransform>();
@@ -155,16 +226,15 @@ public class BattleCardScreen : MonoBehaviour
 
             int index = bestSlot.GetSiblingIndex();
 
-            // Checa capturas
             bool anyCapture = CheckCaptures(index);
 
-            // Atualiza contadores no UI
             UpdateBoardCounts();
 
             Debug.Log("Inimigo jogou: " + bestCard.cardName + " no slot " + index + " (score " + bestScore + ")");
         }
 
         filledSlots++;
+        //bestCardUI.SetOwner(Owner.Enemy);
         NextTurn();
     }
 
@@ -239,7 +309,7 @@ public class BattleCardScreen : MonoBehaviour
     }
 
     // ===============================
-    // 🔹 Nova versão de CheckCaptures com retorno
+    // 🔹 Capturas
     // ===============================
     bool CheckCaptures(int index)
     {
@@ -281,7 +351,6 @@ public class BattleCardScreen : MonoBehaviour
             neighborCard.SetOwner(placedCard.owner);
             Debug.Log($"{placedCard.owner} capturou {neighborCard.cardData.cardName}!");
 
-            // chama a animação de flip com o novo dono
             var flip = neighborCard.GetComponent<CardFlip>();
             if (flip != null) flip.FlipCard(placedCard.owner);
 
@@ -321,7 +390,6 @@ public class BattleCardScreen : MonoBehaviour
         int playerCount = 0;
         int enemyCount = 0;
 
-        // percorre todos os slots do tabuleiro
         for (int i = 0; i < boardArea.childCount; i++)
         {
             var slot = boardArea.GetChild(i);
@@ -330,74 +398,65 @@ public class BattleCardScreen : MonoBehaviour
                 var cardUI = slot.GetChild(0).GetComponent<CardUI>();
                 if (cardUI != null)
                 {
-                    if (cardUI.owner == Owner.Player)
-                        playerCount++;
-                    else if (cardUI.owner == Owner.Enemy)
-                        enemyCount++;
+                    if (cardUI.owner == Owner.Player) playerCount++;
+                    else if (cardUI.owner == Owner.Enemy) enemyCount++;
                 }
             }
         }
 
-        // decidir o vencedor
         if (playerCount > enemyCount)
         {
             Debug.Log($"Fim de jogo! Jogador venceu ({playerCount} x {enemyCount})");
-
-            EndGameUI.instance.ShowEndGame(true);
-
+            StartCoroutine(ShowPanelEndGame(true));
         }
         else if (enemyCount > playerCount)
         {
             Debug.Log($"Fim de jogo! Inimigo venceu ({enemyCount} x {playerCount})");
-            EndGameUI.instance.ShowEndGame(false);
+            StartCoroutine(ShowPanelEndGame(false));
         }
         else
         {
             Debug.Log($"Fim de jogo! Empate ({playerCount} x {enemyCount})");
+            StartCoroutine(ShowPanelEndGame(null));
         }
-
     }
+
+    IEnumerator ShowPanelEndGame(bool? playerWon)
+    {
+        yield return new WaitForSeconds(2f);
+
+        if (playerWon.HasValue)
+            EndGameUI.instance.ShowEndGame(playerWon.Value);
+        else
+            Debug.Log("Empate! Ninguém vence.");
+    }
+
     public void RestartBattle()
     {
         Debug.Log("Reiniciando a batalha...");
 
-        // 🔹 Limpa tabuleiro
         foreach (Transform slot in boardArea)
         {
             foreach (Transform child in slot)
-            {
                 Destroy(child.gameObject);
-            }
         }
 
-        // 🔹 Limpa mãos
         foreach (Transform card in playerHandArea)
-        {
             Destroy(card.gameObject);
-        }
         foreach (Transform card in enemyHandArea)
-        {
             Destroy(card.gameObject);
-        }
 
-        // 🔹 Reseta variáveis
-        playerHand.Clear();
-        enemyHand.Clear();
+        enemyActiveDeck.Clear();
         filledSlots = 0;
         turn = 0;
-        hasStarted = false; // para garantir que o StartGame rode de novo
+        hasStarted = false;
 
-        // 🔹 Reinicia contadores de UI
         UpdateBoardCounts();
-        
-            playerCountText.text = "0";
-       
-            enemyCountText.text = "0";
+        playerCountText.text = "0";
+        enemyCountText.text = "0";
 
-        // 🔹 Fecha UI de fim de jogo
         EndGameUI.instance.CloseEndGame();
-        // 🔹 Recomeça
-        StartGame();
-    }
 
+        startBattleButton.gameObject.SetActive(true);
+    }
 }
