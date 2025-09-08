@@ -21,18 +21,21 @@ public class BattleCardScreen : MonoBehaviour
     public List<CardData> playerActiveDeck = new List<CardData>();   // 🔹 As 5 cartas escolhidas pelo jogador para a partida
     public List<CardData> enemyActiveDeck = new List<CardData>();    // 🔹 As 5 cartas que o inimigo usará na partida
 
-    private int turn = 0; // 0 = jogador, 1 = inimigo
+    public Owner currentTurn = Owner.None;
     private int boardSlots = 9;
     private int filledSlots = 0;
     private bool hasStarted = false;
 
     public static BattleCardScreen Instance;
 
-    [Header("Painel do Deck")]
-    public GameObject deckPanel;
+
+    [Header("Tela de estagio")]
+    public GameObject stageScreen;
     public Transform PanelDeckArea;
     public Button startBattleButton;
-    public Button editDeckButton;
+
+    [Header("Tela de batalha")]
+    public GameObject battleScreen;
 
     public void OnScreenOpened()
     {
@@ -46,26 +49,35 @@ public class BattleCardScreen : MonoBehaviour
             List<int> playerDeckIds = PlayerDeckManager.GetOrCreateDeck(allAvailableCards);
             playerOwnedCards = PlayerDeckManager.ConvertToCards(playerDeckIds, allAvailableCards);
 
-            // 🔹 Se o jogador tiver menos de 5 cartas, preenche com aleatórias do total
-            playerActiveDeck.Clear();
-            if (playerOwnedCards.Count >= 5)
-            {
-                // pega as 5 primeiras do que ele possui (depois editor permitirá escolher)
-                for (int i = 0; i < 5; i++)
-                    playerActiveDeck.Add(playerOwnedCards[i]);
-            }
-            else
-            {
-                Debug.LogWarning("Jogador não possui 5 cartas, completando com cartas aleatórias.");
-                playerActiveDeck.AddRange(playerOwnedCards);
-
-                Shuffle(allAvailableCards);
-                for (int i = playerActiveDeck.Count; i < 5; i++)
-                    playerActiveDeck.Add(allAvailableCards[i]);
-            }
+            // 🔹 Selecionar deck ativo
+            SelectPlayerActiveDeck();
 
             // 🔹 Exibir deck atual na UI
             ShowPlayerDeck(playerActiveDeck);
+        }
+    }
+
+    // ===============================
+    // 🔹 Seleção do Deck do Jogador
+    // ===============================
+    private void SelectPlayerActiveDeck()
+    {
+        playerActiveDeck.Clear();
+
+        if (playerOwnedCards.Count >= 5)
+        {
+            // Placeholder → seleciona as 5 primeiras
+            for (int i = 0; i < 5; i++)
+                playerActiveDeck.Add(playerOwnedCards[i]);
+        }
+        else
+        {
+            Debug.LogWarning("Jogador não possui 5 cartas, completando com cartas aleatórias.");
+            playerActiveDeck.AddRange(playerOwnedCards);
+
+            Shuffle(allAvailableCards);
+            for (int i = playerActiveDeck.Count; i < 5; i++)
+                playerActiveDeck.Add(allAvailableCards[i]);
         }
     }
 
@@ -74,8 +86,6 @@ public class BattleCardScreen : MonoBehaviour
         Instance = this;
         startBattleButton.onClick.AddListener(StartGame);
 
-        if (editDeckButton != null)
-            editDeckButton.onClick.AddListener(OpenDeckEditor);
     }
 
     void ShowPlayerDeck(List<CardData> deckCards)
@@ -99,8 +109,8 @@ public class BattleCardScreen : MonoBehaviour
 
     void StartGame()
     {
-        deckPanel.SetActive(false);
-
+        stageScreen.SetActive(false);
+        battleScreen.SetActive(true);
         // 🔹 Prepara mão inimiga (5 cartas aleatórias do total de cartas)
         enemyActiveDeck.Clear();
         Shuffle(allAvailableCards);
@@ -120,22 +130,18 @@ public class BattleCardScreen : MonoBehaviour
         ));
     }
 
-    void OpenDeckEditor()
-    {
-        Debug.Log("Abrir tela de edição de deck (futuro).");
-    }
 
     public void StartPlayerTurn()
     {
         Debug.Log("Player começa!");
-        turn = 0; // Player
+        currentTurn = Owner.Player;
     }
 
     public void StartEnemyTurn()
     {
         Debug.Log("Inimigo começa!");
-        turn = 1; // Enemy
-        Invoke(nameof(EnemyPlay), 1f);
+        currentTurn = Owner.Enemy;
+        Invoke(nameof(EnemyPlay), 2f);
     }
 
     void Shuffle(List<CardData> list)
@@ -155,23 +161,17 @@ public class BattleCardScreen : MonoBehaviour
 
     public void OnPlayerCardPlaced(CardUI cardUI)
     {
-        if (turn != 0) return;
-
         int index = cardUI.transform.parent.GetSiblingIndex();
         Debug.Log("Jogador jogou: " + cardUI.cardData.cardName + " no slot " + index);
-
         filledSlots++;
         playerActiveDeck.Remove(cardUI.cardData);
-
-        // 🔹 garante que é do jogador
-        //cardUI.SetOwner(Owner.Player);
 
         // Checa capturas
         bool anyCapture = CheckCaptures(index);
 
         // Atualiza contadores no UI
         UpdateBoardCounts();
-
+        currentTurn = Owner.Enemy;
         NextTurn();
     }
 
@@ -216,27 +216,56 @@ public class BattleCardScreen : MonoBehaviour
         {
             enemyActiveDeck.Remove(bestCard);
 
-            bestCardUI.transform.SetParent(bestSlot, false);
+            // 🔹 anima movimento da mão até o slot
+            StartCoroutine(AnimateEnemyCard(bestCardUI, bestSlot, () =>
+            {
+                int index = bestSlot.GetSiblingIndex();
 
-            var rect = bestCardUI.GetComponent<RectTransform>();
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.anchoredPosition = Vector2.zero;
+                bool anyCapture = CheckCaptures(index);
+                UpdateBoardCounts();
 
-            int index = bestSlot.GetSiblingIndex();
+                Debug.Log("Inimigo jogou: " + bestCard.cardName + " no slot " + index + " (score " + bestScore + ")");
 
-            bool anyCapture = CheckCaptures(index);
+                filledSlots++;
 
-            UpdateBoardCounts();
-
-            Debug.Log("Inimigo jogou: " + bestCard.cardName + " no slot " + index + " (score " + bestScore + ")");
+                // 🔹 Só depois da animação terminar passa a vez
+                currentTurn = Owner.Player;
+                NextTurn();
+            }));
         }
 
-        filledSlots++;
-        //bestCardUI.SetOwner(Owner.Enemy);
-        NextTurn();
     }
+    IEnumerator AnimateEnemyCard(CardUI cardUI, Transform targetSlot, System.Action onComplete)
+    {
+        Transform startParent = cardUI.transform.parent;
+        Vector3 startPos = cardUI.transform.position;
+        Vector3 endPos = targetSlot.position;
+
+        float duration = 0.5f;
+        float elapsed = 0f;
+
+        // mantém no topo da UI para não ficar atrás
+        cardUI.transform.SetParent(boardArea.parent, true);
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            cardUI.transform.position = Vector3.Lerp(startPos, endPos, t);
+            yield return null;
+        }
+
+        // 🔹 fixa no slot final
+        cardUI.transform.SetParent(targetSlot, false);
+        var rect = cardUI.GetComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0.5f, 0.5f);
+        rect.anchorMax = new Vector2(0.5f, 0.5f);
+        rect.pivot = new Vector2(0.5f, 0.5f);
+        rect.anchoredPosition = Vector2.zero;
+
+        onComplete?.Invoke();
+    }
+
 
     int EvaluateMove(CardData card, Transform slot)
     {
@@ -285,26 +314,22 @@ public class BattleCardScreen : MonoBehaviour
         return score;
     }
 
-    void NextTurn()
+    public void NextTurn()
     {
-        if (filledSlots >= boardSlots)
+        if (filledSlots >= 9)
         {
             EndGame();
             return;
         }
-
-        turn = (turn + 1) % 2;
-
-        if (turn == 0)
+        if (currentTurn == Owner.Player)
         {
-            Debug.Log("Turno do jogador.");
-            DraggableCard.CanDrag = true;
+            Debug.Log("Turno do jogador");
+            // jogador vai interagir manualmente
         }
-        else
+        else if (currentTurn == Owner.Enemy)
         {
-            Debug.Log("Turno do inimigo...");
+            Debug.Log("Turno do inimigo");
             Invoke(nameof(EnemyPlay), 1f);
-            DraggableCard.CanDrag = false;
         }
     }
 
@@ -447,8 +472,8 @@ public class BattleCardScreen : MonoBehaviour
             Destroy(card.gameObject);
 
         enemyActiveDeck.Clear();
+        playerActiveDeck.Clear();
         filledSlots = 0;
-        turn = 0;
         hasStarted = false;
 
         UpdateBoardCounts();
@@ -456,7 +481,6 @@ public class BattleCardScreen : MonoBehaviour
         enemyCountText.text = "0";
 
         EndGameUI.instance.CloseEndGame();
-
-        startBattleButton.gameObject.SetActive(true);
+        StartGame();
     }
 }

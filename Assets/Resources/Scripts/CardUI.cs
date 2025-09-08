@@ -6,6 +6,7 @@ public enum Owner { None, Player, Enemy }
 
 public class CardUI : MonoBehaviour
 {
+    [Header("Card Elements")]
     public Image artworkImage;
     public TextMeshProUGUI numTop;
     public TextMeshProUGUI numRight;
@@ -14,9 +15,11 @@ public class CardUI : MonoBehaviour
     public TextMeshProUGUI txtName;
     public GameObject panelTextName;
     public Image frameImage;
-    public CardData cardData;
-    public Owner owner;
 
+    [HideInInspector] public CardData cardData;
+    [HideInInspector] public Owner owner;
+
+    private bool isEnabled = true;
 
     public void SetCard(CardData data, Owner newOwner)
     {
@@ -35,9 +38,35 @@ public class CardUI : MonoBehaviour
     {
         owner = newOwner;
     }
+
     public void ShowName(bool show)
     {
         panelTextName.SetActive(show);
     }
 
+    public void SetEnabledState(bool enabled)
+    {
+        isEnabled = enabled;
+
+        if (enabled)
+        {
+            // Normal
+            artworkImage.color = Color.white; 
+            txtName.text = cardData.cardName;
+            numTop.text = cardData.top.ToString();
+            numRight.text = cardData.right.ToString();
+            numBottom.text = cardData.bottom.ToString();
+            numLeft.text = cardData.left.ToString();
+        }
+        else
+        {
+            // Desabilitado (escuro e com interrogação)
+            artworkImage.color = Color.black;
+            txtName.text = "?";
+            numTop.text = "?";
+            numRight.text = "?";
+            numBottom.text = "?";
+            numLeft.text = "?";
+        }
+    }
 }

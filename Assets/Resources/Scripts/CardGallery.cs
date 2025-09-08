@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 public class CardGallery : MonoBehaviour
 {
@@ -20,18 +21,19 @@ public class CardGallery : MonoBehaviour
     public GameObject statusPanel;
     public TextMeshProUGUI numTop, numRight, numBottom, numLeft;
     public TextMeshProUGUI characterName;
-    public RadarPolygon radarPolygon;   // 🔹 Referência ao RadarPolygon no painel de preview
+    public RadarPolygon radarPolygon;
 
     [Header("UI Extra")]
     public TextMeshProUGUI totalCardsText;
 
     [Header("Mobile")]
-    [Tooltip("Pixels de movimento para o tap ser considerado clique (menor = mais sensível)")]
     public float tapMoveThreshold = 20f;
-    [Tooltip("Tempo máx (segundos) para considerar um tap")]
     public float tapTimeThreshold = 0.3f;
 
     private int totalCards = 0;
+
+    // 🔹 Lista de cartas que o jogador possui
+    private List<CardData> playerOwnedCards = new List<CardData>();
 
     private void Start()
     {
@@ -53,53 +55,60 @@ public class CardGallery : MonoBehaviour
 
     private void LoadCards()
     {
+        // 🔹 Carregar todas as cartas do jogo
         CardData[] allCards = Resources.LoadAll<CardData>("cards");
         totalCards = allCards.Length;
+
+        // 🔹 Carregar do PlayerDeckManager as cartas que o jogador possui
+        List<int> ownedIds = PlayerDeckManager.GetOrCreateDeck(new List<CardData>(allCards));
+        playerOwnedCards = PlayerDeckManager.ConvertToCards(ownedIds, new List<CardData>(allCards));
 
         foreach (CardData data in allCards)
         {
             GameObject cardGO = Instantiate(cardPrefab, gridParent);
 
-            // Configura os dados visuais do card
             CardUI cardUI = cardGO.GetComponent<CardUI>();
             cardUI.SetCard(data, Owner.None);
 
-            // Garante um Image para receber eventos (Raycast)
             Image img = cardGO.GetComponent<Image>();
             if (img == null) img = cardGO.AddComponent<Image>();
             img.raycastTarget = true;
             if (img.sprite == null) img.color = Color.white;
 
-            // 🔹 Passa o CardData para o handler (não só o sprite)
-            var touch = cardGO.AddComponent<CardTouchHandler>();
-            touch.Setup(this, scrollRect, data, tapMoveThreshold, tapTimeThreshold);
+            bool playerHasCard = playerOwnedCards.Exists(c => c.cardId == data.cardId);
+            cardUI.SetEnabledState(playerHasCard);
+
+            if (playerHasCard)
+            {
+                var touch = cardGO.AddComponent<CardTouchHandler>();
+                touch.Setup(this, scrollRect, data, tapMoveThreshold, tapTimeThreshold);
+            }
         }
 
+        // 🔹 Atualiza o contador X/Y
         if (totalCardsText != null)
-            totalCardsText.text = $"Characters {totalCards}";
+            totalCardsText.text = $"{playerOwnedCards.Count}/{totalCards}";
     }
 
-    // 🔹 Agora recebe o CardData completo
+
     public void ShowCard(CardData cardData)
     {
         previewImage.sprite = cardData.artwork;
         previewPanel.SetActive(true);
 
-        // Atualiza os textos
         if (numTop) numTop.text = cardData.top.ToString();
         if (numRight) numRight.text = cardData.right.ToString();
         if (numBottom) numBottom.text = cardData.bottom.ToString();
         if (numLeft) numLeft.text = cardData.left.ToString();
         if (characterName) characterName.text = cardData.cardName;
 
-        // Atualiza RadarPolygon
         if (radarPolygon != null)
         {
             radarPolygon.top = cardData.top;
             radarPolygon.right = cardData.right;
             radarPolygon.bottom = cardData.bottom;
             radarPolygon.left = cardData.left;
-            radarPolygon.SetVerticesDirty(); // 🔹 Força redesenho
+            radarPolygon.SetVerticesDirty();
         }
 
         var zoom = previewPanel.transform.GetChild(0).GetComponent<CardZoom>();
@@ -119,6 +128,7 @@ public class CardGallery : MonoBehaviour
         }
     }
 }
+
 
 public class CardTouchHandler : MonoBehaviour,
     IInitializePotentialDragHandler, IBeginDragHandler, IDragHandler, IEndDragHandler,
