@@ -23,7 +23,7 @@ public class BattleCardScreen : MonoBehaviour
 
     public Owner currentTurn = Owner.None;
     private int boardSlots = 9;
-    private int filledSlots = 0;
+    public  int filledSlots = 0;
     private bool hasStarted = false;
 
     public static BattleCardScreen Instance;
@@ -141,8 +141,14 @@ public class BattleCardScreen : MonoBehaviour
     {
         Debug.Log("Inimigo começa!");
         currentTurn = Owner.Enemy;
-        Invoke(nameof(EnemyPlay), 2f);
+        Invoke(nameof(CallEnemyAI), 2f);
+
     }
+    void CallEnemyAI()
+    {
+        EnemyAI.Instance.PlayTurn();
+    }
+
 
     void Shuffle(List<CardData> list)
     {
@@ -175,145 +181,6 @@ public class BattleCardScreen : MonoBehaviour
         NextTurn();
     }
 
-
-    void EnemyPlay()
-    {
-        if (enemyActiveDeck.Count == 0) return;
-
-        CardData bestCard = null;
-        Transform bestSlot = null;
-        int bestScore = -1;
-        CardUI bestCardUI = null;
-
-        // Escolhe a melhor carta e slot
-        foreach (var card in enemyActiveDeck)
-        {
-            foreach (Transform slot in boardArea)
-            {
-                if (slot.childCount > 0) continue;
-
-                int score = EvaluateMove(card, slot);
-                if (score > bestScore)
-                {
-                    bestScore = score;
-                    bestCard = card;
-                    bestSlot = slot;
-
-                    foreach (Transform c in enemyHandArea)
-                    {
-                        var ui = c.GetComponent<CardUI>();
-                        if (ui != null && ui.cardData == bestCard)
-                        {
-                            bestCardUI = ui;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (bestCard != null && bestSlot != null && bestCardUI != null)
-        {
-            enemyActiveDeck.Remove(bestCard);
-
-            // 🔹 anima movimento da mão até o slot
-            StartCoroutine(AnimateEnemyCard(bestCardUI, bestSlot, () =>
-            {
-                int index = bestSlot.GetSiblingIndex();
-
-                bool anyCapture = CheckCaptures(index);
-                UpdateBoardCounts();
-
-                Debug.Log("Inimigo jogou: " + bestCard.cardName + " no slot " + index + " (score " + bestScore + ")");
-
-                filledSlots++;
-
-                // 🔹 Só depois da animação terminar passa a vez
-                currentTurn = Owner.Player;
-                NextTurn();
-            }));
-        }
-
-    }
-    IEnumerator AnimateEnemyCard(CardUI cardUI, Transform targetSlot, System.Action onComplete)
-    {
-        Transform startParent = cardUI.transform.parent;
-        Vector3 startPos = cardUI.transform.position;
-        Vector3 endPos = targetSlot.position;
-
-        float duration = 0.5f;
-        float elapsed = 0f;
-
-        // mantém no topo da UI para não ficar atrás
-        cardUI.transform.SetParent(boardArea.parent, true);
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / duration;
-            cardUI.transform.position = Vector3.Lerp(startPos, endPos, t);
-            yield return null;
-        }
-
-        // 🔹 fixa no slot final
-        cardUI.transform.SetParent(targetSlot, false);
-        var rect = cardUI.GetComponent<RectTransform>();
-        rect.anchorMin = new Vector2(0.5f, 0.5f);
-        rect.anchorMax = new Vector2(0.5f, 0.5f);
-        rect.pivot = new Vector2(0.5f, 0.5f);
-        rect.anchoredPosition = Vector2.zero;
-
-        onComplete?.Invoke();
-    }
-
-
-    int EvaluateMove(CardData card, Transform slot)
-    {
-        int score = 0;
-        int index = slot.GetSiblingIndex();
-        int row = index / 3;
-        int col = index % 3;
-
-        if (row > 0)
-        {
-            var neighbor = boardArea.GetChild(index - 3);
-            if (neighbor.childCount > 0)
-            {
-                var neighborCard = neighbor.GetChild(0).GetComponent<CardUI>().cardData;
-                if (card.top > neighborCard.bottom) score++;
-            }
-        }
-        if (row < 2)
-        {
-            var neighbor = boardArea.GetChild(index + 3);
-            if (neighbor.childCount > 0)
-            {
-                var neighborCard = neighbor.GetChild(0).GetComponent<CardUI>().cardData;
-                if (card.bottom > neighborCard.top) score++;
-            }
-        }
-        if (col > 0)
-        {
-            var neighbor = boardArea.GetChild(index - 1);
-            if (neighbor.childCount > 0)
-            {
-                var neighborCard = neighbor.GetChild(0).GetComponent<CardUI>().cardData;
-                if (card.left > neighborCard.right) score++;
-            }
-        }
-        if (col < 2)
-        {
-            var neighbor = boardArea.GetChild(index + 1);
-            if (neighbor.childCount > 0)
-            {
-                var neighborCard = neighbor.GetChild(0).GetComponent<CardUI>().cardData;
-                if (card.right > neighborCard.left) score++;
-            }
-        }
-
-        return score;
-    }
-
     public void NextTurn()
     {
         if (filledSlots >= 9)
@@ -329,14 +196,15 @@ public class BattleCardScreen : MonoBehaviour
         else if (currentTurn == Owner.Enemy)
         {
             Debug.Log("Turno do inimigo");
-            Invoke(nameof(EnemyPlay), 1f);
+            //Invoke(nameof(EnemyPlay), 1f);
+            Invoke(nameof(CallEnemyAI), 2f);
         }
     }
 
     // ===============================
     // 🔹 Capturas
     // ===============================
-    bool CheckCaptures(int index)
+    public bool CheckCaptures(int index)
     {
         bool anyCapture = false;
 
@@ -385,7 +253,7 @@ public class BattleCardScreen : MonoBehaviour
         return false;
     }
 
-    void UpdateBoardCounts()
+    public void UpdateBoardCounts()
     {
         int playerCount = 0;
         int enemyCount = 0;

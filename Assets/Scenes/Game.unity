@@ -2501,6 +2501,7 @@ GameObject:
   - component: {fileID: 656123227}
   - component: {fileID: 656123228}
   - component: {fileID: 656123229}
+  - component: {fileID: 656123230}
   m_Layer: 5
   m_Name: BattleCardScreen
   m_TagString: Untagged
@@ -2565,6 +2566,8 @@ MonoBehaviour:
   playerOwnedCards: []
   playerActiveDeck: []
   enemyActiveDeck: []
+  currentTurn: 0
+  filledSlots: 0
   stageScreen: {fileID: 1376205781}
   PanelDeckArea: {fileID: 1470617451}
   startBattleButton: {fileID: 1085019757}
@@ -2587,6 +2590,18 @@ MonoBehaviour:
   fadeDuration: 1.5
   spriteVictory: {fileID: -1871981314940015288, guid: 600d0ce7dc3c23f4d9619bcec715ca05, type: 3}
   spriteDefeat: {fileID: -1424601595486499950, guid: 600d0ce7dc3c23f4d9619bcec715ca05, type: 3}
+--- !u!114 &656123230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656123226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bebadc33a7b5494b9ce09b39cf537ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
 --- !u!1 &661107188
 GameObject:
   m_ObjectHideFlags: 0

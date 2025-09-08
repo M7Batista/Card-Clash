@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 408622591319069062}
   - component: {fileID: 6479153491003033594}
   - component: {fileID: 8954458396926482327}
-  - component: {fileID: 3290122464968476331}
+  - component: {fileID: 2182290863038026228}
   m_Layer: 5
   m_Name: BoardSlot
   m_TagString: BoardSlot
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3290122464968476331
+--- !u!114 &2182290863038026228
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
