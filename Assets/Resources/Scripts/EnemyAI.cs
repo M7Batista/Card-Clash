@@ -54,11 +54,13 @@ public class EnemyAI : MonoBehaviour
         {
             battle.enemyActiveDeck.Remove(bestCard);
 
-            // anima movimento da mão até o slot
             StartCoroutine(AnimateEnemyCard(bestCardUI, bestSlot, () =>
             {
                 int index = bestSlot.GetSiblingIndex();
-                bool anyCapture = battle.CheckCaptures(index);
+
+                // ✅ Corrigido: usa o BoardManager
+                bool anyCapture = BoardManager.Instance.CheckCaptures(index);
+
                 battle.UpdateBoardCounts();
 
                 Debug.Log($"Inimigo jogou: {bestCard.cardName} no slot {index} (score {bestScore})");

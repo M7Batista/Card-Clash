@@ -23,7 +23,7 @@ public class BattleCardScreen : MonoBehaviour
 
     public Owner currentTurn = Owner.None;
     private int boardSlots = 9;
-    public  int filledSlots = 0;
+    public int filledSlots = 0;
     private bool hasStarted = false;
 
     public static BattleCardScreen Instance;
@@ -161,10 +161,6 @@ public class BattleCardScreen : MonoBehaviour
         }
     }
 
-    // ===============================
-    // 🔹 Lógica de Turnos
-    // ===============================
-
     public void OnPlayerCardPlaced(CardUI cardUI)
     {
         int index = cardUI.transform.parent.GetSiblingIndex();
@@ -172,14 +168,26 @@ public class BattleCardScreen : MonoBehaviour
         filledSlots++;
         playerActiveDeck.Remove(cardUI.cardData);
 
-        // Checa capturas
-        bool anyCapture = CheckCaptures(index);
+        // 🔹 Usa o BoardManager para capturas
+        bool anyCapture = BoardManager.Instance.CheckCaptures(index);
 
         // Atualiza contadores no UI
         UpdateBoardCounts();
         currentTurn = Owner.Enemy;
         NextTurn();
     }
+
+    public void UpdateBoardCounts()
+    {
+        int playerCount, enemyCount;
+        BoardManager.Instance.GetBoardCounts(out playerCount, out enemyCount);
+
+        if (playerCountText != null)
+            playerCountText.text = playerCount.ToString();
+        if (enemyCountText != null)
+            enemyCountText.text = enemyCount.ToString();
+    }
+
 
     public void NextTurn()
     {
@@ -196,87 +204,13 @@ public class BattleCardScreen : MonoBehaviour
         else if (currentTurn == Owner.Enemy)
         {
             Debug.Log("Turno do inimigo");
-            //Invoke(nameof(EnemyPlay), 1f);
-            Invoke(nameof(CallEnemyAI), 2f);
+            Invoke(nameof(CallEnemyAI), 1f);
         }
     }
 
-    // ===============================
-    // 🔹 Capturas
-    // ===============================
-    public bool CheckCaptures(int index)
-    {
-        bool anyCapture = false;
 
-        var placedSlot = boardArea.GetChild(index);
-        var placedCard = placedSlot.GetChild(0).GetComponent<CardUI>();
 
-        int row = index / 3;
-        int col = index % 3;
 
-        if (row > 0) anyCapture |= CaptureCheck(placedCard, index - 3, placedCard.cardData.top, "bottom");
-        if (row < 2) anyCapture |= CaptureCheck(placedCard, index + 3, placedCard.cardData.bottom, "top");
-        if (col > 0) anyCapture |= CaptureCheck(placedCard, index - 1, placedCard.cardData.left, "right");
-        if (col < 2) anyCapture |= CaptureCheck(placedCard, index + 1, placedCard.cardData.right, "left");
-
-        return anyCapture;
-    }
-
-    bool CaptureCheck(CardUI placedCard, int neighborIndex, int placedValue, string neighborSide)
-    {
-        var neighborSlot = boardArea.GetChild(neighborIndex);
-        if (neighborSlot.childCount == 0) return false;
-
-        var neighborCard = neighborSlot.GetChild(0).GetComponent<CardUI>();
-        if (neighborCard == null || neighborCard.owner == placedCard.owner) return false;
-
-        int neighborValue = 0;
-        switch (neighborSide)
-        {
-            case "top": neighborValue = neighborCard.cardData.top; break;
-            case "bottom": neighborValue = neighborCard.cardData.bottom; break;
-            case "left": neighborValue = neighborCard.cardData.left; break;
-            case "right": neighborValue = neighborCard.cardData.right; break;
-        }
-
-        if (placedValue > neighborValue)
-        {
-            neighborCard.SetOwner(placedCard.owner);
-            Debug.Log($"{placedCard.owner} capturou {neighborCard.cardData.cardName}!");
-
-            var flip = neighborCard.GetComponent<CardFlip>();
-            if (flip != null) flip.FlipCard(placedCard.owner);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public void UpdateBoardCounts()
-    {
-        int playerCount = 0;
-        int enemyCount = 0;
-
-        for (int i = 0; i < boardArea.childCount; i++)
-        {
-            var slot = boardArea.GetChild(i);
-            if (slot.childCount > 0)
-            {
-                var cardUI = slot.GetChild(0).GetComponent<CardUI>();
-                if (cardUI != null)
-                {
-                    if (cardUI.owner == Owner.Player) playerCount++;
-                    else if (cardUI.owner == Owner.Enemy) enemyCount++;
-                }
-            }
-        }
-
-        if (playerCountText != null)
-            playerCountText.text = playerCount.ToString();
-        if (enemyCountText != null)
-            enemyCountText.text = enemyCount.ToString();
-    }
 
     void EndGame()
     {
