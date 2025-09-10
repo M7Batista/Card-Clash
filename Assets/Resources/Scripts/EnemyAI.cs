@@ -61,8 +61,6 @@ public class EnemyAI : MonoBehaviour
                 // ✅ Corrigido: usa o BoardManager
                 bool anyCapture = BoardManager.Instance.CheckCaptures(index);
 
-                battle.UpdateBoardCounts();
-
                 Debug.Log($"Inimigo jogou: {bestCard.cardName} no slot {index} (score {bestScore})");
 
                 battle.filledSlots++;

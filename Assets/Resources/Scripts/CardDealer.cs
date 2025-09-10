@@ -34,10 +34,11 @@ public class CardDealer : MonoBehaviour
             var drag = cardGO.GetComponent<DraggableCard>();
             if (drag != null)
             {
-                drag.OnCardPlaced += (placedCard) =>
-                {
-                    BattleCardScreen.Instance.OnPlayerCardPlaced(placedCard);
-                };
+                //drag.OnDroppedInSlot += OnPlayerCardPlaced;
+                //drag.OnDroppedInSlot += (placedCard) =>
+               // {
+               //     BattleCardScreen.Instance.OnPlayerCardPlaced(placedCard);
+             //   };
             }
 
             yield return new WaitForSeconds(0.1f);
@@ -86,7 +87,7 @@ public class CardDealer : MonoBehaviour
         if (owner == Owner.Player)
         {
             var drag = cardObj.AddComponent<DraggableCard>();
-            drag.OnCardPlaced += BattleCardScreen.Instance.OnPlayerCardPlaced;
+            //drag.OnDroppedInSlot += BattleCardScreen.Instance.OnPlayerCardPlaced;
             //cardObj.GetComponent<CardFlip>().FlipCard(Owner.Player);
         }
         else

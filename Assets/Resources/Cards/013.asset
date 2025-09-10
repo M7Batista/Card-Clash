@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc2b6d11e7a1bd46b8492bc6e03da8a, type: 3}
   m_Name: 013
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  cardId: 13
+  id: 13
   cardName: Catia
   artwork: {fileID: 21300000, guid: cbf78b79d375b7e469e815f5b6037037, type: 3}
   top: 6

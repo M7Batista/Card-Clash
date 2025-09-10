@@ -59,9 +59,6 @@ public class CardGallery : MonoBehaviour
         CardData[] allCards = Resources.LoadAll<CardData>("cards");
         totalCards = allCards.Length;
 
-        // 🔹 Carregar do PlayerDeckManager as cartas que o jogador possui
-        List<int> ownedIds = PlayerDeckManager.GetOrCreateDeck(new List<CardData>(allCards));
-        playerOwnedCards = PlayerDeckManager.ConvertToCards(ownedIds, new List<CardData>(allCards));
 
         foreach (CardData data in allCards)
         {
@@ -75,14 +72,8 @@ public class CardGallery : MonoBehaviour
             img.raycastTarget = true;
             if (img.sprite == null) img.color = Color.white;
 
-            bool playerHasCard = playerOwnedCards.Exists(c => c.cardId == data.cardId);
-            cardUI.SetEnabledState(playerHasCard);
+            
 
-            if (playerHasCard)
-            {
-                var touch = cardGO.AddComponent<CardTouchHandler>();
-                touch.Setup(this, scrollRect, data, tapMoveThreshold, tapTimeThreshold);
-            }
         }
 
         // 🔹 Atualiza o contador X/Y

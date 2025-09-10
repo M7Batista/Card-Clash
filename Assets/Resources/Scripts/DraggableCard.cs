@@ -8,7 +8,7 @@ public class DraggableCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private Canvas canvas;
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
-    private Transform parentBeforeDrag;
+    public Transform parentBeforeDrag;
     public Action<CardUI> OnCardPlaced;
     public static bool CanDrag = false; // 🔑 Controle global
 
@@ -49,7 +49,7 @@ public class DraggableCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         canvasGroup.blocksRaycasts = true;
 
         // se for solto no tabuleiro
-        if (eventData.pointerEnter != null && eventData.pointerEnter.CompareTag("BoardSlot"))
+        if (eventData.pointerEnter != null && eventData.pointerEnter.CompareTag("Slot"))
         {
             transform.SetParent(eventData.pointerEnter.transform, false);
 
@@ -60,6 +60,7 @@ public class DraggableCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
             var cardUI = GetComponent<CardUI>();
             OnCardPlaced?.Invoke(cardUI);
+            BattleCardScreen.Instance.OnPlayerCardPlaced(cardUI);
 
             Destroy(this); // não pode ser arrastada de novo
         }

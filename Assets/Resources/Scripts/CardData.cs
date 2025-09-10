@@ -4,7 +4,7 @@ using UnityEngine;
 public class CardData : ScriptableObject
 {
     [Header("Identificação")]
-    public int cardId;         // ID único do card
+    public int id;         // ID único do card
     public string cardName;    // Nome exibido
 
     [Header("Arte")]
@@ -15,4 +15,6 @@ public class CardData : ScriptableObject
     public int right;
     public int bottom;
     public int left;
+
+
 }

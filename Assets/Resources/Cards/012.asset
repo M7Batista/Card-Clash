@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc2b6d11e7a1bd46b8492bc6e03da8a, type: 3}
   m_Name: 012
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  cardId: 12
+  id: 12
   cardName: Penelope
   artwork: {fileID: 21300000, guid: 8ef5a70f2ad189f4fa8a2de9e296ef52, type: 3}
   top: 7

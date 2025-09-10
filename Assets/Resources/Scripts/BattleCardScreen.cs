@@ -13,7 +13,6 @@ public class BattleCardScreen : MonoBehaviour
     public Transform playerHandArea;
     public Transform enemyHandArea;
     public Transform boardArea;
-    public Text playerCountText, enemyCountText;
     public GameObject roulletPrefab;
 
     [Header("Listas de Cartas")]
@@ -22,7 +21,7 @@ public class BattleCardScreen : MonoBehaviour
     public List<CardData> enemyActiveDeck = new List<CardData>();    // 🔹 As 5 cartas que o inimigo usará na partida
 
     public Owner currentTurn = Owner.None;
-    private int boardSlots = 9;
+    //private int boardSlots = 9;
     public int filledSlots = 0;
     private bool hasStarted = false;
 
@@ -31,11 +30,14 @@ public class BattleCardScreen : MonoBehaviour
 
     [Header("Tela de estagio")]
     public GameObject stageScreen;
-    public Transform PanelDeckArea;
     public Button startBattleButton;
 
     [Header("Tela de batalha")]
     public GameObject battleScreen;
+
+    [Header("Botões extras")]
+    public Button restartButton;
+    public Button exitButton;
 
     public void OnScreenOpened()
     {
@@ -45,15 +47,15 @@ public class BattleCardScreen : MonoBehaviour
             hasStarted = true;
             Debug.Log("Tela de Batalha de Cartas aberta!");
 
-            // 🔹 Carregar todas as cartas que o jogador possui
-            List<int> playerDeckIds = PlayerDeckManager.GetOrCreateDeck(allAvailableCards);
-            playerOwnedCards = PlayerDeckManager.ConvertToCards(playerDeckIds, allAvailableCards);
+            // 🔹 Carregar os ids do deck ativo do jogador
+            List<int> playerDeckIds = PlayerDeckManager.LoadDeck();
+            foreach (int id in playerDeckIds)
+            {
+                CardData card = PlayerDeckManager.GetCardById(id);
+                if (card != null)
+                    playerActiveDeck.Add(card);
+            }
 
-            // 🔹 Selecionar deck ativo
-            SelectPlayerActiveDeck();
-
-            // 🔹 Exibir deck atual na UI
-            ShowPlayerDeck(playerActiveDeck);
         }
     }
 
@@ -85,27 +87,10 @@ public class BattleCardScreen : MonoBehaviour
     {
         Instance = this;
         startBattleButton.onClick.AddListener(StartGame);
-
+        restartButton.onClick.AddListener(RestartBattle);
+        exitButton.onClick.AddListener(ExitBattle);
     }
 
-    void ShowPlayerDeck(List<CardData> deckCards)
-    {
-        // Limpa painel antes
-        foreach (Transform child in PanelDeckArea)
-            Destroy(child.gameObject);
-
-        // Instancia cartas no painel
-        foreach (CardData card in deckCards)
-        {
-            GameObject cardGO = Instantiate(cardPrefab, PanelDeckArea);
-            CardUI cardUI = cardGO.GetComponent<CardUI>();
-            cardUI.SetCard(card, Owner.Player);
-
-            // 🔹 Deck é só exibição, sem drag
-            var drag = cardGO.GetComponent<DraggableCard>();
-            if (drag != null) Destroy(drag);
-        }
-    }
 
     void StartGame()
     {
@@ -128,6 +113,8 @@ public class BattleCardScreen : MonoBehaviour
             enemyHandArea,
             cardPrefab
         ));
+        BoardManager.Instance.UpdateBoardCounts(); // Atualiza contadores iniciais
+
     }
 
 
@@ -171,31 +158,20 @@ public class BattleCardScreen : MonoBehaviour
         // 🔹 Usa o BoardManager para capturas
         bool anyCapture = BoardManager.Instance.CheckCaptures(index);
 
-        // Atualiza contadores no UI
-        UpdateBoardCounts();
         currentTurn = Owner.Enemy;
         NextTurn();
     }
 
-    public void UpdateBoardCounts()
-    {
-        int playerCount, enemyCount;
-        BoardManager.Instance.GetBoardCounts(out playerCount, out enemyCount);
-
-        if (playerCountText != null)
-            playerCountText.text = playerCount.ToString();
-        if (enemyCountText != null)
-            enemyCountText.text = enemyCount.ToString();
-    }
 
 
     public void NextTurn()
     {
         if (filledSlots >= 9)
         {
-            EndGame();
+            BoardManager.Instance.CheckEndGame(); // ✅ agora quem decide é o BoardManager
             return;
         }
+
         if (currentTurn == Owner.Player)
         {
             Debug.Log("Turno do jogador");
@@ -207,82 +183,87 @@ public class BattleCardScreen : MonoBehaviour
             Invoke(nameof(CallEnemyAI), 1f);
         }
     }
-
-
-
-
-
-    void EndGame()
+    private void RestartBattle()
     {
-        int playerCount = 0;
-        int enemyCount = 0;
+        Debug.Log("Reiniciando batalha...");
 
-        for (int i = 0; i < boardArea.childCount; i++)
+        // Reinicia contadores
+        filledSlots = 0;
+        currentTurn = Owner.None;
+
+        // Limpa áreas de cartas
+        foreach (Transform child in playerHandArea) Destroy(child.gameObject);
+        foreach (Transform child in enemyHandArea) Destroy(child.gameObject);
+        foreach (Transform slot in boardArea)
         {
-            var slot = boardArea.GetChild(i);
-            if (slot.childCount > 0)
+            foreach (Transform card in slot)
             {
-                var cardUI = slot.GetChild(0).GetComponent<CardUI>();
-                if (cardUI != null)
-                {
-                    if (cardUI.owner == Owner.Player) playerCount++;
-                    else if (cardUI.owner == Owner.Enemy) enemyCount++;
-                }
+                Destroy(card.gameObject); // só destrói a carta dentro do slot
             }
         }
 
-        if (playerCount > enemyCount)
+        // Limpa listas
+        playerActiveDeck.Clear();
+        enemyActiveDeck.Clear();
+
+        // Recarrega o deck do jogador
+        List<int> playerDeckIds = PlayerDeckManager.LoadDeck();
+        foreach (int id in playerDeckIds)
         {
-            Debug.Log($"Fim de jogo! Jogador venceu ({playerCount} x {enemyCount})");
-            StartCoroutine(ShowPanelEndGame(true));
+            CardData card = PlayerDeckManager.GetCardById(id);
+            if (card != null)
+                playerActiveDeck.Add(card);
         }
-        else if (enemyCount > playerCount)
-        {
-            Debug.Log($"Fim de jogo! Inimigo venceu ({enemyCount} x {playerCount})");
-            StartCoroutine(ShowPanelEndGame(false));
-        }
-        else
-        {
-            Debug.Log($"Fim de jogo! Empate ({playerCount} x {enemyCount})");
-            StartCoroutine(ShowPanelEndGame(null));
-        }
+
+        // Prepara mão do inimigo
+        Shuffle(allAvailableCards);
+        for (int i = 0; i < 5 && i < allAvailableCards.Count; i++)
+            enemyActiveDeck.Add(allAvailableCards[i]);
+
+        // Recria roleta
+        Instantiate(roulletPrefab, this.transform);
+
+        // Re-distribui cartas
+        StartCoroutine(CardDealer.Instance.DealCards(
+            playerActiveDeck,
+            enemyActiveDeck,
+            playerHandArea,
+            enemyHandArea,
+            cardPrefab
+        ));
+
+        BoardManager.Instance.UpdateBoardCounts();
     }
-
-    IEnumerator ShowPanelEndGame(bool? playerWon)
+    private void ExitBattle()
     {
-        yield return new WaitForSeconds(2f);
+        Debug.Log("Saindo da batalha...");
 
-        if (playerWon.HasValue)
-            EndGameUI.instance.ShowEndGame(playerWon.Value);
-        else
-            Debug.Log("Empate! Ninguém vence.");
-    }
+        battleScreen.SetActive(false);
+        stageScreen.SetActive(true);
 
-    public void RestartBattle()
-    {
-        Debug.Log("Reiniciando a batalha...");
+        // Limpa o estado da batalha (opcional)
+        filledSlots = 0;
+        currentTurn = Owner.None;
+        playerActiveDeck.Clear();
+        enemyActiveDeck.Clear();
 
+        foreach (Transform child in playerHandArea) Destroy(child.gameObject);
+        foreach (Transform child in enemyHandArea) Destroy(child.gameObject);
         foreach (Transform slot in boardArea)
         {
-            foreach (Transform child in slot)
-                Destroy(child.gameObject);
+            foreach (Transform card in slot)
+            {
+                Destroy(card.gameObject); // só destrói a carta dentro do slot
+            }
         }
-
-        foreach (Transform card in playerHandArea)
-            Destroy(card.gameObject);
-        foreach (Transform card in enemyHandArea)
-            Destroy(card.gameObject);
-
-        enemyActiveDeck.Clear();
-        playerActiveDeck.Clear();
-        filledSlots = 0;
-        hasStarted = false;
-
-        UpdateBoardCounts();
-        playerCountText.text = "0";
-        enemyCountText.text = "0";
-
-        EndGameUI.instance.CloseEndGame();
-        StartGame();
+        // Recarrega o deck do jogador
+        List<int> playerDeckIds = PlayerDeckManager.LoadDeck();
+        foreach (int id in playerDeckIds)
+        {
+            CardData card = PlayerDeckManager.GetCardById(id);
+            if (card != null)
+                playerActiveDeck.Add(card);
+        }
     }
+
 }

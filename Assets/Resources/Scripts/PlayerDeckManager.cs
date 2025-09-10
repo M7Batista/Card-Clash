@@ -1,115 +1,142 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class PlayerDeckData
-{
-    public List<int> cardIds = new List<int>(); // IDs (índices na lista global "deck")
-}
-
+/// <summary>
+/// Gerencia a coleção do jogador (com duplicatas) e o deck ativo (5 slots),
+/// carregando CardData diretamente de Resources/Cards.
+/// </summary>
 public static class PlayerDeckManager
 {
-    private const string DeckKey = "PlayerDeck";
-    private const int DefaultDeckSize = 5;
+    private const string COLLECTION_KEY = "PlayerCollection"; // coleção do jogador (ids, com duplicatas)
+    private const string DECK_KEY = "PlayerDeck";             // deck ativo (5 ids ou -1)
 
-    /// <summary>
-    /// Carrega o deck salvo no dispositivo
-    /// </summary>
+    // Cache de CardData carregados de Resources/Cards
+    private static List<CardData> _allCardsCache;
+    private static Dictionary<int, CardData> _idLookup;
+
+    // ======================================================
+    // 🔹 Cache / Carregamento de Cards
+    // ======================================================
+    private static void EnsureCacheLoaded()
+    {
+        if (_allCardsCache != null && _idLookup != null) return;
+
+        // Carrega todos os CardData de Assets/Resources/Cards
+        var loaded = Resources.LoadAll<CardData>("Cards");
+        _allCardsCache = new List<CardData>(loaded);
+        _idLookup = new Dictionary<int, CardData>();
+
+        foreach (var c in loaded)
+        {
+            if (c == null) continue;
+
+            if (!_idLookup.ContainsKey(c.id))
+            {
+                _idLookup[c.id] = c;
+            }
+            else
+            {
+                Debug.LogWarning($"[PlayerDeckManager] ID duplicado {c.id} em Resources/Cards. " +
+                                 $"Usando o primeiro encontrado ('{_idLookup[c.id].name}'), ignorando '{c.name}'.");
+            }
+        }
+    }
+
+    /// <summary>Retorna uma cópia da lista de todos os CardData carregados (somente leitura para quem chama).</summary>
+    public static List<CardData> GetAllCards()
+    {
+        EnsureCacheLoaded();
+        return new List<CardData>(_allCardsCache);
+    }
+
+    /// <summary>Busca um CardData pelo ID. Retorna null se não encontrado.</summary>
+    public static CardData GetCardById(int id)
+    {
+        EnsureCacheLoaded();
+        if (_idLookup.TryGetValue(id, out var data)) return data;
+
+        Debug.LogWarning($"[PlayerDeckManager] Card id {id} não encontrado em Resources/Cards.");
+        return null;
+    }
+
+    // ======================================================
+    // 🔹 Coleção do Jogador (com duplicatas)
+    // ======================================================
+    public static void SaveCollection(List<int> ownedIds)
+    {
+        string json = JsonHelper.ToJson(ownedIds.ToArray(), true);
+        PlayerPrefs.SetString(COLLECTION_KEY, json);
+        PlayerPrefs.Save();
+        Debug.Log($"[DeckManager] Coleção salva com {ownedIds.Count} cartas (pode conter duplicatas).");
+    }
+
+    public static List<int> GetOwnedCards()
+    {
+        if (!PlayerPrefs.HasKey(COLLECTION_KEY))
+            return new List<int>();
+
+        string json = PlayerPrefs.GetString(COLLECTION_KEY);
+
+        if (string.IsNullOrEmpty(json))
+            return new List<int>();
+
+        int[] ids = JsonHelper.FromJson<int>(json);
+        if (ids == null)
+            return new List<int>();
+
+        return new List<int>(ids);
+    }
+
+
+    // ======================================================
+    // 🔹 Deck Ativo (5 slots; usar -1 para vazio)
+    // ======================================================
+    public static void SaveDeck(List<int> deckIds)
+    {
+        string json = JsonHelper.ToJson(deckIds.ToArray(), true);
+        PlayerPrefs.SetString(DECK_KEY, json);
+        PlayerPrefs.Save();
+        Debug.Log($"[DeckManager] Deck salvo com {deckIds.Count} slots.");
+    }
+
     public static List<int> LoadDeck()
     {
-        if (!PlayerPrefs.HasKey(DeckKey))
-            return null;
+        if (!PlayerPrefs.HasKey(DECK_KEY))
+            return new List<int>(); // sem deck salvo ainda
 
-        string json = PlayerPrefs.GetString(DeckKey);
-        Debug.Log($"Loaded Deck JSON: {json}");
-        PlayerDeckData data = JsonUtility.FromJson<PlayerDeckData>(json);
-        return data.cardIds;
+        string json = PlayerPrefs.GetString(DECK_KEY);
+
+        if (string.IsNullOrEmpty(json))
+            return new List<int>();
+
+        int[] ids = JsonHelper.FromJson<int>(json);
+        if (ids == null)
+            return new List<int>();
+
+        return new List<int>(ids);
+    }
+}
+
+/// <summary>
+/// Auxiliar para serializar arrays em JSON (PlayerPrefs).
+/// </summary>
+public static class JsonHelper
+{
+    public static T[] FromJson<T>(string json)
+    {
+        Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(json);
+        return wrapper.Items;
     }
 
-    /// <summary>
-    /// Salva o deck no dispositivo
-    /// </summary>
-    public static void SaveDeck(List<int> cardIds)
+    public static string ToJson<T>(T[] array, bool prettyPrint = false)
     {
-        PlayerDeckData data = new PlayerDeckData { cardIds = cardIds };
-        string json = JsonUtility.ToJson(data);
-        PlayerPrefs.SetString(DeckKey, json);
-        PlayerPrefs.Save();
+        Wrapper<T> wrapper = new Wrapper<T> { Items = array };
+        return JsonUtility.ToJson(wrapper, prettyPrint);
     }
 
-    /// <summary>
-    /// Cria um deck inicial (primeiras 5 cartas) se ainda não existir
-    /// </summary>
-    public static List<int> GetOrCreateDeck(List<CardData> allCards)
+    [System.Serializable]
+    private class Wrapper<T>
     {
-        List<int> playerDeckIds = LoadDeck();
-        if (playerDeckIds == null || playerDeckIds.Count == 0)
-        {
-            playerDeckIds = new List<int>();
-            for (int i = 0; i < DefaultDeckSize && i < allCards.Count; i++)
-                playerDeckIds.Add(i);
-                Debug.Log("Creating default player deck.");
-
-            SaveDeck(playerDeckIds);
-        }
-        return playerDeckIds;
-    }
-
-    /// <summary>
-    /// Converte IDs em cartas reais
-    /// </summary>
-    public static List<CardData> ConvertToCards(List<int> ids, List<CardData> allCards)
-    {
-        List<CardData> deckCards = new List<CardData>();
-        foreach (int id in ids)
-        {
-            if (id >= 0 && id < allCards.Count)
-                deckCards.Add(allCards[id]);
-        }
-        return deckCards;
-    }
-
-    // ======================================================
-    // 🔹 Funções extras para edição do deck
-    // ======================================================
-
-    /// <summary>
-    /// Adiciona uma carta ao deck (se não estiver cheia ou duplicada)
-    /// </summary>
-    public static bool AddCard(int cardId, int maxDeckSize = 5)
-    {
-        List<int> currentDeck = LoadDeck() ?? new List<int>();
-
-        if (currentDeck.Count >= maxDeckSize)
-            return false; // deck cheio
-
-        if (currentDeck.Contains(cardId))
-            return false; // já existe
-
-        currentDeck.Add(cardId);
-        SaveDeck(currentDeck);
-        return true;
-    }
-
-    /// <summary>
-    /// Remove uma carta do deck (se existir)
-    /// </summary>
-    public static bool RemoveCard(int cardId)
-    {
-        List<int> currentDeck = LoadDeck();
-        if (currentDeck == null || !currentDeck.Contains(cardId))
-            return false;
-
-        currentDeck.Remove(cardId);
-        SaveDeck(currentDeck);
-        return true;
-    }
-
-    /// <summary>
-    /// Limpa todo o deck
-    /// </summary>
-    public static void ClearDeck()
-    {
-        SaveDeck(new List<int>());
+        public T[] Items;
     }
 }

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc2b6d11e7a1bd46b8492bc6e03da8a, type: 3}
   m_Name: 014
   m_EditorClassIdentifier: Assembly-CSharp::CardData
-  cardId: 14
-  cardName: Catia
+  id: 14
+  cardName: Galia
   artwork: {fileID: 21300000, guid: 5b4c2319e246f2f46beee3bcc274e4e1, type: 3}
   top: 5
   right: 3
