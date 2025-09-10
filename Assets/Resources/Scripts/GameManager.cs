@@ -20,4 +20,27 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("O diretório de cache já está vazio. Nada para apagar.");
         }
     }
+    public void ClearData()
+    {
+        // 🔹 Limpa chaves usadas pelo PlayerDeckManager
+        PlayerPrefs.DeleteKey("PlayerDeck");
+        PlayerPrefs.DeleteKey("PlayerCollection");
+
+        // 🔹 Atualiza em memória
+       // playerCollection.Clear();
+        //activeDeck.Clear();
+
+       // foreach (var slot in deckSlots)
+            //slot.ClearSlot();
+
+        //foreach (Transform child in collectionContainer)
+            //Destroy(child.gameObject);
+
+        Debug.Log("⚠ Dados apagados com sucesso!");
+
+        // 🔹 Opcional: recarregar cena para resetar UI
+         UnityEngine.SceneManagement.SceneManager.LoadScene(
+             UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+    }
+
 }

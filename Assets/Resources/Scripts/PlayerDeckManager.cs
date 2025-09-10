@@ -72,9 +72,29 @@ public static class PlayerDeckManager
 
     public static List<int> GetOwnedCards()
     {
-        if (!PlayerPrefs.HasKey(COLLECTION_KEY))
-            return new List<int>();
+        EnsureCacheLoaded();
 
+        // 🔹 Caso não exista coleção salva
+        if (!PlayerPrefs.HasKey(COLLECTION_KEY))
+        {
+            // Garante que existem pelo menos 10 cartas no banco
+            int maxPool = Mathf.Min(10, _allCardsCache.Count);
+
+            List<int> starterCollection = new List<int>();
+            for (int i = 0; i < 7; i++)
+            {
+                int randIndex = Random.Range(0, maxPool);
+                starterCollection.Add(_allCardsCache[randIndex].id);
+            }
+
+            // 🔹 Salva a coleção inicial
+            SaveCollection(starterCollection);
+
+            Debug.Log($"[DeckManager] Nenhuma coleção encontrada. Gerada coleção inicial com {starterCollection.Count} cartas aleatórias.");
+            return starterCollection;
+        }
+
+        // 🔹 Caso exista coleção salva
         string json = PlayerPrefs.GetString(COLLECTION_KEY);
 
         if (string.IsNullOrEmpty(json))

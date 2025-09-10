@@ -1,37 +1,33 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class DeckSlot : MonoBehaviour, IDropHandler
+public class DeckSlot : MonoBehaviour
 {
-    public CardUI CurrentCard { get; private set; }
-
-    public void OnDrop(PointerEventData eventData)
-    {
-        var dragged = eventData.pointerDrag;
-        if (dragged == null) return;
-
-        var cardUI = dragged.GetComponent<CardUI>();
-        if (cardUI == null) return;
-
-        // Se já tem carta no slot, substitui
-        if (CurrentCard != null)
-        {
-            Destroy(CurrentCard.gameObject);
-        }
-
-        // Coloca a carta neste slot
-        cardUI.transform.SetParent(transform, false);
-        CurrentCard = cardUI;
-    }
+    public CardUI CurrentCard;      // card atual no slot
+    public GameObject arrowReplace; // seta de substituição (ícone na UI)
 
     public void SetCard(CardData data)
     {
         if (CurrentCard != null) Destroy(CurrentCard.gameObject);
 
-        var go = Instantiate(DeckEditorUI.Instance.cardPrefab, transform);
-        var cardUI = go.GetComponent<CardUI>();
-        cardUI.SetCard(data, Owner.Player);
+        // cria card UI dentro do slot
+        GameObject cardGO = Instantiate(DeckEditorUI.Instance.cardPrefab, transform);
+        CurrentCard = cardGO.GetComponent<CardUI>();
+        CurrentCard.SetCard(data, Owner.None);
+    }
 
-        CurrentCard = cardUI;
+    public void ClearSlot()
+    {
+        if (CurrentCard != null)
+        {
+            Destroy(CurrentCard.gameObject);
+            CurrentCard = null;
+        }
+    }
+
+    public void ShowReplaceArrow(bool show)
+    {
+        if (arrowReplace != null)
+            arrowReplace.SetActive(show);
     }
 }
