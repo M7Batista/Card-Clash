@@ -234,7 +234,7 @@ public class BattleCardScreen : MonoBehaviour
 
         BoardManager.Instance.UpdateBoardCounts();
     }
-    private void ExitBattle()
+    public void ExitBattle()
     {
         Debug.Log("Saindo da batalha...");
 

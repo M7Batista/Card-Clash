@@ -6,11 +6,9 @@ using System.Collections;
 public class EndGameUI : MonoBehaviour
 {
     public GameObject panel;
-    public Button restartButton;
     public Image resultImage;
     public float fadeDuration = 1.5f;
-    public Sprite spriteVictory;
-    public Sprite spriteDefeat;
+    public Sprite spriteVictory, spriteDefeat, spriteDraw;
     public static EndGameUI instance;
     private void Awake()
     {
@@ -19,18 +17,21 @@ public class EndGameUI : MonoBehaviour
 
 
     // Chame esse método quando o jogo terminar
-    public void ShowEndGame(bool victory)
+    public void ShowEndGame(int result)
     {
-        panel.SetActive(true);
-
-        if (victory)
+        switch (result)
         {
-            resultImage.sprite = spriteVictory;
+            case 0: //vitória
+                resultImage.sprite = spriteVictory;
+                break;
+            case 1: //derrota
+                 resultImage.sprite = spriteDefeat;
+                break;
+            case 2: //empate
+               resultImage.sprite = spriteDraw;
+                break;
         }
-        else
-        {
-            resultImage.sprite = spriteDefeat;
-        }
+       
         StartCoroutine(FadeIn());
 
     }
@@ -49,11 +50,11 @@ public class EndGameUI : MonoBehaviour
         }
 
         //resultImage.GetComponent<Image>().alpha = 1f; // garante que fica 100% visível
-    }
-    public void CloseEndGame()
-    {
+        yield return new WaitForSeconds(2f);
         panel.SetActive(false);
+        BattleCardScreen.Instance.ExitBattle();
     }
+    
 
 }
 

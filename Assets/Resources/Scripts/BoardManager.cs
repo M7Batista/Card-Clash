@@ -140,27 +140,26 @@ public class BoardManager : MonoBehaviour
         if (playerCount > enemyCount)
         {
             Debug.Log($"Fim de jogo! Jogador venceu ({playerCount} x {enemyCount})");
-            BattleCardScreen.Instance.StartCoroutine(ShowPanelEndGame(true));
+            BattleCardScreen.Instance.StartCoroutine(ShowPanelEndGame(0));
         }
         else if (enemyCount > playerCount)
         {
             Debug.Log($"Fim de jogo! Inimigo venceu ({enemyCount} x {playerCount})");
-            BattleCardScreen.Instance.StartCoroutine(ShowPanelEndGame(false));
+            BattleCardScreen.Instance.StartCoroutine(ShowPanelEndGame(1));
         }
         else
         {
             Debug.Log($"Fim de jogo! Empate ({playerCount} x {enemyCount})");
-            BattleCardScreen.Instance.StartCoroutine(ShowPanelEndGame(null));
+            BattleCardScreen.Instance.StartCoroutine(ShowPanelEndGame(2));
         }
     }
 
-    private IEnumerator ShowPanelEndGame(bool? playerWon)
+    private IEnumerator ShowPanelEndGame(int result)
     {
         yield return new WaitForSeconds(2f);
 
-        if (playerWon.HasValue)
-            EndGameUI.instance.ShowEndGame(playerWon.Value);
-        else
-            Debug.Log("Empate! Ninguém vence.");
+
+        EndGameUI.instance.ShowEndGame(result);
+
     }
 }
