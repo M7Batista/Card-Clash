@@ -27,20 +27,11 @@ public class CardDealer : MonoBehaviour
         for (int i = 0; i < playerDeck.Count; i++)
         {
             CardData card = playerDeck[i];
-
-            GameObject cardGO = GameObject.Instantiate(cardPrefab, playerHandArea);
-            CardUI cardUI = cardGO.GetComponent<CardUI>();
+            GameObject cardIstance = GameObject.Instantiate(cardPrefab, playerHandArea);
+            CardUI cardUI = cardIstance.GetComponent<CardUI>();
             cardUI.SetCard(card, Owner.Player);
-            var drag = cardGO.GetComponent<DraggableCard>();
-            if (drag != null)
-            {
-                //drag.OnDroppedInSlot += OnPlayerCardPlaced;
-                //drag.OnDroppedInSlot += (placedCard) =>
-               // {
-               //     BattleCardScreen.Instance.OnPlayerCardPlaced(placedCard);
-             //   };
-            }
-
+            var drag = cardIstance.GetComponent<DraggableCard>();
+            StartCoroutine(AnimateCard(cardIstance, playerHandArea));
             yield return new WaitForSeconds(0.1f);
         }
 
@@ -48,15 +39,14 @@ public class CardDealer : MonoBehaviour
         for (int i = 0; i < enemyHand.Count; i++)
         {
             CardData card = enemyHand[i];
-
-            GameObject cardGO = GameObject.Instantiate(cardPrefab, enemyHandArea);
-            CardUI cardUI = cardGO.GetComponent<CardUI>();
+            GameObject cardInstance = GameObject.Instantiate(cardPrefab, enemyHandArea);
+            CardUI cardUI = cardInstance.GetComponent<CardUI>();
             cardUI.SetCard(card, Owner.Enemy);
 
             // inimigo não pode arrastar
-            var drag = cardGO.GetComponent<DraggableCard>();
+            var drag = cardInstance.GetComponent<DraggableCard>();
             if (drag != null) Destroy(drag);
-
+            StartCoroutine(AnimateCard(cardInstance, enemyHandArea));
             yield return new WaitForSeconds(0.1f);
         }
         // desativa drag até começar o turno real
@@ -77,31 +67,6 @@ public class CardDealer : MonoBehaviour
         }
     }
 
-    void CreateCard(CardData cardData, Transform parent, Owner owner)
-    {
-        var cardObj = Instantiate(cardPrefab, parent);
-        var cardUI = cardObj.GetComponent<CardUI>();
-        cardUI.SetCard(cardData, owner);
-        cardUI.ShowName(false);
-        // comportamento diferente entre Player e Enemy
-        if (owner == Owner.Player)
-        {
-            var drag = cardObj.AddComponent<DraggableCard>();
-            //drag.OnDroppedInSlot += BattleCardScreen.Instance.OnPlayerCardPlaced;
-            //cardObj.GetComponent<CardFlip>().FlipCard(Owner.Player);
-        }
-        else
-        {
-            var drag = cardObj.GetComponent<DraggableCard>();
-            if (drag != null) drag.enabled = false;
-            //cardObj.GetComponent<CardFlip>().FlipCard(Owner.Enemy);
-        }
-
-        // animação de entrada
-        StartCoroutine(AnimateCard(cardObj, parent));
-        Debug.Log($"Carta {cardData.cardName} criada para {owner}");
-    }
-
     IEnumerator AnimateCard(GameObject card, Transform handParent)
     {
         CanvasGroup cg = card.GetComponent<CanvasGroup>();
@@ -116,7 +81,7 @@ public class CardDealer : MonoBehaviour
         cg.alpha = 0f;
 
         // Posição inicial (fora da tela, parte inferior)
-        Vector2 startPos = new Vector2(0, -Screen.height);
+        Vector2 startPos = new Vector2(-Screen.width, Screen.height/2);
         Vector2 endPos = handParent.position; // alvo = posição da mão
 
         rt.position = startPos;

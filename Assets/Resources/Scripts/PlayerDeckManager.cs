@@ -81,9 +81,9 @@ public static class PlayerDeckManager
             int maxPool = Mathf.Min(10, _allCardsCache.Count);
 
             List<int> starterCollection = new List<int>();
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 8; i++)
             {
-                int randIndex = Random.Range(0, maxPool);
+                int randIndex = Random.Range(0, 18);
                 starterCollection.Add(_allCardsCache[randIndex].id);
             }
 

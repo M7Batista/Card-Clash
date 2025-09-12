@@ -19,16 +19,17 @@ public class EndGameUI : MonoBehaviour
     // Chame esse método quando o jogo terminar
     public void ShowEndGame(int result)
     {
+        panel.SetActive(true);
         switch (result)
         {
             case 0: //vitória
                 resultImage.sprite = spriteVictory;
                 break;
             case 1: //derrota
-                 resultImage.sprite = spriteDefeat;
+                resultImage.sprite = spriteDefeat;
                 break;
             case 2: //empate
-               resultImage.sprite = spriteDraw;
+                resultImage.sprite = spriteDraw;
                 break;
         }
        

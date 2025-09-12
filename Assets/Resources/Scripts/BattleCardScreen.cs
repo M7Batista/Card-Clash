@@ -120,13 +120,11 @@ public class BattleCardScreen : MonoBehaviour
 
     public void StartPlayerTurn()
     {
-        Debug.Log("Player começa!");
         currentTurn = Owner.Player;
     }
 
     public void StartEnemyTurn()
     {
-        Debug.Log("Inimigo começa!");
         currentTurn = Owner.Enemy;
         Invoke(nameof(CallEnemyAI), 2f);
 
