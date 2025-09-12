@@ -10,7 +10,7 @@ public class DeckEditorUI : MonoBehaviour
     [Header("Referências")]
     public Transform collectionContainer;
     public Transform deckSlotsContainer;
-    public Button saveButton;
+    public Button saveButton, clearButton;
     public TextMeshProUGUI combatPowerText;
 
     [Header("Prefabs")]
@@ -43,6 +43,7 @@ public class DeckEditorUI : MonoBehaviour
         LoadDeck();
 
         saveButton.onClick.AddListener(SaveDeck);
+        clearButton.onClick.AddListener(ClearSlot);
     }
 
     private void PopulateCollection()
@@ -63,28 +64,7 @@ public class DeckEditorUI : MonoBehaviour
         }
     }
 
-    /*private void OnCollectionCardClicked(CardUI cardUI)
-    {
-        // 1️⃣ Se ainda existe slot vazio → adiciona direto
-        DeckSlot emptySlot = FindEmptySlot();
-        if (emptySlot != null)
-        {
-            emptySlot.SetCard(cardUI.cardData);
-            MarkCollectionCard(cardUI, true);
-            RefreshActiveDeckList();
-            return;
-        }
-
-        // 2️⃣ Se deck já cheio → entra em modo substituição
-        if (selectedCollectionCardUI == cardUI)
-        {
-            // clica de novo → cancela substituição
-            ClearSubstitutionMode();
-            return;
-        }
-
-        EnterSubstitutionMode(cardUI);
-    }*/
+    
     private void OnCollectionCardClicked(CardUI cardUI)
     {
         // 🔹 Se o card já está no deck (check ativo) → remove uma ocorrência
@@ -122,10 +102,6 @@ public class DeckEditorUI : MonoBehaviour
         EnterSubstitutionMode(cardUI);
         UpdateCombatPower();
     }
-    /// <summary>
-    /// Procura um slot do deck que contenha a carta pelo id.
-    /// Retorna o primeiro encontrado ou null.
-    /// </summary>
     private DeckSlot FindSlotWithCard(int cardId)
     {
         foreach (var slot in deckSlots)
@@ -236,7 +212,19 @@ public class DeckEditorUI : MonoBehaviour
             }
         }
     }
-
+    public void ClearSlot()
+    {
+        foreach (var slot in deckSlots)
+        {
+            if (slot.CurrentCard != null)
+            {
+                UnmarkCollectionCard(slot.CurrentCard.cardData);
+                slot.ClearSlot();
+            }
+        }
+        RefreshActiveDeckList();
+        UpdateCombatPower();
+    }
     private void RefreshActiveDeckList()
     {
         activeDeck.Clear();
