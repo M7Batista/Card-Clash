@@ -24,6 +24,8 @@ public class CardUI : MonoBehaviour
     private bool isEnabled = true;
     public bool isChecked = false;
     public GameObject checkmark;   // Ícone "✔"
+    public GameObject front; // arraste no Inspector
+    public GameObject back;  // arraste no Inspector
 
 
     public void SetCard(CardData data, Owner newOwner)
@@ -93,5 +95,26 @@ public class CardUI : MonoBehaviour
         if (mainImage == null) return;
 
         mainImage.color = dimmed ? new Color(1, 1, 1, 0.4f) : Color.white;
+    }
+    private bool isFaceUp = true;
+
+    public void ShowFront()
+    {
+        front.SetActive(true);
+        back.SetActive(false);
+        isFaceUp = true;
+    }
+
+    public void ShowBack()
+    {
+        front.SetActive(false);
+        back.SetActive(true);
+        isFaceUp = false;
+    }
+
+    public void Flip()
+    {
+        if (isFaceUp) ShowBack();
+        else ShowFront();
     }
 }
