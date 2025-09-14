@@ -91,15 +91,6 @@ public class DeckEditorUI : MonoBehaviour
             return;
         }
 
-        // 2️⃣ Se deck já cheio → entra em modo substituição
-        if (selectedCollectionCardUI == cardUI)
-        {
-            // clica de novo → cancela substituição
-            ClearSubstitutionMode();
-            return;
-        }
-
-        EnterSubstitutionMode(cardUI);
         UpdateCombatPower();
     }
     private DeckSlot FindSlotWithCard(int cardId)
@@ -131,7 +122,7 @@ public class DeckEditorUI : MonoBehaviour
             slot.SetCard(newCard);
             MarkCollectionCard(selectedCollectionCardUI, true);
 
-            ClearSubstitutionMode();
+            //ClearSubstitutionMode();
         }
         else
         {
@@ -144,48 +135,7 @@ public class DeckEditorUI : MonoBehaviour
         UpdateCombatPower();
     }
 
-    // ============================
-    // Substituição
-    // ============================
-    private void EnterSubstitutionMode(CardUI cardUI)
-    {
-        selectedCollectionCardUI = cardUI;
-
-        // destaque coleção
-        foreach (Transform child in collectionContainer)
-        {
-            var ui = child.GetComponent<CardUI>();
-            if (ui == cardUI) ui.SetHighlight(true);
-            else ui.SetDimmed(true);
-        }
-
-        // slots mostram setas
-        foreach (var slot in deckSlots)
-        {
-            slot.ShowReplaceArrow(true);
-        }
-    }
-
-    private void ClearSubstitutionMode()
-    {
-        selectedCollectionCardUI = null;
-
-        foreach (Transform child in collectionContainer)
-        {
-            var ui = child.GetComponent<CardUI>();
-            ui.SetHighlight(false);
-            ui.SetDimmed(false);
-        }
-
-        foreach (var slot in deckSlots)
-        {
-            slot.ShowReplaceArrow(false);
-        }
-    }
-
-    // ============================
-    // Helpers
-    // ============================
+   
     private DeckSlot FindEmptySlot()
     {
         foreach (var slot in deckSlots)

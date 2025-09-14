@@ -495,15 +495,12 @@ MonoBehaviour:
   numBottom: {fileID: 1100141414917574350}
   numLeft: {fileID: 317649368616160052}
   txtName: {fileID: 337342839802137189}
-  panelTextName: {fileID: 0}
-  frameImage: {fileID: 3506125302651392393}
-  highlightBorder: {fileID: 0}
   cardData: {fileID: 0}
   owner: 0
   isChecked: 0
   checkmark: {fileID: 7965573512808102732}
-  front: {fileID: 0}
-  back: {fileID: 0}
+  front: {fileID: 5492845387056219137}
+  back: {fileID: 5902689953499319662}
 --- !u!114 &4848301492097987754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,7 +519,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   flipSound: {fileID: 0}
   flipDuration: 0.9
-  jumpScale: 1.3
+  jumpScale: 1.2
 --- !u!1 &2672239840743361237
 GameObject:
   m_ObjectHideFlags: 0
@@ -1339,7 +1336,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a54d5017a0ab8dd41aa01d308b3a8803, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 592578c1b8267c148a839894badbdc23, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

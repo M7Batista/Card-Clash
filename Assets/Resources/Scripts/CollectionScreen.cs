@@ -27,7 +27,7 @@ public class CollectionScreen : MonoBehaviour
     private int totalCards = 0;
 
     // 🔹 Lista de cartas que o jogador possui
-    private List<CardData> playerOwnedCards = new List<CardData>();
+    public List<CardData> playerOwnedCards = new List<CardData>();
 
     private void Start()
     {
@@ -44,30 +44,50 @@ public class CollectionScreen : MonoBehaviour
 
     private void LoadCards()
     {
+        // Carregar cartas que o jogador possui
+        playerOwnedCards.Clear();
+        List<int> ownedIds = PlayerDeckManager.GetOwnedCards();
+        foreach (int id in ownedIds)
+        {
+            var card = PlayerDeckManager.GetCardById(id);
+            if (card != null) playerOwnedCards.Add(card);
+        }
         // 🔹 Carregar todas as cartas do jogo
         CardData[] allCards = Resources.LoadAll<CardData>("cards");
         totalCards = allCards.Length;
-
 
         foreach (CardData card in allCards)
         {
             GameObject cardGO = Instantiate(cardPrefab, scrollContent);
             CardUI cardUI = cardGO.GetComponent<CardUI>();
-            cardUI.SetCard(card, Owner.None);
+
+            // 🔹 Se o jogador possui a carta → mostra normal
+            if (playerOwnedCards.Contains(card))
+            {
+                cardUI.SetCard(card, Owner.None);
+            }
+            else
+            {
+                // 🔹 Caso contrário → mostra verso
+                cardUI.ShowBack(); 
+            }
 
             // clique no card da coleção
             Button btn = cardGO.GetComponent<Button>();
             if (btn == null) btn = cardGO.AddComponent<Button>();
-            btn.onClick.AddListener(() => OnCollectionCardClicked(cardUI));   
+            btn.onClick.AddListener(() => OnCollectionCardClicked(cardUI));
         }
 
-        // 🔹 Atualiza o contador X/Y
+        // 🔹 Atualiza o contador
         if (totalCardsText != null)
             totalCardsText.text = $"{playerOwnedCards.Count}/{totalCards}";
     }
+
     private void OnCollectionCardClicked(CardUI cardUI)
     {
-        ShowCard(cardUI.cardData);
+        // só abre preview se o jogador tiver a carta
+        if (playerOwnedCards.Contains(cardUI.cardData))
+            ShowCard(cardUI.cardData);
     }
 
     public void ShowCard(CardData cardData)
@@ -93,5 +113,4 @@ public class CollectionScreen : MonoBehaviour
         var zoom = previewPanel.transform.GetChild(0).GetComponent<CardZoom>();
         if (zoom != null) zoom.ResetZoom();
     }
-
 }

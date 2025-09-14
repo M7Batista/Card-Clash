@@ -23,7 +23,6 @@ public class BattleCardScreen : MonoBehaviour
     public Owner currentTurn = Owner.None;
     //private int boardSlots = 9;
     public int filledSlots = 0;
-    private bool hasStarted = false;
 
     public static BattleCardScreen Instance;
 
@@ -41,22 +40,18 @@ public class BattleCardScreen : MonoBehaviour
 
     public void OnScreenOpened()
     {
-        Debug.Log("BattleCardScreen: OnScreenOpened chamado.");
-        if (!hasStarted)
+
+        Debug.Log("Tela de Batalha de Cartas aberta!");
+        // 🔹 Carregar os ids do deck ativo do jogador
+        List<int> playerDeckIds = PlayerDeckManager.LoadDeck();
+        playerActiveDeck.Clear();
+        foreach (int id in playerDeckIds)
         {
-            hasStarted = true;
-            Debug.Log("Tela de Batalha de Cartas aberta!");
-
-            // 🔹 Carregar os ids do deck ativo do jogador
-            List<int> playerDeckIds = PlayerDeckManager.LoadDeck();
-            foreach (int id in playerDeckIds)
-            {
-                CardData card = PlayerDeckManager.GetCardById(id);
-                if (card != null)
-                    playerActiveDeck.Add(card);
-            }
-
+            CardData card = PlayerDeckManager.GetCardById(id);
+            if (card != null)
+                playerActiveDeck.Add(card);
         }
+
     }
 
     // ===============================
@@ -94,6 +89,13 @@ public class BattleCardScreen : MonoBehaviour
 
     void StartGame()
     {
+        // 🔹 Verifica se o deck do jogador está válido
+        if (playerActiveDeck == null || playerActiveDeck.Count < 5)
+        {
+            Dialog.Instance.ShowMessage("Choose your cards before starting the game!");
+            Debug.LogError("❌ O jogador não possui 5 cartas definidas no deck. O jogo não pode iniciar!");
+            return;
+        }
         stageScreen.SetActive(false);
         battleScreen.SetActive(true);
         // 🔹 Prepara mão inimiga (5 cartas aleatórias do total de cartas)
