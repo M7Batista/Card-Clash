@@ -8,6 +8,7 @@ public class DeckEditorUI : MonoBehaviour
     public static DeckEditorUI Instance;
 
     [Header("Referências")]
+    public Transform uiCanvas;
     public Transform collectionContainer;
     public Transform deckSlotsContainer;
     public Button saveButton, clearButton;
@@ -15,7 +16,7 @@ public class DeckEditorUI : MonoBehaviour
 
     [Header("Prefabs")]
     public GameObject cardPrefab;
-
+    public GameObject floatingMessagePrefab;
     public List<CardData> playerCollection = new List<CardData>();
     private List<CardData> activeDeck = new List<CardData>();
 
@@ -64,7 +65,7 @@ public class DeckEditorUI : MonoBehaviour
         }
     }
 
-    
+
     private void OnCollectionCardClicked(CardUI cardUI)
     {
         // 🔹 Se o card já está no deck (check ativo) → remove uma ocorrência
@@ -135,7 +136,7 @@ public class DeckEditorUI : MonoBehaviour
         UpdateCombatPower();
     }
 
-   
+
     private DeckSlot FindEmptySlot()
     {
         foreach (var slot in deckSlots)
@@ -195,6 +196,10 @@ public class DeckEditorUI : MonoBehaviour
         PlayerDeckManager.SaveDeck(deckIds);
 
         Debug.Log("Deck salvo!");
+        // Exibe mensagem flutuante
+        GameObject go = Instantiate(floatingMessagePrefab, uiCanvas);
+        go.transform.localPosition = Vector3.zero; // aparece no centro
+        go.GetComponent<FloatingMessage>().Show("Deck saved successfully!");
     }
 
     private void LoadDeck()
@@ -243,7 +248,7 @@ public class DeckEditorUI : MonoBehaviour
             if (slot.CurrentCard != null)
             {
                 CardData c = slot.CurrentCard.cardData;
-                totalPower += c.top + c.right + c.bottom + c.left; 
+                totalPower += c.top + c.right + c.bottom + c.left;
             }
         }
 

@@ -15,6 +15,7 @@ public class BoardManager : MonoBehaviour
     [Header("UI")]
     public TextMeshProUGUI playerCountText;
     public TextMeshProUGUI enemyCountText;
+    public GameObject turnArrow;
 
     private void Awake()
     {
@@ -136,7 +137,7 @@ public class BoardManager : MonoBehaviour
     public void CheckEndGame()
     {
         GetBoardCounts(out int playerCount, out int enemyCount);
-
+        turnArrow.SetActive(false);
         if (playerCount > enemyCount)
         {
             Debug.Log($"Fim de jogo! Jogador venceu ({playerCount} x {enemyCount})");
@@ -153,12 +154,34 @@ public class BoardManager : MonoBehaviour
             StartCoroutine(ShowPanelEndGame(2));
         }
     }
-    
+
 
 
     private IEnumerator ShowPanelEndGame(int result)
     {
         yield return new WaitForSeconds(1f);
         EndGameUI.instance.ShowEndGame(result);
+    }
+    public void UpdateTurnArrow(Transform handArea)
+    {
+        if (turnArrow == null || handArea == null) return;
+
+        turnArrow.SetActive(true);
+
+        RectTransform rt = turnArrow.GetComponent<RectTransform>();
+        RectTransform handRT = handArea.GetComponent<RectTransform>();
+
+        // 🔹 Pega posição Y da HandArea (local para o Canvas)
+        Vector3 handPos = handRT.position;
+        Vector3 arrowPos = rt.position;
+
+        // Mantém X fixo (direita da tela), pega Y do HandArea
+        arrowPos.y = handPos.y;
+        arrowPos.x = Screen.width - 80f; // ajuste: 80px da borda direita
+        rt.position = arrowPos;
+    }
+    public void HideTurnArrow()
+    {
+        turnArrow.SetActive(false);
     }
 }

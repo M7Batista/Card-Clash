@@ -123,11 +123,15 @@ public class BattleCardScreen : MonoBehaviour
     public void StartPlayerTurn()
     {
         currentTurn = Owner.Player;
+        SetPlayerHandDraggable(true);
+        BoardManager.Instance.UpdateTurnArrow(playerHandArea);
     }
 
     public void StartEnemyTurn()
     {
         currentTurn = Owner.Enemy;
+        SetPlayerHandDraggable(false);
+        BoardManager.Instance.UpdateTurnArrow(enemyHandArea);
         Invoke(nameof(CallEnemyAI), 2f);
 
     }
@@ -174,15 +178,28 @@ public class BattleCardScreen : MonoBehaviour
 
         if (currentTurn == Owner.Player)
         {
+            SetPlayerHandDraggable(true);
+            BoardManager.Instance.UpdateTurnArrow(playerHandArea);
             Debug.Log("Turno do jogador");
             // jogador vai interagir manualmente
         }
         else if (currentTurn == Owner.Enemy)
         {
+            SetPlayerHandDraggable(false);
+            BoardManager.Instance.UpdateTurnArrow(enemyHandArea);
             Debug.Log("Turno do inimigo");
             Invoke(nameof(CallEnemyAI), 1f);
         }
     }
+    private void SetPlayerHandDraggable(bool canDrag)
+{
+    foreach (Transform child in playerHandArea)
+    {
+        var draggable = child.GetComponent<DraggableCard>(); // seu script de drag
+        if (draggable != null)
+            draggable.enabled = canDrag;
+    }
+}
     private void RestartBattle()
     {
         Debug.Log("Reiniciando batalha...");
@@ -190,6 +207,7 @@ public class BattleCardScreen : MonoBehaviour
         // Reinicia contadores
         filledSlots = 0;
         currentTurn = Owner.None;
+        BoardManager.Instance.HideTurnArrow();
 
         // Limpa áreas de cartas
         foreach (Transform child in playerHandArea) Destroy(child.gameObject);
@@ -240,7 +258,7 @@ public class BattleCardScreen : MonoBehaviour
 
         battleScreen.SetActive(false);
         stageScreen.SetActive(true);
-
+        BoardManager.Instance.HideTurnArrow();
         // Limpa o estado da batalha (opcional)
         filledSlots = 0;
         currentTurn = Owner.None;
