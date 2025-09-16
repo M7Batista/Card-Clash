@@ -30,7 +30,7 @@ public class CardDealer : MonoBehaviour
             GameObject cardIstance = GameObject.Instantiate(cardPrefab, playerHandArea);
             CardUI cardUI = cardIstance.GetComponent<CardUI>();
             cardUI.SetCard(card, Owner.Player);
-            var drag = cardIstance.GetComponent<DraggableCard>();
+            cardIstance.AddComponent<DraggableCard>(); //Adicione o drag
             StartCoroutine(AnimateCard(cardIstance, playerHandArea));
             yield return new WaitForSeconds(0.1f);
         }
@@ -43,9 +43,6 @@ public class CardDealer : MonoBehaviour
             CardUI cardUI = cardInstance.GetComponent<CardUI>();
             cardUI.SetCard(card, Owner.Enemy);
 
-            // inimigo não pode arrastar
-            var drag = cardInstance.GetComponent<DraggableCard>();
-            if (drag != null) Destroy(drag);
             StartCoroutine(AnimateCard(cardInstance, enemyHandArea));
             yield return new WaitForSeconds(0.1f);
         }
