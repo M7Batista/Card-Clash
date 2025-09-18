@@ -18,7 +18,7 @@ public class CollectionScreen : MonoBehaviour
     [Header("Preview Status")]
     public GameObject statusPanel;
     public TextMeshProUGUI numTop, numRight, numBottom, numLeft;
-    public TextMeshProUGUI characterName;
+    public TextMeshProUGUI characterName, txtPower, txtID;
     public RadarPolygon radarPolygon;
 
     [Header("UI Extra")]
@@ -80,7 +80,7 @@ public class CollectionScreen : MonoBehaviour
 
         // 🔹 Atualiza o contador
         if (totalCardsText != null)
-            totalCardsText.text = $"{playerOwnedCards.Count}/{totalCards}";
+            totalCardsText.text = $"Cards colleted {playerOwnedCards.Count} / {totalCards}";
     }
 
     private void OnCollectionCardClicked(CardUI cardUI)
@@ -109,7 +109,9 @@ public class CollectionScreen : MonoBehaviour
             radarPolygon.left = cardData.left;
             radarPolygon.SetVerticesDirty();
         }
-
+        int power = cardData.top+cardData.right+cardData.bottom+cardData.left;
+        txtPower.text = $"{power}";
+        txtID.text = $"{cardData.id}";
         var zoom = previewPanel.transform.GetChild(0).GetComponent<CardZoom>();
         if (zoom != null) zoom.ResetZoom();
     }
