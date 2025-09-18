@@ -25,16 +25,8 @@ public class GameManager : MonoBehaviour
         // 🔹 Limpa chaves usadas pelo PlayerDeckManager
         PlayerPrefs.DeleteKey("PlayerDeck");
         PlayerPrefs.DeleteKey("PlayerCollection");
+        PlayerPrefs.DeleteKey("UnlockedStage");
 
-        // 🔹 Atualiza em memória
-       // playerCollection.Clear();
-        //activeDeck.Clear();
-
-       // foreach (var slot in deckSlots)
-            //slot.ClearSlot();
-
-        //foreach (Transform child in collectionContainer)
-            //Destroy(child.gameObject);
 
         Debug.Log("⚠ Dados apagados com sucesso!");
 

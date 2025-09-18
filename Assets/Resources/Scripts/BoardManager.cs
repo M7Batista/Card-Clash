@@ -140,6 +140,7 @@ public class BoardManager : MonoBehaviour
         turnArrow.SetActive(false);
         if (playerCount > enemyCount)
         {
+            StageMapGenerator.Instance.UnlockNextStage();
             Debug.Log($"Fim de jogo! Jogador venceu ({playerCount} x {enemyCount})");
             StartCoroutine(ShowPanelEndGame(0));
         }

@@ -29,7 +29,6 @@ public class BattleCardScreen : MonoBehaviour
 
     [Header("Tela de estagio")]
     public GameObject stageScreen;
-    public Button startBattleButton;
 
     [Header("Tela de batalha")]
     public GameObject battleScreen;
@@ -81,13 +80,12 @@ public class BattleCardScreen : MonoBehaviour
     void Start()
     {
         Instance = this;
-        startBattleButton.onClick.AddListener(StartGame);
         restartButton.onClick.AddListener(RestartBattle);
         exitButton.onClick.AddListener(ExitBattle);
     }
 
 
-    void StartGame()
+    public void StartBattle()
     {
         // 🔹 Verifica se o deck do jogador está válido
         if (playerActiveDeck == null || playerActiveDeck.Count < 5)
