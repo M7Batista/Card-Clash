@@ -69,7 +69,8 @@ public class CollectionScreen : MonoBehaviour
             else
             {
                 // 🔹 Caso contrário → mostra verso
-                cardUI.ShowBack(); 
+                //cardUI.ShowBack();
+                cardUI.SetCard(card, Owner.None); 
             }
 
             // clique no card da coleção

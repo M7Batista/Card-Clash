@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dc2b6d11e7a1bd46b8492bc6e03da8a, type: 3}
+  m_Name: 3
+  m_EditorClassIdentifier: Assembly-CSharp::CardData
+  id: 3
+  rarity: 0
+  top: 3
+  right: 1
+  bottom: 2
+  left: 3
+  artwork: {fileID: 21300000, guid: de662ad10c29b0643b8f797fd6a1e439, type: 3}
+  cardName: Gobhime

@@ -6,8 +6,6 @@ public class StageMapGenerator : MonoBehaviour
 {
     [Header("Configurações do Mapa")]
     public int totalStages = 100;
-    public float spacingY = 200f;      // Distância vertical entre linhas
-    public float spacingX = 200f;      // Distância horizontal para o zigue-zague
 
     [Header("Referências")]
     public RectTransform content;        // Content do Scroll View
@@ -48,11 +46,10 @@ public class StageMapGenerator : MonoBehaviour
             if (text != null)
                 text.text = i.ToString();
 
-            // 🔹 Agora a posição é calculada de cima para baixo
-            float posY = -(i - 1) * spacingY;
-            float posX = (i % 2 == 0) ? spacingX : -spacingX;
 
-            newButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(posX, posY);
+            //float posX = (i % 2 == 0) ? 300 : -300;
+            //newButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(posX, posY);
+
             // imagem
             var image = newButton.GetComponent<Image>();
             var button = newButton.GetComponent<Button>();
@@ -86,18 +83,8 @@ public class StageMapGenerator : MonoBehaviour
     void OnStageClicked(int index)
     {
         Debug.Log("Jogador entrou no estágio " + index);
+        BattleCardScreen.Instance.SetEnemyDeck(EnemyDeckManager.Instance.GenerateEnemyDeck(index));
         BattleCardScreen.Instance.StartBattle();
-
-        // Exemplo: desbloqueia o próximo estágio
-        /*if (index == unlockedStage && unlockedStage < totalStages)
-        {
-            unlockedStage++;
-            PlayerPrefs.SetInt("UnlockedStage", unlockedStage);
-            PlayerPrefs.Save();
-
-            // Regenera tela com novo desbloqueio
-            GenerateStages();
-        }*/
     }
     public void UnlockNextStage()
     {

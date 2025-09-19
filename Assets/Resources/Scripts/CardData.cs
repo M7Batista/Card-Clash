@@ -1,16 +1,12 @@
 using UnityEngine;
-public enum Type { Common, Rare, Epic, Legendary }
+public enum CardRarity { Common, Uncommon, Rare, Epic, Legendary }
+
 [CreateAssetMenu(fileName = "NewCard", menuName = "Card Game/Card Data")]
 public class CardData : ScriptableObject
 {
     [Header("Identificação")]
-
     public int id;         // ID único do card
-    public Type typeCard; // Raridade do card
-    public string cardName;    // Nome exibido
-
-    [Header("Arte")]
-    public Sprite artwork;     // Imagem do card
+    public CardRarity rarity; // Raridade do card
 
     [Header("Atributos")]
     public int top;
@@ -18,5 +14,8 @@ public class CardData : ScriptableObject
     public int bottom;
     public int left;
 
+    [Header("Imagem")]
+    public Sprite artwork;     // Imagem do card
+    public string cardName;    // Nome exibido
 
 }

@@ -16,7 +16,7 @@ public class BattleCardScreen : MonoBehaviour
     public GameObject roulletPrefab;
 
     [Header("Listas de Cartas")]
-    public List<CardData> playerOwnedCards = new List<CardData>();   // 🔹 Todas as cartas que o jogador possui
+    //public List<CardData> playerOwnedCards = new List<CardData>();   // 🔹 Todas as cartas que o jogador possui
     public List<CardData> playerActiveDeck = new List<CardData>();   // 🔹 As 5 cartas escolhidas pelo jogador para a partida
     public List<CardData> enemyActiveDeck = new List<CardData>();    // 🔹 As 5 cartas que o inimigo usará na partida
 
@@ -27,10 +27,8 @@ public class BattleCardScreen : MonoBehaviour
     public static BattleCardScreen Instance;
 
 
-    [Header("Tela de estagio")]
+    [Header("Telas")]
     public GameObject stageScreen;
-
-    [Header("Tela de batalha")]
     public GameObject battleScreen;
 
     [Header("Botões extras")]
@@ -56,7 +54,7 @@ public class BattleCardScreen : MonoBehaviour
     // ===============================
     // 🔹 Seleção do Deck do Jogador
     // ===============================
-    private void SelectPlayerActiveDeck()
+    /*private void SelectPlayerActiveDeck()
     {
         playerActiveDeck.Clear();
 
@@ -75,7 +73,7 @@ public class BattleCardScreen : MonoBehaviour
             for (int i = playerActiveDeck.Count; i < 5; i++)
                 playerActiveDeck.Add(allAvailableCards[i]);
         }
-    }
+    }*/
 
     void Start()
     {
@@ -83,8 +81,10 @@ public class BattleCardScreen : MonoBehaviour
         restartButton.onClick.AddListener(RestartBattle);
         exitButton.onClick.AddListener(ExitBattle);
     }
-
-
+    public void SetEnemyDeck(List<CardData> enemyDeck)
+    {
+        enemyActiveDeck = enemyDeck;
+    }
     public void StartBattle()
     {
         // 🔹 Verifica se o deck do jogador está válido
@@ -94,13 +94,20 @@ public class BattleCardScreen : MonoBehaviour
             Debug.LogError("❌ O jogador não possui 5 cartas definidas no deck. O jogo não pode iniciar!");
             return;
         }
+        // Verifica se o inimigo tem cartas
+        if(enemyActiveDeck == null || enemyActiveDeck.Count < 5)
+        {
+            Dialog.Instance.ShowMessage("Enemy deck is not set! Cannot start the game.");
+            Debug.LogError("❌ O deck do inimigo não está definido. O jogo não pode iniciar!");
+            return;
+        }
         stageScreen.SetActive(false);
         battleScreen.SetActive(true);
         // 🔹 Prepara mão inimiga (5 cartas aleatórias do total de cartas)
-        enemyActiveDeck.Clear();
+        /*enemyActiveDeck.Clear();
         Shuffle(allAvailableCards);
         for (int i = 0; i < 5 && i < allAvailableCards.Count; i++)
-            enemyActiveDeck.Add(allAvailableCards[i]);
+            enemyActiveDeck.Add(allAvailableCards[i]); */
 
         // 🔹 Criar roleta
         Instantiate(roulletPrefab, this.transform);
