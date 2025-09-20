@@ -8,6 +8,7 @@ public class CardUI : MonoBehaviour
 {
     [Header("Referências Visuais")]
     public Image artworkImage;
+    public Image frameImage;
     public TextMeshProUGUI numTop;
     public TextMeshProUGUI numRight;
     public TextMeshProUGUI numBottom;
@@ -40,6 +41,14 @@ public class CardUI : MonoBehaviour
     public void SetOwner(Owner newOwner)
     {
         owner = newOwner;
+        if(newOwner == Owner.Player)
+            frameImage.color = new Color32(52, 125, 255, 255); // azul
+        else
+        if(newOwner == Owner.Enemy)
+            frameImage.color = new Color32(255, 71, 71, 255); // vermelho
+        else
+            frameImage.color = Color.white; // neutro
+        
     }
     string ConvertToString(int value)
     {

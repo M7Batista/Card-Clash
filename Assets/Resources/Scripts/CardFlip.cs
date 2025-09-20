@@ -5,7 +5,6 @@ using System.Collections;
 public class CardFlip : MonoBehaviour
 {
     [Header("Refs")]
-    public Image frameImage;    // frame que muda de cor conforme o dono
     public GameObject front;    // frente da carta
     public GameObject back;     // verso da carta
     public AudioSource audioSource;    // arraste um AudioSource no Inspector
@@ -14,13 +13,9 @@ public class CardFlip : MonoBehaviour
     [Header("Config")]
     public float flipDuration = 1f;   // tempo total do duplo flip (0 -> 360)
     public float jumpScale = 1.2f;    // quanto a carta cresce no "pulo"
-
-    private Owner newOwner;
     
-
-    public void FlipCard(Owner newOwner)
+    public void FlipCard(Owner newOwner, CardUI cardUI)
     {
-        this.newOwner = newOwner;
         StopAllCoroutines();
         StartCoroutine(FlipTwoTimesSameDirection());
     }
@@ -63,13 +58,6 @@ public class CardFlip : MonoBehaviour
             {
                 if (back != null) back.SetActive(false);
                 if (front != null) front.SetActive(true);
-
-                if (frameImage != null)
-                {
-                    frameImage.color = (newOwner == Owner.Player)
-                        ? new Color32(52, 125, 255, 255)
-                        : new Color32(255, 71, 71, 255);
-                }
 
                 PlayFlipSound();
                 switchedToFrontAgain = true;

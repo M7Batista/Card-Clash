@@ -67,7 +67,7 @@ public class BoardManager : MonoBehaviour
             Debug.Log($"{placedCard.owner} capturou {neighborCard.cardData.cardName}!");
 
             var flip = neighborCard.GetComponent<CardFlip>();
-            if (flip != null) flip.FlipCard(placedCard.owner);
+            if (flip != null) flip.FlipCard(placedCard.owner,placedCard);
 
             // ✅ Atualiza pontos só quando houve captura
             UpdateBoardCounts();

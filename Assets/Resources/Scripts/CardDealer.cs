@@ -52,7 +52,7 @@ public class CardDealer : MonoBehaviour
         Debug.Log("Distribuição de cartas concluída.");
         yield return new WaitForSeconds(0.5f);
         // 🔹 Agora que TODAS entraram, faz o flip de todas
-        foreach (Transform playerCard in playerHandArea.transform)
+        /*foreach (Transform playerCard in playerHandArea.transform)
         {
             var flip = playerCard.GetComponent<CardFlip>();
             if (flip != null) flip.FlipCard(Owner.Player);
@@ -61,7 +61,7 @@ public class CardDealer : MonoBehaviour
         {
             var flip = enemyCard.GetComponent<CardFlip>();
             if (flip != null) flip.FlipCard(Owner.Enemy);
-        }
+        }*/
     }
 
     IEnumerator AnimateCard(GameObject card, Transform handParent)

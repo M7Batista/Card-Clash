@@ -209,6 +209,7 @@ public class BattleCardScreen : MonoBehaviour
         // Configurações pós-batalha, se necessário
         battleScreen.SetActive(false);
         stealCardsScreen.SetActive(true);
+        
         if (result == 0)
         {
 
@@ -220,7 +221,7 @@ public class BattleCardScreen : MonoBehaviour
         }
         else
         {
-            Debug.Log("Empate!");
+            stageScreen.SetActive(true);
             ExitBattle();
         }
     }

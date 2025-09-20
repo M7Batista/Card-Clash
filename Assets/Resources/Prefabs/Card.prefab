@@ -476,6 +476,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardUI
   artworkImage: {fileID: 64414298158590307}
+  frameImage: {fileID: 3506125302651392393}
   numTop: {fileID: 8827180921620620171}
   numRight: {fileID: 1545206127322337703}
   numBottom: {fileID: 1100141414917574350}
@@ -499,7 +500,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41880000c13aba544be48b4ff5024661, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardFlip
-  frameImage: {fileID: 3506125302651392393}
   front: {fileID: 5492845387056219137}
   back: {fileID: 5902689953499319662}
   audioSource: {fileID: 0}
@@ -1397,7 +1397,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 04876a3fba43e6b4694260d75a56aac1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 35112383b338d6044be4a1f9fffa9a36, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

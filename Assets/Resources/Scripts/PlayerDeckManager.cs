@@ -83,7 +83,7 @@ public static class PlayerDeckManager
             List<int> starterCollection = new List<int>();
             for (int i = 0; i < 6; i++)
             {
-                int randIndex = Random.Range(0, 21);
+                int randIndex = Random.Range(0, 20);
                 starterCollection.Add(_allCardsCache[randIndex].id);
             }
 
