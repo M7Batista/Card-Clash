@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public static class PlayerDeckManager
 {
-    private const string COLLECTION_KEY = "PlayerCollection"; // coleção do jogador (ids, com duplicatas)
+    private const string COLLECTION_KEY = "PlayerCollection"; // coleção do jogador (somente os ids dos cards. podem ter duplicatas)
     private const string DECK_KEY = "PlayerDeck";             // deck ativo (5 ids ou -1)
 
     // Cache de CardData carregados de Resources/Cards
@@ -135,6 +135,66 @@ public static class PlayerDeckManager
 
         return new List<int>(ids);
     }
+    /// <summary>Adiciona uma carta à coleção do jogador.</summary>
+    public static void AddCardToCollection(int cardId)
+    {
+        var collection = GetOwnedCards();
+        collection.Add(cardId);
+        SaveCollection(collection);
+        Debug.Log($"[DeckManager] Carta adicionada à coleção: {cardId}");
+    }
+
+    /// <summary>Remove uma carta da coleção do jogador (apenas uma cópia).</summary>
+    public static bool RemoveCardFromCollection(int cardId)
+    {
+        var collection = GetOwnedCards();
+        if (collection.Contains(cardId))
+        {
+            collection.Remove(cardId);
+            SaveCollection(collection);
+
+            // Também verificar se estava no deck
+            var deck = LoadDeck();
+            if (deck.Contains(cardId))
+            {
+                deck.Remove(cardId);
+                SaveDeck(deck);
+                Debug.Log($"[DeckManager] Carta removida do deck ativo: {cardId}");
+            }
+
+            Debug.Log($"[DeckManager] Carta removida da coleção: {cardId}");
+            return true;
+        }
+
+        Debug.LogWarning($"[DeckManager] Tentou remover carta {cardId}, mas não estava na coleção.");
+        return false;
+    }
+
+    /// <summary>Retorna uma lista de CardData que representa a coleção completa.</summary>
+    public static List<CardData> GetOwnedCardData()
+    {
+        var ids = GetOwnedCards();
+        var result = new List<CardData>();
+        foreach (var id in ids)
+        {
+            var data = GetCardById(id);
+            if (data != null) result.Add(data);
+        }
+        return result;
+    }
+
+    /// <summary>Retorna uma lista de CardData do deck ativo.</summary>
+    public static List<CardData> GetDeckCardData()
+    {
+        var ids = LoadDeck();
+        var result = new List<CardData>();
+        foreach (var id in ids)
+        {
+            var data = GetCardById(id);
+            if (data != null) result.Add(data);
+        }
+        return result;
+    }
 }
 
 /// <summary>
@@ -159,4 +219,5 @@ public static class JsonHelper
     {
         public T[] Items;
     }
+
 }

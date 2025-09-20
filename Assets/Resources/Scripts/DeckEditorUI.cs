@@ -27,8 +27,28 @@ public class DeckEditorUI : MonoBehaviour
 
     private void Awake() => Instance = this;
 
-    private void Start()
+    /*private void Start()
     {
+        deckSlots = deckSlotsContainer.GetComponentsInChildren<DeckSlot>();
+
+        // Carrega coleção
+        playerCollection.Clear();
+        List<int> ownedIds = PlayerDeckManager.GetOwnedCards();
+        foreach (int id in ownedIds)
+        {
+            var card = PlayerDeckManager.GetCardById(id);
+            if (card != null) playerCollection.Add(card);
+        }
+
+        PopulateCollection();
+        LoadDeck();
+
+        saveButton.onClick.AddListener(SaveDeck);
+        clearButton.onClick.AddListener(ClearSlot);
+    }*/
+    void OnEnable()
+    {
+        Debug.Log("DeckEditorUI: OnScreenOpened called");
         deckSlots = deckSlotsContainer.GetComponentsInChildren<DeckSlot>();
 
         // Carrega coleção

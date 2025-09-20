@@ -115,10 +115,13 @@ public class BottomNavController : MonoBehaviour
             {
                 method.Invoke(screenLogic, null);
             }
+            Debug.Log("Chamando OnScreenOpened em " + screenLogic.GetType().Name);
+
         }
+    
     }
 
-    IEnumerator SlideTransition(RectTransform fromScreen, RectTransform toScreen, bool slideLeft)
+    /*IEnumerator SlideTransition(RectTransform fromScreen, RectTransform toScreen, bool slideLeft)
     {
         float elapsed = 0f;
         Vector2 startFrom = fromScreen.anchoredPosition;
@@ -154,7 +157,7 @@ public class BottomNavController : MonoBehaviour
                 method.Invoke(screenLogic, null);
             }
         }
-    }
+    }*/
 
 
 

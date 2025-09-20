@@ -96,7 +96,7 @@ public class BattleCardScreen : MonoBehaviour
             return;
         }
         // Verifica se o inimigo tem cartas
-        if(enemyActiveDeck == null || enemyActiveDeck.Count < 5)
+        if (enemyActiveDeck == null || enemyActiveDeck.Count < 5)
         {
             Dialog.Instance.ShowMessage("Enemy deck is not set! Cannot start the game.");
             Debug.LogError("❌ O deck do inimigo não está definido. O jogo não pode iniciar!");
@@ -198,14 +198,14 @@ public class BattleCardScreen : MonoBehaviour
         }
     }
     private void SetPlayerHandDraggable(bool canDrag)
-{
-    foreach (Transform child in playerHandArea)
     {
-        var draggable = child.GetComponent<DraggableCard>(); // seu script de drag
-        if (draggable != null)
-            draggable.enabled = canDrag;
+        foreach (Transform child in playerHandArea)
+        {
+            var draggable = child.GetComponent<DraggableCard>(); // seu script de drag
+            if (draggable != null)
+                draggable.enabled = canDrag;
+        }
     }
-}
     private void RestartBattle()
     {
         Debug.Log("Reiniciando batalha...");
@@ -264,9 +264,15 @@ public class BattleCardScreen : MonoBehaviour
         stealCardsScreen.SetActive(true);
         CardStealUIManager.Instance.OpenStealScreen(playerActiveDeck, enemyActiveDeck, true, false);
 
-        /*Debug.Log("Saindo da batalha...");
+        
+    }
+    public void OnScreenClosed()
+    {
+        Debug.Log("Tela de Batalha de Cartas fechada!");
+        Debug.Log("Saindo da batalha...");
 
         battleScreen.SetActive(false);
+        stealCardsScreen.SetActive(false);
         stageScreen.SetActive(true);
         BoardManager.Instance.HideTurnArrow();
         // Limpa o estado da batalha (opcional)
@@ -291,7 +297,7 @@ public class BattleCardScreen : MonoBehaviour
             CardData card = PlayerDeckManager.GetCardById(id);
             if (card != null)
                 playerActiveDeck.Add(card);
-        }*/
+        }
     }
 
 }

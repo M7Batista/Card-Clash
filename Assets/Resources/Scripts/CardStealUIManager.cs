@@ -101,11 +101,13 @@ public class CardStealUIManager : MonoBehaviour
         confirmNoButton.onClick.AddListener(() => CancelSteal());
     }
 
+
     private void ConfirmSteal()
     {
-        // Adiciona a carta na coleção do jogador
         Debug.Log($"Jogador roubou: {selectedCard.cardName} ({selectedCard.rarity})");
-        playerCards.Add(selectedCard);
+
+        // Salvar na coleção oficial
+        PlayerDeckManager.AddCardToCollection(selectedCard.id);
 
         confirmModal.SetActive(false);
         EndStealScreen();
@@ -122,9 +124,11 @@ public class CardStealUIManager : MonoBehaviour
         selectedCardGO = null;
     }
 
+
     private void EnemyStealsCard()
     {
-        if (playerCards.Count == 0)
+        var playerCollection = PlayerDeckManager.GetOwnedCardData();
+        if (playerCollection.Count == 0)
         {
             Debug.Log("Jogador não tem cartas para perder.");
             EndStealScreen();
@@ -132,16 +136,18 @@ public class CardStealUIManager : MonoBehaviour
         }
 
         CardData stolen = isBoss
-            ? WeightedRandomSteal(playerCards)
-            : playerCards[Random.Range(0, playerCards.Count)];
+            ? WeightedRandomSteal(playerCollection)
+            : playerCollection[Random.Range(0, playerCollection.Count)];
 
-        playerCards.Remove(stolen);
+        // Remover da coleção (e do deck se estiver equipado)
+        PlayerDeckManager.RemoveCardFromCollection(stolen.id);
 
         Debug.Log($"Inimigo roubou: {stolen.cardName} ({stolen.rarity})");
 
-        // TODO: animar destaque na carta roubada
+        // TODO: animar destaque da carta roubada
         EndStealScreen();
     }
+
 
     private CardData WeightedRandomSteal(List<CardData> pool)
     {
@@ -167,7 +173,7 @@ public class CardStealUIManager : MonoBehaviour
 
     private void EndStealScreen()
     {
-        gameObject.SetActive(false);
-        // Aqui você pode chamar GameManager para ir pra próxima tela ou voltar pro mapa
+        BattleCardScreen.Instance.OnScreenClosed();
+       
     }
 }

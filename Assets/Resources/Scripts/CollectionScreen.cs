@@ -25,9 +25,13 @@ public class CollectionScreen : MonoBehaviour
     public TextMeshProUGUI totalCardsText;
     private int totalCards = 0;
     public List<CardData> playerOwnedCards = new List<CardData>();
+    public static CollectionScreen Instance;
+    private void Awake() => Instance = this;
 
-    private void Start()
+    void OnEnable()
     {
+
+        Debug.Log("CollectionScreen Start");
         previewPanel.SetActive(false);
 
         if (scrollRect != null)
@@ -36,10 +40,6 @@ public class CollectionScreen : MonoBehaviour
             scrollRect.vertical = true;
         }
 
-        LoadCards();
-    }
-    public void OnScreenOpened()
-    {
         LoadCards();
     }
 
@@ -112,7 +112,7 @@ public class CollectionScreen : MonoBehaviour
             radarPolygon.left = cardData.left;
             radarPolygon.SetVerticesDirty();
         }
-        int power = cardData.top+cardData.right+cardData.bottom+cardData.left;
+        int power = cardData.top + cardData.right + cardData.bottom + cardData.left;
         txtPower.text = $"{power}";
         txtID.text = $"{cardData.id}";
         var zoom = previewPanel.transform.GetChild(0).GetComponent<CardZoom>();
