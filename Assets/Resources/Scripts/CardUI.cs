@@ -29,10 +29,10 @@ public class CardUI : MonoBehaviour
         cardData = data;
         artworkImage.sprite = data.artwork;
         txtName.text = data.cardName;
-        numTop.text = data.top.ToString();
-        numRight.text = data.right.ToString();
-        numBottom.text = data.bottom.ToString();
-        numLeft.text = data.left.ToString();
+        numTop.text = ConvertToString(data.top);
+        numRight.text = ConvertToString(data.right);
+        numBottom.text = ConvertToString(data.bottom);
+        numLeft.text = ConvertToString(data.left);
 
         SetOwner(newOwner);
     }
@@ -41,8 +41,24 @@ public class CardUI : MonoBehaviour
     {
         owner = newOwner;
     }
+    string ConvertToString(int value)
+    {
+        string strValue = "";
+        if (value == 10)
+        {
+            strValue = "A";
+        }
+        else
+        if (value == 11)
+        {
+            strValue = "B";
+        }
+        else
+            strValue = value.ToString();
+        return strValue;
+    }
 
-    
+
     // Mostra ou esconde o "✔"
     public void ShowCheckmark(bool show)
     {
@@ -50,7 +66,7 @@ public class CardUI : MonoBehaviour
         isChecked = show;
     }
 
-   
+
     private bool isFaceUp = true;
 
     public void ShowFront()

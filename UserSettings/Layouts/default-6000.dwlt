@@ -101,7 +101,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 81
+  controlID: 75
   draggingID: 0
 --- !u!114 &5
 MonoBehaviour:
@@ -253,7 +253,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 39
+  controlID: 48
   draggingID: 0
 --- !u!114 &11
 MonoBehaviour:
@@ -279,7 +279,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 40
+  controlID: 19
   draggingID: 0
 --- !u!114 &12
 MonoBehaviour:
@@ -347,7 +347,7 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: -5214
+  m_LastSelectedObjectID: 50912
 --- !u!114 &14
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -521,7 +521,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Resources/Art/Background
+    - Assets/Resources/Scripts
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -531,16 +531,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Resources/Art/Background
+  - Assets/Resources/Scripts
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\Mike\Projetos\Card Clash
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 6ccd0000
-    m_LastClickedID: 52588
-    m_ExpandedIDs: 000000001ccd00001ecd000020cd000022cd000024cd000026cd000028cd00002acd00002ccd0000
+    scrollPos: {x: 0, y: 21}
+    m_SelectedIDs: a8cd0000
+    m_LastClickedID: 52648
+    m_ExpandedIDs: 00000000d4cd0000d6cd0000d8cd0000dacd0000dccd0000decd0000e0cd0000e2cd0000e4cd0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -569,7 +569,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000001ccd00001ecd000020cd000022cd000024cd000026cd000028cd00002acd00002ccd0000
+    m_ExpandedIDs: 00000000d4cd0000d6cd0000d8cd0000dacd0000dccd0000decd0000e0cd0000e2cd0000e4cd0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -595,9 +595,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 96c10000
-    m_LastClickedInstanceID: 49558
-    m_HadKeyboardFocusLastEvent: 0
+    m_SelectedInstanceIDs: e0c60000
+    m_LastClickedInstanceID: 50912
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000688200006ee1000062a8000006a70000aeae000008fc000002c60000c2c500002cbe0000cebd0000f4cd0000ca6301006ca20100fcda0000a839010014c7000000000000d22b010040b80100aec7000028320100
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
@@ -606,7 +606,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 0}
+    m_ScrollPosition: {x: 0, y: 121}
     m_GridSize: 64
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 300
@@ -700,7 +700,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: f655ffff74ebffff8eebffffa2ebffffecfaffff88c50000c0c5000058c60000d8c60000e4c6000084c70000acc7000016c8000016c90000
+      m_ExpandedIDs: b24efeffc44efeff4c57feff02fbffff8ec50000e0c60000aac7000014c800008cc90000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 

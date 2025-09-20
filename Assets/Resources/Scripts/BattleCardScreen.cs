@@ -30,6 +30,7 @@ public class BattleCardScreen : MonoBehaviour
     [Header("Telas")]
     public GameObject stageScreen;
     public GameObject battleScreen;
+    public GameObject stealCardsScreen;
 
     [Header("Botões extras")]
     public Button restartButton;
@@ -162,7 +163,7 @@ public class BattleCardScreen : MonoBehaviour
         int index = cardUI.transform.parent.GetSiblingIndex();
         Debug.Log("Jogador jogou: " + cardUI.cardData.cardName + " no slot " + index);
         filledSlots++;
-        playerActiveDeck.Remove(cardUI.cardData);
+        //playerActiveDeck.Remove(cardUI.cardData);
 
         // 🔹 Usa o BoardManager para capturas
         bool anyCapture = BoardManager.Instance.CheckCaptures(index);
@@ -259,7 +260,11 @@ public class BattleCardScreen : MonoBehaviour
     }
     public void ExitBattle()
     {
-        Debug.Log("Saindo da batalha...");
+        battleScreen.SetActive(false);
+        stealCardsScreen.SetActive(true);
+        CardStealUIManager.Instance.OpenStealScreen(playerActiveDeck, enemyActiveDeck, true, false);
+
+        /*Debug.Log("Saindo da batalha...");
 
         battleScreen.SetActive(false);
         stageScreen.SetActive(true);
@@ -286,7 +291,7 @@ public class BattleCardScreen : MonoBehaviour
             CardData card = PlayerDeckManager.GetCardById(id);
             if (card != null)
                 playerActiveDeck.Add(card);
-        }
+        }*/
     }
 
 }

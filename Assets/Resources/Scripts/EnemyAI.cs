@@ -1,9 +1,12 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
     public static EnemyAI Instance;
+    public List<CardData> enemyDeck = new List<CardData>();
+    
 
     private void Awake()
     {
@@ -16,7 +19,10 @@ public class EnemyAI : MonoBehaviour
     public void PlayTurn()
     {
         var battle = BattleCardScreen.Instance;
-        if (battle.enemyActiveDeck.Count == 0) return;
+        if(enemyDeck.Count == 0)
+        {
+            enemyDeck = new List<CardData>(battle.enemyActiveDeck);
+        }
 
         CardData bestCard = null;
         Transform bestSlot = null;
@@ -24,7 +30,7 @@ public class EnemyAI : MonoBehaviour
         CardUI bestCardUI = null;
 
         // Escolhe a melhor carta e slot
-        foreach (var card in battle.enemyActiveDeck)
+        foreach (var card in enemyDeck)
         {
             foreach (Transform slot in battle.boardArea)
             {
@@ -52,7 +58,7 @@ public class EnemyAI : MonoBehaviour
 
         if (bestCard != null && bestSlot != null && bestCardUI != null)
         {
-            battle.enemyActiveDeck.Remove(bestCard);
+            enemyDeck.Remove(bestCard);
 
             StartCoroutine(AnimateEnemyCard(bestCardUI, bestSlot, () =>
             {

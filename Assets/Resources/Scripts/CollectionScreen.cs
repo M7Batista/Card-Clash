@@ -23,10 +23,7 @@ public class CollectionScreen : MonoBehaviour
 
     [Header("UI Extra")]
     public TextMeshProUGUI totalCardsText;
-
     private int totalCards = 0;
-
-    // 🔹 Lista de cartas que o jogador possui
     public List<CardData> playerOwnedCards = new List<CardData>();
 
     private void Start()
@@ -39,6 +36,10 @@ public class CollectionScreen : MonoBehaviour
             scrollRect.vertical = true;
         }
 
+        LoadCards();
+    }
+    public void OnScreenOpened()
+    {
         LoadCards();
     }
 
@@ -59,6 +60,7 @@ public class CollectionScreen : MonoBehaviour
         foreach (CardData card in allCards)
         {
             GameObject cardGO = Instantiate(cardPrefab, scrollContent);
+            cardGO.name = $"{card.id}";
             CardUI cardUI = cardGO.GetComponent<CardUI>();
 
             // 🔹 Se o jogador possui a carta → mostra normal
@@ -70,7 +72,7 @@ public class CollectionScreen : MonoBehaviour
             {
                 // 🔹 Caso contrário → mostra verso
                 //cardUI.ShowBack();
-                cardUI.SetCard(card, Owner.None); 
+                cardUI.SetCard(card, Owner.None);
             }
 
             // clique no card da coleção
