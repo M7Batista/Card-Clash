@@ -25,6 +25,7 @@ public class BattleCardScreen : MonoBehaviour
 
     public Owner currentTurn = Owner.None;
     public int filledSlots = 0;
+    private GameObject currentRoullet;
     public static BattleCardScreen Instance;
 
 
@@ -75,7 +76,7 @@ public class BattleCardScreen : MonoBehaviour
         battleScreen.SetActive(true);
        
         // 🔹 Criar roleta
-        Instantiate(roulletPrefab, this.transform);
+        currentRoullet = Instantiate(roulletPrefab, this.transform);
 
         // 🔹 Distribuir cartas na mão
         StartCoroutine(CardDealer.Instance.DealCards(
@@ -203,18 +204,40 @@ public class BattleCardScreen : MonoBehaviour
 
         BoardManager.Instance.UpdateBoardCounts();
     }
+    public void PosBattleSetup(int result)
+    {
+        // Configurações pós-batalha, se necessário
+        battleScreen.SetActive(false);
+        stealCardsScreen.SetActive(true);
+        if (result == 0)
+        {
+
+            CardStealUIManager.Instance.OpenStealScreen(playerActiveDeck, enemyActiveDeck, true, false);
+        }
+        else if (result == 1)
+        {
+            CardStealUIManager.Instance.OpenStealScreen(playerActiveDeck, enemyActiveDeck, false, false);
+        }
+        else
+        {
+            Debug.Log("Empate!");
+            ExitBattle();
+        }
+    }
     public void ExitBattle()
     {
         battleScreen.SetActive(false);
-        stealCardsScreen.SetActive(true);
-        CardStealUIManager.Instance.OpenStealScreen(playerActiveDeck, enemyActiveDeck, true, false);
-
+        stealCardsScreen.SetActive(false);
+        
+        if (currentRoullet != null)
+        {
+            Destroy(currentRoullet);
+        }
 
     }
     public void OnScreenClosed()
     {
         Debug.Log("Tela de Batalha de Cartas fechada!");
-        Debug.Log("Saindo da batalha...");
 
         battleScreen.SetActive(false);
         stealCardsScreen.SetActive(false);

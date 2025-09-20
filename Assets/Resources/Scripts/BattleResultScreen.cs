@@ -3,13 +3,18 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 
-public class EndGameUI : MonoBehaviour
+public class BattleResultScreen : MonoBehaviour
 {
+    [Header("Referências na UI")]
     public GameObject panel;
     public Image resultImage;
-    public float fadeDuration = 1.5f;
-    public Sprite spriteVictory, spriteDefeat, spriteDraw;
-    public static EndGameUI instance;
+    public Sprite spriteVictory;
+    public Sprite spriteDefeat;
+    public Sprite spriteDraw;
+
+    float fadeDuration = 1.5f;
+    int result; // 0 = vitória, 1 = derrota, 2 = empate
+    public static BattleResultScreen instance;
     private void Awake()
     {
         instance = this;
@@ -20,6 +25,7 @@ public class EndGameUI : MonoBehaviour
     public void ShowEndGame(int result)
     {
         panel.SetActive(true);
+        this.result = result;
         switch (result)
         {
             case 0: //vitória
@@ -53,7 +59,7 @@ public class EndGameUI : MonoBehaviour
         //resultImage.GetComponent<Image>().alpha = 1f; // garante que fica 100% visível
         yield return new WaitForSeconds(2f);
         panel.SetActive(false);
-        BattleCardScreen.Instance.ExitBattle();
+        BattleCardScreen.Instance.PosBattleSetup(result);
     }
     
 

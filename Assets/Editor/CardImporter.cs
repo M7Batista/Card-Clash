@@ -18,7 +18,7 @@ public class CardImporter : EditorWindow
 
         string[] lines = File.ReadAllLines(csvPath);
 
-        string cardsFolderPath = "Assets/Resources/ListCards";
+        string cardsFolderPath = "Assets/Resources/Cards";
         if (!Directory.Exists(cardsFolderPath))
         {
             Directory.CreateDirectory(cardsFolderPath);

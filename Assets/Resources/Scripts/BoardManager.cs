@@ -161,7 +161,7 @@ public class BoardManager : MonoBehaviour
     private IEnumerator ShowPanelEndGame(int result)
     {
         yield return new WaitForSeconds(1f);
-        EndGameUI.instance.ShowEndGame(result);
+        BattleResultScreen.instance.ShowEndGame(result);
     }
     public void UpdateTurnArrow(Transform handArea)
     {

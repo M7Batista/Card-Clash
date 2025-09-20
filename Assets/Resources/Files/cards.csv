@@ -21,9 +21,9 @@ id,rarity,top,right,bottom,left,cardName,cardArtwork
 20,Common,5,1,2,3,Mary,020
 21,Uncommon,3,5,4,6,Flora,021
 22,Uncommon,5,6,3,4,Epinel,022
-23,Uncommon,4,3,6,5,unknown,000
-24,Uncommon,6,4,5,3,unknown,000
-25,Uncommon,3,7,4,5,unknown,000
+23,Uncommon,4,3,6,5,Aquamarine,023
+24,Uncommon,6,4,5,3,Vanila,024
+25,Uncommon,3,7,4,5,Magenta,025
 26,Uncommon,7,4,5,3,unknown,000
 27,Uncommon,5,3,7,4,unknown,000
 28,Uncommon,4,5,3,7,unknown,000
