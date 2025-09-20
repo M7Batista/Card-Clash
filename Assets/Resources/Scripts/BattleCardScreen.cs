@@ -5,36 +5,29 @@ using UnityEngine.UI;
 
 public class BattleCardScreen : MonoBehaviour
 {
-    [Header("Configurações do Deck")]
-    public List<CardData> allAvailableCards;    // 🔹 Todas as cartas existentes no jogo
-    public GameObject cardPrefab;
+    [Header("Listas de Cards")]
+    public List<CardData> playerActiveDeck = new List<CardData>();   // 🔹 As 5 cartas escolhidas pelo jogador para a partida
+    public List<CardData> enemyActiveDeck = new List<CardData>();    // 🔹 As 5 cartas que o inimigo usará na partida
 
     [Header("Referências na UI")]
     public Transform playerHandArea;
     public Transform enemyHandArea;
     public Transform boardArea;
     public GameObject roulletPrefab;
-
-    [Header("Listas de Cartas")]
-    //public List<CardData> playerOwnedCards = new List<CardData>();   // 🔹 Todas as cartas que o jogador possui
-    public List<CardData> playerActiveDeck = new List<CardData>();   // 🔹 As 5 cartas escolhidas pelo jogador para a partida
-    public List<CardData> enemyActiveDeck = new List<CardData>();    // 🔹 As 5 cartas que o inimigo usará na partida
-
-    public Owner currentTurn = Owner.None;
-    //private int boardSlots = 9;
-    public int filledSlots = 0;
-
-    public static BattleCardScreen Instance;
-
+    public GameObject cardPrefab;
+    public Button restartButton;
+    public Button exitButton;
 
     [Header("Telas")]
     public GameObject stageScreen;
     public GameObject battleScreen;
     public GameObject stealCardsScreen;
 
-    [Header("Botões extras")]
-    public Button restartButton;
-    public Button exitButton;
+    public Owner currentTurn = Owner.None;
+    public int filledSlots = 0;
+    public static BattleCardScreen Instance;
+
+
 
     public void OnScreenOpened()
     {
@@ -51,30 +44,6 @@ public class BattleCardScreen : MonoBehaviour
         }
 
     }
-
-    // ===============================
-    // 🔹 Seleção do Deck do Jogador
-    // ===============================
-    /*private void SelectPlayerActiveDeck()
-    {
-        playerActiveDeck.Clear();
-
-        if (playerOwnedCards.Count >= 5)
-        {
-            // Placeholder → seleciona as 5 primeiras
-            for (int i = 0; i < 5; i++)
-                playerActiveDeck.Add(playerOwnedCards[i]);
-        }
-        else
-        {
-            Debug.LogWarning("Jogador não possui 5 cartas, completando com cartas aleatórias.");
-            playerActiveDeck.AddRange(playerOwnedCards);
-
-            Shuffle(allAvailableCards);
-            for (int i = playerActiveDeck.Count; i < 5; i++)
-                playerActiveDeck.Add(allAvailableCards[i]);
-        }
-    }*/
 
     void Start()
     {
@@ -104,12 +73,7 @@ public class BattleCardScreen : MonoBehaviour
         }
         stageScreen.SetActive(false);
         battleScreen.SetActive(true);
-        // 🔹 Prepara mão inimiga (5 cartas aleatórias do total de cartas)
-        /*enemyActiveDeck.Clear();
-        Shuffle(allAvailableCards);
-        for (int i = 0; i < 5 && i < allAvailableCards.Count; i++)
-            enemyActiveDeck.Add(allAvailableCards[i]); */
-
+       
         // 🔹 Criar roleta
         Instantiate(roulletPrefab, this.transform);
 
@@ -147,32 +111,17 @@ public class BattleCardScreen : MonoBehaviour
     }
 
 
-    void Shuffle(List<CardData> list)
-    {
-        for (int i = 0; i < list.Count; i++)
-        {
-            CardData temp = list[i];
-            int rand = Random.Range(i, list.Count);
-            list[i] = list[rand];
-            list[rand] = temp;
-        }
-    }
-
     public void OnPlayerCardPlaced(CardUI cardUI)
     {
         int index = cardUI.transform.parent.GetSiblingIndex();
         Debug.Log("Jogador jogou: " + cardUI.cardData.cardName + " no slot " + index);
         filledSlots++;
         //playerActiveDeck.Remove(cardUI.cardData);
-
         // 🔹 Usa o BoardManager para capturas
         bool anyCapture = BoardManager.Instance.CheckCaptures(index);
-
         currentTurn = Owner.Enemy;
         NextTurn();
     }
-
-
 
     public void NextTurn()
     {
@@ -209,7 +158,7 @@ public class BattleCardScreen : MonoBehaviour
     private void RestartBattle()
     {
         Debug.Log("Reiniciando batalha...");
-
+        stealCardsScreen.SetActive(false);
         // Reinicia contadores
         filledSlots = 0;
         currentTurn = Owner.None;
@@ -239,10 +188,6 @@ public class BattleCardScreen : MonoBehaviour
                 playerActiveDeck.Add(card);
         }
 
-        // Prepara mão do inimigo
-        Shuffle(allAvailableCards);
-        for (int i = 0; i < 5 && i < allAvailableCards.Count; i++)
-            enemyActiveDeck.Add(allAvailableCards[i]);
 
         // Recria roleta
         Instantiate(roulletPrefab, this.transform);
@@ -264,7 +209,7 @@ public class BattleCardScreen : MonoBehaviour
         stealCardsScreen.SetActive(true);
         CardStealUIManager.Instance.OpenStealScreen(playerActiveDeck, enemyActiveDeck, true, false);
 
-        
+
     }
     public void OnScreenClosed()
     {

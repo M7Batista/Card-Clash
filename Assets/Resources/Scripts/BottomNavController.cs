@@ -6,10 +6,16 @@ using System.Collections.Generic;
 public class BottomNavController : MonoBehaviour
 {
     [Header("Screens")]
-    public RectTransform homeScreen, galleryScreen, battleCardScreen, puzzleScreen;
+    public RectTransform homeScreen;
+    public RectTransform collectionScreen;
+    public RectTransform battleCardScreen;
+    public RectTransform puzzleScreen;
 
     [Header("Buttons")]
-    public Button homeButton, galleryButton, battleCardButton, puzzleButton;
+    public Button homeButton;
+    public Button collectionButton;
+    public Button battleCardButton;
+    public Button puzzleButton;
 
     private RectTransform currentScreen;
     private RectTransform nextScreen;
@@ -27,7 +33,7 @@ public class BottomNavController : MonoBehaviour
         buttonToScreen = new Dictionary<Button, RectTransform>()
         {
             { homeButton, homeScreen },
-            { galleryButton, galleryScreen },
+            { collectionButton, collectionScreen },
             { battleCardButton, battleCardScreen },
             { puzzleButton, puzzleScreen }
         };
@@ -35,13 +41,13 @@ public class BottomNavController : MonoBehaviour
         // Estado inicial → Home
         currentScreen = homeScreen;
         homeScreen.gameObject.SetActive(true);
-        galleryScreen.gameObject.SetActive(false);
+        collectionScreen.gameObject.SetActive(false);
         battleCardScreen.gameObject.SetActive(false);
         puzzleScreen.gameObject.SetActive(false);
 
         // Botões
         homeButton.onClick.AddListener(() => SwitchScreen(homeScreen, homeButton));
-        galleryButton.onClick.AddListener(() => SwitchScreen(galleryScreen, galleryButton));
+        collectionButton.onClick.AddListener(() => SwitchScreen(collectionScreen, collectionButton));
         battleCardButton.onClick.AddListener(() => SwitchScreen(battleCardScreen, battleCardButton));
         puzzleButton.onClick.AddListener(() => SwitchScreen(puzzleScreen, puzzleButton));
 
@@ -198,7 +204,7 @@ public class BottomNavController : MonoBehaviour
     {
         List<RectTransform> order = new List<RectTransform>()
         {
-            homeScreen, galleryScreen, battleCardScreen, puzzleScreen
+            homeScreen, collectionScreen, battleCardScreen, puzzleScreen
         };
 
         int fromIndex = order.IndexOf(from);

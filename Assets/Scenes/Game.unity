@@ -819,7 +819,6 @@ GameObject:
   m_Component:
   - component: {fileID: 132688539}
   - component: {fileID: 132688542}
-  - component: {fileID: 132688541}
   - component: {fileID: 132688540}
   - component: {fileID: 132688543}
   m_Layer: 5
@@ -878,36 +877,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &132688541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 132688538}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!222 &132688542
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -929,11 +898,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BottomNavController
   homeScreen: {fileID: 1743933930}
-  galleryScreen: {fileID: 1360928673}
+  collectionScreen: {fileID: 1360928673}
   battleCardScreen: {fileID: 656123227}
   puzzleScreen: {fileID: 315670258}
   homeButton: {fileID: 277152039}
-  galleryButton: {fileID: 1456905867}
+  collectionButton: {fileID: 1456905867}
   battleCardButton: {fileID: 1652606871}
   puzzleButton: {fileID: 1764235742}
 --- !u!1 &161394624
@@ -3956,34 +3925,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2a6d5bff59555342b304b15d31445f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  allAvailableCards:
-  - {fileID: 11400000, guid: 2b423d2835147bb4d8a092287f18160c, type: 2}
-  - {fileID: 11400000, guid: dc2688c368daf3b489f120220a25713f, type: 2}
-  - {fileID: 11400000, guid: 85fd300ddff7b5b478a3bcc9f4a0ed1d, type: 2}
-  - {fileID: 11400000, guid: f250a1018f289494a867b0bd41bb9a67, type: 2}
-  - {fileID: 11400000, guid: 46c73d3aa04a90a4886dcc7b298cedf7, type: 2}
-  - {fileID: 11400000, guid: 123ae237e8945524491b64c536c8aaf2, type: 2}
-  - {fileID: 11400000, guid: 585d9e745751e0545bd540a4813e2d74, type: 2}
-  - {fileID: 11400000, guid: 1bfdc20d687ac5142a41407af896aca5, type: 2}
-  - {fileID: 11400000, guid: 123a8abd2cad2c1468b6e552dc8815c0, type: 2}
-  - {fileID: 11400000, guid: e18061787016d004892064db1e18a675, type: 2}
-  - {fileID: 11400000, guid: 576cae2c97cbd2040bceb6750099c22a, type: 2}
-  - {fileID: 11400000, guid: 7590fbf3da41be741a49591af2268140, type: 2}
-  - {fileID: 11400000, guid: 1ef2f790ba12acb468698ef643402b34, type: 2}
-  cardPrefab: {fileID: 1825409461321534248, guid: 8a8f4b99c6172b54391ffbf246ba9910, type: 3}
+  allAvailableCards: []
+  playerActiveDeck: []
+  enemyActiveDeck: []
   playerHandArea: {fileID: 165657210}
   enemyHandArea: {fileID: 638206425}
   boardArea: {fileID: 323047574}
   roulletPrefab: {fileID: 1697671794205873989, guid: cc95fb98db426d748a65d77b8bbbd1ae, type: 3}
-  playerActiveDeck: []
-  enemyActiveDeck: []
-  currentTurn: 0
-  filledSlots: 0
+  cardPrefab: {fileID: 1825409461321534248, guid: 8a8f4b99c6172b54391ffbf246ba9910, type: 3}
+  restartButton: {fileID: 676604243}
+  exitButton: {fileID: 1358865062}
   stageScreen: {fileID: 1376205781}
   battleScreen: {fileID: 1933786978}
   stealCardsScreen: {fileID: 756091706}
-  restartButton: {fileID: 676604243}
-  exitButton: {fileID: 1358865062}
+  currentTurn: 0
+  filledSlots: 0
 --- !u!114 &656123229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6230,8 +6186,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1743933930}
-  - {fileID: 1360928673}
   - {fileID: 656123227}
+  - {fileID: 1360928673}
   - {fileID: 315670258}
   m_Father: {fileID: 17173623}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7558,7 +7514,7 @@ GameObject:
   - component: {fileID: 1360928673}
   - component: {fileID: 1360928675}
   m_Layer: 5
-  m_Name: GalleryScreen
+  m_Name: CollectionScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8328,7 +8284,7 @@ GameObject:
   - component: {fileID: 1456905868}
   - component: {fileID: 1456905867}
   m_Layer: 5
-  m_Name: GalleryButton
+  m_Name: CollectionButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12972,6 +12928,7 @@ MonoBehaviour:
   saveButton: {fileID: 393342574}
   clearButton: {fileID: 1530353460}
   combatPowerText: {fileID: 1306208806}
+  scrollRect: {fileID: 82134226}
   cardPrefab: {fileID: 1825409461321534248, guid: 8a8f4b99c6172b54391ffbf246ba9910, type: 3}
   floatingMessagePrefab: {fileID: 3610297412550946047, guid: 01694b7b93e92b84ba2d076e8816e9f8, type: 3}
   playerCollection: []

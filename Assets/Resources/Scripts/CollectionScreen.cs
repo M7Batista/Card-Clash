@@ -98,10 +98,10 @@ public class CollectionScreen : MonoBehaviour
         previewImage.sprite = cardData.artwork;
         previewPanel.SetActive(true);
         statusPanel.SetActive(true);
-        if (numTop) numTop.text = cardData.top.ToString();
-        if (numRight) numRight.text = cardData.right.ToString();
-        if (numBottom) numBottom.text = cardData.bottom.ToString();
-        if (numLeft) numLeft.text = cardData.left.ToString();
+        if (numTop) numTop.text = ConvertToString(cardData.top);
+        if (numRight) numRight.text = ConvertToString(cardData.right);
+        if (numBottom) numBottom.text = ConvertToString(cardData.bottom);
+        if (numLeft) numLeft.text = ConvertToString(cardData.left);
         if (characterName) characterName.text = cardData.cardName;
 
         if (radarPolygon != null)
@@ -117,5 +117,23 @@ public class CollectionScreen : MonoBehaviour
         txtID.text = $"{cardData.id}";
         var zoom = previewPanel.transform.GetChild(0).GetComponent<CardZoom>();
         if (zoom != null) zoom.ResetZoom();
+    }
+    string ConvertToString(int value)
+    {
+        string result = "";
+        if (value == 10)
+        {
+            result = "A";
+        }
+        else if (value == 11)
+        {
+            result = "B";
+        }
+
+        else
+        {
+            result = value.ToString();
+        }
+        return result;
     }
 }

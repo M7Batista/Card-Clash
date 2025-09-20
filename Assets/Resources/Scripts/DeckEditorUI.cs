@@ -13,6 +13,7 @@ public class DeckEditorUI : MonoBehaviour
     public Transform deckSlotsContainer;
     public Button saveButton, clearButton;
     public TextMeshProUGUI combatPowerText;
+    public ScrollRect scrollRect;
 
     [Header("Prefabs")]
     public GameObject cardPrefab;
@@ -27,27 +28,15 @@ public class DeckEditorUI : MonoBehaviour
 
     private void Awake() => Instance = this;
 
-    /*private void Start()
-    {
-        deckSlots = deckSlotsContainer.GetComponentsInChildren<DeckSlot>();
-
-        // Carrega coleção
-        playerCollection.Clear();
-        List<int> ownedIds = PlayerDeckManager.GetOwnedCards();
-        foreach (int id in ownedIds)
-        {
-            var card = PlayerDeckManager.GetCardById(id);
-            if (card != null) playerCollection.Add(card);
-        }
-
-        PopulateCollection();
-        LoadDeck();
-
-        saveButton.onClick.AddListener(SaveDeck);
-        clearButton.onClick.AddListener(ClearSlot);
-    }*/
+   
     void OnEnable()
     {
+        if (scrollRect != null)
+        {
+            scrollRect.horizontal = false;
+            scrollRect.vertical = true;
+        }
+
         Debug.Log("DeckEditorUI: OnScreenOpened called");
         deckSlots = deckSlotsContainer.GetComponentsInChildren<DeckSlot>();
 
