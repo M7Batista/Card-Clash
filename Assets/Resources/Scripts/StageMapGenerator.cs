@@ -31,12 +31,10 @@ public class StageMapGenerator : MonoBehaviour
 
     private void GenerateStages()
     {
-        // Altura real do content (sem espaço extra desnecessário)
-        //float contentHeight = totalStages * spacingY;
-        //content.sizeDelta = new Vector2(content.sizeDelta.x, contentHeight);
         // limpar botões antigos
         foreach (Transform t in content) Destroy(t.gameObject);
-
+        float posY = 0;
+        float posX = 0;
         for (int i = 1; i <= totalStages; i++)
         {
             GameObject newButton = Instantiate(stageButtonPrefab, content);
@@ -47,9 +45,10 @@ public class StageMapGenerator : MonoBehaviour
                 text.text = i.ToString();
 
 
-            //float posX = (i % 2 == 0) ? 300 : -300;
+            posX = (i % 2 == 0) ? 200 : -200;
+            posY -= 150;
             //newButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(posX, posY);
-
+            //content.sizeDelta = new Vector2(content.sizeDelta.x, Mathf.Abs(posY) + 150);
             // imagem
             var image = newButton.GetComponent<Image>();
             var button = newButton.GetComponent<Button>();

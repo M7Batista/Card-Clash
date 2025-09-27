@@ -128,9 +128,9 @@ public class CardStealUIManager : MonoBehaviour
     private void EnemyStealsCard()
     {
         var playerCollection = PlayerDeckManager.GetOwnedCardData();
-        if (playerCollection.Count == 0)
+        if (playerCollection.Count <= 5)
         {
-            Debug.Log("Jogador não tem cartas para perder.");
+            Debug.Log("Jogador tem apenas 5 cartas ou menos, inimigo não rouba");
             EndStealScreen();
             return;
         }

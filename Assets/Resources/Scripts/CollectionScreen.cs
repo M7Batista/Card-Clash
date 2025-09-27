@@ -6,10 +6,10 @@ using System.Collections.Generic;
 
 public class CollectionScreen : MonoBehaviour
 {
-    [Header("Galeria")]
+    [Header("Scroll View")]
+    public ScrollRect scrollRect;
     public Transform scrollContent;
     public GameObject cardPrefab;
-    public ScrollRect scrollRect;
 
     [Header("Preview")]
     public GameObject previewPanel;
@@ -23,14 +23,15 @@ public class CollectionScreen : MonoBehaviour
 
     [Header("UI Extra")]
     public TextMeshProUGUI totalCardsText;
+    public TMP_Dropdown sortDropdown;   // 🔹 Dropdown para escolher a ordenação
     private int totalCards = 0;
     public List<CardData> playerOwnedCards = new List<CardData>();
-    public static CollectionScreen Instance;
-    private void Awake() => Instance = this;
+
+    private enum SortMode { ByID, ByName, ByRarity }
+    private SortMode currentSort = SortMode.ByID;
 
     void OnEnable()
     {
-
         Debug.Log("CollectionScreen Start");
         previewPanel.SetActive(false);
 
@@ -40,6 +41,32 @@ public class CollectionScreen : MonoBehaviour
             scrollRect.vertical = true;
         }
 
+        if (sortDropdown != null)
+        {
+            sortDropdown.onValueChanged.AddListener(OnSortChanged);
+        }
+
+        LoadCards();
+    }
+
+    private void OnDisable()
+    {
+        if (sortDropdown != null)
+            sortDropdown.onValueChanged.RemoveListener(OnSortChanged);
+    }
+
+    private void OnSortChanged(int index)
+    {
+        currentSort = (SortMode)index;
+        ReloadCards();
+    }
+
+    private void ReloadCards()
+    {
+        foreach (Transform child in scrollContent)
+        {
+            Destroy(child.gameObject);
+        }
         LoadCards();
     }
 
@@ -53,42 +80,53 @@ public class CollectionScreen : MonoBehaviour
             var card = PlayerDeckManager.GetCardById(id);
             if (card != null) playerOwnedCards.Add(card);
         }
+
         // 🔹 Carregar todas as cartas do jogo
         CardData[] allCards = Resources.LoadAll<CardData>("cards");
         totalCards = allCards.Length;
 
+        // 🔹 Aplicar ordenação
+        System.Array.Sort(allCards, (a, b) =>
+        {
+            switch (currentSort)
+            {
+                case SortMode.ByName:
+                    return a.cardName.CompareTo(b.cardName);
+                case SortMode.ByRarity:
+                    int rarityCompare = a.rarity.CompareTo(b.rarity);
+                    if (rarityCompare == 0)
+                        return a.id.CompareTo(b.id);
+                    return rarityCompare;
+                case SortMode.ByID:
+                default:
+                    return a.id.CompareTo(b.id);
+            }
+        });
+
+        // 🔹 Instanciar cartas na ordem
         foreach (CardData card in allCards)
         {
             GameObject cardGO = Instantiate(cardPrefab, scrollContent);
             cardGO.name = $"{card.id}";
             CardUI cardUI = cardGO.GetComponent<CardUI>();
 
-            // 🔹 Se o jogador possui a carta → mostra normal
             if (playerOwnedCards.Contains(card))
-            {
                 cardUI.SetCard(card, Owner.None);
-            }
             else
-            {
-                // 🔹 Caso contrário → mostra verso
-                //cardUI.ShowBack();
-                cardUI.SetCard(card, Owner.None);
-            }
+                cardUI.ShowBack();
+                //cardUI.SetCard(card, Owner.None); // aqui pode exibir bloqueada
 
-            // clique no card da coleção
             Button btn = cardGO.GetComponent<Button>();
             if (btn == null) btn = cardGO.AddComponent<Button>();
             btn.onClick.AddListener(() => OnCollectionCardClicked(cardUI));
         }
 
-        // 🔹 Atualiza o contador
         if (totalCardsText != null)
-            totalCardsText.text = $"Cards colleted {playerOwnedCards.Count} / {totalCards}";
+            totalCardsText.text = $"{playerOwnedCards.Count} / {totalCards}";
     }
 
     private void OnCollectionCardClicked(CardUI cardUI)
     {
-        // só abre preview se o jogador tiver a carta
         if (playerOwnedCards.Contains(cardUI.cardData))
             ShowCard(cardUI.cardData);
     }
@@ -98,6 +136,7 @@ public class CollectionScreen : MonoBehaviour
         previewImage.sprite = cardData.artwork;
         previewPanel.SetActive(true);
         statusPanel.SetActive(true);
+
         if (numTop) numTop.text = ConvertToString(cardData.top);
         if (numRight) numRight.text = ConvertToString(cardData.right);
         if (numBottom) numBottom.text = ConvertToString(cardData.bottom);
@@ -112,28 +151,19 @@ public class CollectionScreen : MonoBehaviour
             radarPolygon.left = cardData.left;
             radarPolygon.SetVerticesDirty();
         }
+
         int power = cardData.top + cardData.right + cardData.bottom + cardData.left;
-        txtPower.text = $"{power}";
+        //txtPower.text = $"{power}";
         txtID.text = $"{cardData.id}";
+
         var zoom = previewPanel.transform.GetChild(0).GetComponent<CardZoom>();
         if (zoom != null) zoom.ResetZoom();
     }
+
     string ConvertToString(int value)
     {
-        string result = "";
-        if (value == 10)
-        {
-            result = "A";
-        }
-        else if (value == 11)
-        {
-            result = "B";
-        }
-
-        else
-        {
-            result = value.ToString();
-        }
-        return result;
+        if (value == 10) return "A";
+        if (value == 11) return "B";
+        return value.ToString();
     }
 }

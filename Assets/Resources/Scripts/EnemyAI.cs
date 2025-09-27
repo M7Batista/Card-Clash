@@ -18,10 +18,12 @@ public class EnemyAI : MonoBehaviour
     /// </summary>
     public void PlayTurn()
     {
+        Debug.Log("Inimigo está jogando...");
         var battle = BattleCardScreen.Instance;
         if(enemyDeck.Count == 0)
         {
             enemyDeck = new List<CardData>(battle.enemyActiveDeck);
+            Debug.Log("Deck do inimigo recarregado.");
         }
 
         CardData bestCard = null;
@@ -32,8 +34,10 @@ public class EnemyAI : MonoBehaviour
         // Escolhe a melhor carta e slot
         foreach (var card in enemyDeck)
         {
+            Debug.Log($"Analisando carta do inimigo: {card.cardName}");
             foreach (Transform slot in battle.boardArea)
             {
+                Debug.Log($"  Analisando slot {slot.GetSiblingIndex()}");
                 if (slot.childCount > 0) continue;
 
                 int score = EvaluateMove(battle, card, slot);
@@ -49,9 +53,12 @@ public class EnemyAI : MonoBehaviour
                         if (ui != null && ui.cardData == bestCard)
                         {
                             bestCardUI = ui;
+                            Debug.Log($"Inimigo escolheu a carta {bestCard.cardName} com score {bestScore}");
                             break;
                         }
                     }
+                }else{
+                    Debug.Log("Não é melhor que a melhor carta atual.");
                 }
             }
         }

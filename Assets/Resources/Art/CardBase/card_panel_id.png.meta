@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: fbf9750e8a8d793499ab06be56b4d578
+guid: 98a089b21c4691f47a04a5bdc8d5dfb2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8779927366816340202
-    second: roullet_center_0
+      213: 6249124356115195733
+    second: card_panel_id_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,12 +100,12 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 50
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 0
+    overridden: 1
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: roullet_center_0
+      name: card_panel_id_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 130
-        height: 130
+        width: 75
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6176e23f39e672680800000000000000
-      internalID: -8779927366816340202
+      spriteID: 557ec7b1e7959b650800000000000000
+      internalID: 6249124356115195733
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      roullet_center_0: -8779927366816340202
+      card_panel_id_0: 6249124356115195733
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
