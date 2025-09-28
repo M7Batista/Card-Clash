@@ -78,7 +78,7 @@ public class DeckEditorUI : MonoBehaviour
     private void OnCollectionCardClicked(CardUI cardUI)
     {
         // 🔹 Se o card já está no deck (check ativo) → remove uma ocorrência
-        if (cardUI.isChecked) // ou cardUI.ShowCheckmark == true, dependendo da sua implementação
+        if (cardUI.isChecked)
         {
             // procura um slot que contenha esse card
             DeckSlot slotWithCard = FindSlotWithCard(cardUI.cardData.id);

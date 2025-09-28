@@ -82,8 +82,8 @@ public class StageMapGenerator : MonoBehaviour
     void OnStageClicked(int index)
     {
         Debug.Log("Jogador entrou no estágio " + index);
-        BattleCardScreen.Instance.SetEnemyDeck(EnemyDeckManager.Instance.GenerateEnemyDeck(index));
-        BattleCardScreen.Instance.StartBattle();
+        BattleCardScreen.Instance.PrepareBattle();
+
     }
     public void UnlockNextStage()
     {

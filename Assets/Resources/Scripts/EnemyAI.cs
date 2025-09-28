@@ -7,20 +7,27 @@ public enum EnemyDifficulty { Easy, Medium, Hard, Advanced }
 public class EnemyAI : MonoBehaviour
 {
     public static EnemyAI Instance;
-    public List<CardData> enemyDeck = new List<CardData>();
+    public List<CardData> enemyDeckInBattle = new List<CardData>();
     public EnemyDifficulty difficulty = EnemyDifficulty.Easy; // 🔹 Configurável no Inspetor
 
     private void Awake()
     {
         Instance = this;
     }
+    public void SetEnemyDeck(List<CardData> deck)
+    {
+        enemyDeckInBattle = new List<CardData>(deck);
+    }
 
     public void PlayTurn()
     {
         var battle = BattleCardScreen.Instance;
 
-        if (enemyDeck.Count == 0)
-            enemyDeck = new List<CardData>(battle.enemyActiveDeck);
+        if (enemyDeckInBattle.Count == 0)
+        {
+            Debug.LogWarning("⚠️ EnemyAI não tem cartas para jogar!");
+    
+        }
 
         CardData chosenCard = null;
         Transform chosenSlot = null;
@@ -44,7 +51,7 @@ public class EnemyAI : MonoBehaviour
 
         if (chosenCard != null && chosenSlot != null && chosenUI != null)
         {
-            enemyDeck.Remove(chosenCard);
+            enemyDeckInBattle.Remove(chosenCard);
             StartCoroutine(AnimateEnemyCard(chosenUI, chosenSlot, () =>
             {
                 int index = chosenSlot.GetSiblingIndex();
@@ -57,13 +64,16 @@ public class EnemyAI : MonoBehaviour
         else
         {
             Debug.LogWarning("⚠️ EnemyAI não encontrou jogada válida!");
+            Debug.Log(chosenCard);
+            Debug.Log(chosenSlot);
+            Debug.Log(chosenUI);
         }
     }
 
     // 🔹 Fácil: aleatória (mas evita jogadas suicidas)
     private (CardData, Transform, CardUI) PlayEasy(BattleCardScreen battle)
     {
-        List<CardData> validCards = new List<CardData>(enemyDeck);
+        List<CardData> validCards = new List<CardData>(enemyDeckInBattle);
         List<Transform> emptySlots = new List<Transform>();
 
         foreach (Transform slot in battle.boardArea)
@@ -86,7 +96,7 @@ public class EnemyAI : MonoBehaviour
         Transform bestSlot = null;
         int bestCaptures = -1;
 
-        foreach (var card in enemyDeck)
+        foreach (var card in enemyDeckInBattle)
         {
             foreach (Transform slot in battle.boardArea)
             {
@@ -115,7 +125,7 @@ public class EnemyAI : MonoBehaviour
         Transform bestSlot = null;
         int bestScore = -999;
 
-        foreach (var card in enemyDeck)
+        foreach (var card in enemyDeckInBattle)
         {
             foreach (Transform slot in battle.boardArea)
             {

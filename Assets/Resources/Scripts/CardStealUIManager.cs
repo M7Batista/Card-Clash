@@ -127,22 +127,26 @@ public class CardStealUIManager : MonoBehaviour
 
     private void EnemyStealsCard()
     {
+        
         var playerCollection = PlayerDeckManager.GetOwnedCardData();
         if (playerCollection.Count <= 5)
         {
             Debug.Log("Jogador tem apenas 5 cartas ou menos, inimigo não rouba");
             EndStealScreen();
             return;
+        }else{
+            var playerDeck = PlayerDeckManager.GetDeckCardData();
+            CardData stolen = isBoss
+            ? WeightedRandomSteal(playerDeck)
+            : playerDeck[Random.Range(0, playerDeck.Count)];
+
+            // Remover da coleção (e do deck se estiver equipado)
+            PlayerDeckManager.RemoveCardFromCollection(stolen.id);
+
+            Debug.Log($"Inimigo roubou: {stolen.cardName} ({stolen.rarity})");
         }
 
-        CardData stolen = isBoss
-            ? WeightedRandomSteal(playerCollection)
-            : playerCollection[Random.Range(0, playerCollection.Count)];
-
-        // Remover da coleção (e do deck se estiver equipado)
-        PlayerDeckManager.RemoveCardFromCollection(stolen.id);
-
-        Debug.Log($"Inimigo roubou: {stolen.cardName} ({stolen.rarity})");
+        
 
         // TODO: animar destaque da carta roubada
         EndStealScreen();

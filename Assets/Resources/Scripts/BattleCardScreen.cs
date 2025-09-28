@@ -66,7 +66,9 @@ public class BattleCardScreen : MonoBehaviour
         // 🔹 Carregar o estágio atual
         currentStage = PlayerPrefs.GetInt("UnlockedStage", 1);
         // Prepara o deck do inimigo baseado no estágio atual
-        SetEnemyDeck(EnemyDeckManager.Instance.GenerateEnemyDeck(currentStage));
+        enemyActiveDeck = EnemyDeckManager.Instance.GenerateEnemyDeck(currentStage);
+        //SetEnemyDeck(EnemyDeckManager.Instance.GenerateEnemyDeck(currentStage));
+        EnemyAI.Instance.SetEnemyDeck(enemyActiveDeck);
         // Calcula o poder do inimigo
         int enemyPower = 0;
         foreach (var card in enemyActiveDeck)
