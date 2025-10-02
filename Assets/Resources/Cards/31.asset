@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 7
   bottom: 6
   left: 4
-  artwork: {fileID: 21300000, guid: 35112383b338d6044be4a1f9fffa9a36, type: 3}
-  cardName: unknown
+  artwork: {fileID: 21300000, guid: 3c7ecf61e048a1e4dbb16f56c47e756d, type: 3}
+  cardName: Samira

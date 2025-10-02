@@ -6,8 +6,7 @@ using TMPro;
 public class CardStealUIManager : MonoBehaviour
 {
     [Header("Referências de UI")]
-    public Transform playerCardContainer;
-    public Transform enemyCardContainer;
+    public Transform stealCardContainer;
     public GameObject cardPrefab; // Prefab simples de botão de carta
     public GameObject confirmModal;
     public TMP_Text confirmText;
@@ -17,6 +16,7 @@ public class CardStealUIManager : MonoBehaviour
     [Header("Dados")]
     private List<CardData> playerCards = new List<CardData>();
     private List<CardData> enemyCards = new List<CardData>();
+    List<CardData> cards; // cartas atualmente mostradas (inimigo ou jogador)
     private CardData selectedCard;
     private GameObject selectedCardGO;
 
@@ -41,44 +41,47 @@ public class CardStealUIManager : MonoBehaviour
         this.enemyCards = enemy;
         this.playerWon = playerWon;
         this.isBoss = isBoss;
-
-        ClearContainers();
-        PopulateCards(playerCardContainer, player, false);
-        PopulateCards(enemyCardContainer, enemy, true);
-
         confirmModal.SetActive(false);
+        ClearContainers();
+        PopulateCards(playerWon);
+
+
 
         if (!playerWon)
         {
             // Derrota → inimigo rouba automaticamente
-            Invoke(nameof(EnemyStealsCard), 1.5f);
+            Invoke(nameof(EnemyStealsCard), 2.5f);
         }
     }
 
     private void ClearContainers()
     {
-        foreach (Transform child in playerCardContainer) Destroy(child.gameObject);
-        foreach (Transform child in enemyCardContainer) Destroy(child.gameObject);
+        foreach (Transform child in stealCardContainer) Destroy(child.gameObject);
     }
 
-    private void PopulateCards(Transform container, List<CardData> cards, bool isEnemySide)
+    private void PopulateCards(bool playerWon)
     {
+        cards = playerWon ? enemyCards : playerCards; //se o jogador venceu, mostra as cartas inimigas
+
         foreach (var card in cards)
         {
             Debug.Log($"Mostrando carta: {card.cardName} ({card.rarity})");
-            //GameObject go = Instantiate(cardPrefab, container);
-            //go.GetComponentInChildren<TMP_Text>().text = card.cardName;
 
-            GameObject cardIstance = GameObject.Instantiate(cardPrefab, container);
+            GameObject cardIstance = GameObject.Instantiate(cardPrefab, stealCardContainer);
             CardUI cardUI = cardIstance.GetComponent<CardUI>();
-            cardUI.SetCard(card, Owner.Player);
 
 
-            if (isEnemySide && playerWon)
+            if (playerWon) // se o jogador venceu, pode clicar nas cartas inimigas
             {
+                cardUI.SetCard(card, Owner.Enemy);
                 cardIstance.AddComponent<Button>();
                 Button btn = cardIstance.GetComponent<Button>();
                 btn.onClick.AddListener(() => OnEnemyCardClicked(card, cardIstance));
+            }
+            else
+            {
+
+                cardUI.SetCard(card, Owner.Player);
             }
         }
     }
@@ -92,7 +95,8 @@ public class CardStealUIManager : MonoBehaviour
         selectedCardGO.transform.localPosition += Vector3.up * 20f;
 
         confirmModal.SetActive(true);
-        confirmText.text = $"Deseja roubar a carta \"{card.cardName}\" ({card.rarity})?";
+        //confirmText.text = $"Deseja roubar a carta \"{card.cardName}\" ({card.rarity})?";
+        confirmText.text = $"Do you want to get the \"{card.cardName}\" ({card.rarity}) card?";
 
         confirmYesButton.onClick.RemoveAllListeners();
         confirmYesButton.onClick.AddListener(() => ConfirmSteal());
@@ -110,7 +114,10 @@ public class CardStealUIManager : MonoBehaviour
         PlayerDeckManager.AddCardToCollection(selectedCard.id);
 
         confirmModal.SetActive(false);
-        EndStealScreen();
+        StartCoroutine(AnimateStolenCard(selectedCardGO, true, () =>
+         {
+             EndStealScreen();
+         }));
     }
 
     private void CancelSteal()
@@ -127,14 +134,17 @@ public class CardStealUIManager : MonoBehaviour
 
     private void EnemyStealsCard()
     {
-        
+
         var playerCollection = PlayerDeckManager.GetOwnedCardData();
         if (playerCollection.Count <= 5)
         {
             Debug.Log("Jogador tem apenas 5 cartas ou menos, inimigo não rouba");
             EndStealScreen();
             return;
-        }else{
+        }
+        else
+        {
+
             var playerDeck = PlayerDeckManager.GetDeckCardData();
             CardData stolen = isBoss
             ? WeightedRandomSteal(playerDeck)
@@ -144,12 +154,19 @@ public class CardStealUIManager : MonoBehaviour
             PlayerDeckManager.RemoveCardFromCollection(stolen.id);
 
             Debug.Log($"Inimigo roubou: {stolen.cardName} ({stolen.rarity})");
+
+
+            GameObject stolenCard = cards.Find(c => c.id == stolen.id) != null
+                ? stealCardContainer.GetChild(cards.IndexOf(stolen)).gameObject
+                : GameObject.Instantiate(cardPrefab, stealCardContainer);
+            StartCoroutine(AnimateStolenCard(stolenCard, true, () =>
+            {
+                EndStealScreen();
+            }));
+
         }
 
-        
 
-        // TODO: animar destaque da carta roubada
-        EndStealScreen();
     }
 
 
@@ -178,6 +195,60 @@ public class CardStealUIManager : MonoBehaviour
     private void EndStealScreen()
     {
         BattleCardScreen.Instance.OnScreenClosed();
-       
+
     }
+
+    private System.Collections.IEnumerator AnimateStolenCard(GameObject cardGO, bool playerStole, System.Action onComplete)
+
+{
+    RectTransform rect = cardGO.GetComponent<RectTransform>();
+
+    // 🔹 Garante que fique acima de todos elementos de UI
+    cardGO.transform.SetParent(transform, true); 
+    cardGO.transform.SetAsLastSibling();
+
+    Vector3 startPos = rect.position;
+    Vector3 centerPos = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
+
+    float elapsed = 0f;
+    float duration = 0.5f;
+
+    Vector3 targetScale = Vector3.one * 2f;
+    Vector3 originalScale = rect.localScale;
+
+    // 🔹 Move até o centro e aumenta o tamanho
+    while (elapsed < duration)
+    {
+        elapsed += Time.deltaTime;
+        float t = elapsed / duration;
+        rect.position = Vector3.Lerp(startPos, centerPos, t);
+        rect.localScale = Vector3.Lerp(originalScale, targetScale, t);
+        yield return null;
+    }
+
+    // 🔹 Pausa 1 segundo no centro
+    yield return new WaitForSeconds(1f);
+
+    // 🔹 Move para fora da tela (cima ou baixo)
+    elapsed = 0f;
+    duration = 0.5f;
+    Vector3 endPos = playerStole
+        ? new Vector3(Screen.width / 2f, -Screen.height, 0f)  // jogador → vai para baixo
+        : new Vector3(Screen.width / 2f, Screen.height * 2f, 0f); // inimigo → vai para cima
+
+    while (elapsed < duration)
+    {
+        elapsed += Time.deltaTime;
+        float t = elapsed / duration;
+        rect.position = Vector3.Lerp(centerPos, endPos, t);
+        yield return null;
+    }
+
+    onComplete?.Invoke();
+
+    // 🔹 Destroi a cópia temporária da carta
+    Destroy(cardGO);
+}
+
+
 }

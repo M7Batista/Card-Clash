@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 6
   bottom: 4
   left: 5
-  artwork: {fileID: 21300000, guid: 35112383b338d6044be4a1f9fffa9a36, type: 3}
-  cardName: unknown
+  artwork: {fileID: 21300000, guid: d89f46c3165331540b76edc519ddf07e, type: 3}
+  cardName: Julie
