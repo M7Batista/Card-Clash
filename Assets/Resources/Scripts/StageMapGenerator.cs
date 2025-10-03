@@ -82,7 +82,7 @@ public class StageMapGenerator : MonoBehaviour
     void OnStageClicked(int index)
     {
         Debug.Log("Jogador entrou no estágio " + index);
-        BattleCardScreen.Instance.PrepareBattle();
+        BattleCardScreen.Instance.PrepareBattle(index);
 
     }
     public void UnlockNextStage()

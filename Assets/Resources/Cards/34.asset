@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 3
   bottom: 5
   left: 7
-  artwork: {fileID: 21300000, guid: 35112383b338d6044be4a1f9fffa9a36, type: 3}
+  artwork: {fileID: 21300000, guid: 8c66104334604c1408f3543c992f8117, type: 3}
   cardName: unknown

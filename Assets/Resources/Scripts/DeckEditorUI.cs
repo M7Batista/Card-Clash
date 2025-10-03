@@ -18,6 +18,7 @@ public class DeckEditorUI : MonoBehaviour
     [Header("Prefabs")]
     public GameObject cardPrefab;
     public GameObject floatingMessagePrefab;
+    [Header("Dados do Jogador")]
     public List<CardData> playerCollection = new List<CardData>();
     private List<CardData> activeDeck = new List<CardData>();
 
@@ -28,7 +29,7 @@ public class DeckEditorUI : MonoBehaviour
 
     private void Awake() => Instance = this;
 
-   
+
     void OnEnable()
     {
         if (scrollRect != null)
@@ -50,10 +51,11 @@ public class DeckEditorUI : MonoBehaviour
         }
 
         PopulateCollection();
-        LoadDeck();
+        LoadActiveDeck();
 
         saveButton.onClick.AddListener(SaveDeck);
         clearButton.onClick.AddListener(ClearSlot);
+       
     }
 
     private void PopulateCollection()
@@ -211,7 +213,7 @@ public class DeckEditorUI : MonoBehaviour
         go.GetComponent<FloatingMessage>().Show("Deck saved successfully!");
     }
 
-    private void LoadDeck()
+    private void LoadActiveDeck()
     {
         List<int> deckIds = PlayerDeckManager.LoadDeck();
         for (int i = 0; i < deckSlots.Length; i++)

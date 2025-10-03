@@ -58,7 +58,7 @@ public class BottomNavController : MonoBehaviour
         nextScreen.gameObject.SetActive(true);
 
         // Direção do slide
-        bool slideLeft = IsSlideLeft(currentScreen, nextScreen);
+        //bool slideLeft = IsSlideLeft(currentScreen, nextScreen);
 
         //StartCoroutine(SlideTransition(currentScreen, nextScreen, slideLeft));
         StartCoroutine(FadeTransition(currentScreen, nextScreen));
@@ -195,7 +195,7 @@ public class BottomNavController : MonoBehaviour
     }
 
     // 🔹 Decide direção do slide
-    bool IsSlideLeft(RectTransform from, RectTransform to)
+    /*bool IsSlideLeft(RectTransform from, RectTransform to)
     {
         List<RectTransform> order = new List<RectTransform>()
         {
@@ -206,5 +206,5 @@ public class BottomNavController : MonoBehaviour
         int toIndex = order.IndexOf(to);
 
         return toIndex > fromIndex; // se for para frente → slide left
-    }
+    }*/
 }

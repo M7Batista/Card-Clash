@@ -10,6 +10,7 @@ public class CardStealUIManager : MonoBehaviour
     public GameObject cardPrefab; // Prefab simples de botão de carta
     public GameObject confirmModal;
     public TMP_Text confirmText;
+    public TMP_Text titleText;
     public Button confirmYesButton;
     public Button confirmNoButton;
 
@@ -47,8 +48,12 @@ public class CardStealUIManager : MonoBehaviour
 
 
 
-        if (!playerWon)
+        if (playerWon)
         {
+            titleText.text = "Select 1 card you want!";
+        }else
+        {
+            titleText.text = "you lost a card to the enemy!";
             // Derrota → inimigo rouba automaticamente
             Invoke(nameof(EnemyStealsCard), 2.5f);
         }
@@ -159,7 +164,7 @@ public class CardStealUIManager : MonoBehaviour
             GameObject stolenCard = cards.Find(c => c.id == stolen.id) != null
                 ? stealCardContainer.GetChild(cards.IndexOf(stolen)).gameObject
                 : GameObject.Instantiate(cardPrefab, stealCardContainer);
-            StartCoroutine(AnimateStolenCard(stolenCard, true, () =>
+            StartCoroutine(AnimateStolenCard(stolenCard, false, () =>
             {
                 EndStealScreen();
             }));

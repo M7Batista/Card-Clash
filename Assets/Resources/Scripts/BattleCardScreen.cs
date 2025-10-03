@@ -30,7 +30,6 @@ public class BattleCardScreen : MonoBehaviour
     [Header("Estado do Jogo")]
     public Owner currentTurn = Owner.None;
     public int filledSlots = 0;
-    public int currentStage = 1;
     public static BattleCardScreen Instance;
     [Header("Preparação de Batalha")]
     public GameObject panelPrepareBattle;
@@ -59,12 +58,17 @@ public class BattleCardScreen : MonoBehaviour
     void Start()
     {
         Instance = this;
-        startBattleButton.onClick.AddListener(PrepareBattle);
+       
+        startBattleButton.onClick.AddListener(StartBattleButtonClicked);
     }
-    public void PrepareBattle()
+    void  StartBattleButtonClicked()
+    {
+         int stage = PlayerPrefs.GetInt("UnlockedStage", 1);
+        PrepareBattle(stage);
+    }
+    public void PrepareBattle(int currentStage)
     {
         // 🔹 Carregar o estágio atual
-        currentStage = PlayerPrefs.GetInt("UnlockedStage", 1);
         // Prepara o deck do inimigo baseado no estágio atual
         enemyActiveDeck = EnemyDeckManager.Instance.GenerateEnemyDeck(currentStage);
         //SetEnemyDeck(EnemyDeckManager.Instance.GenerateEnemyDeck(currentStage));
@@ -86,7 +90,7 @@ public class BattleCardScreen : MonoBehaviour
 
         panelPrepareBattle.SetActive(true);
         stageText.text = "Stage " + currentStage;
-        
+
         pStartBattleButton.onClick.RemoveAllListeners();
         pStartBattleButton.onClick.AddListener(() =>
         {

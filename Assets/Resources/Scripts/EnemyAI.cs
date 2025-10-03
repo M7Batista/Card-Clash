@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; // se usar Dropdown padrão
+using TMPro;          // se usar TMP_Dropdown
+
 
 public enum EnemyDifficulty { Easy, Medium, Hard, Advanced }
 
@@ -8,7 +11,29 @@ public class EnemyAI : MonoBehaviour
 {
     public static EnemyAI Instance;
     public List<CardData> enemyDeckInBattle = new List<CardData>();
-    public EnemyDifficulty difficulty = EnemyDifficulty.Easy; // 🔹 Configurável no Inspetor
+    public EnemyDifficulty difficulty = EnemyDifficulty.Hard; // 🔹 Configurável no Inspetor
+    [Header("UI Debug")]
+    public TMP_Dropdown difficultyDropdown;
+    private void Start()
+    {
+        if (difficultyDropdown != null)
+        {
+            difficultyDropdown.ClearOptions();
+            difficultyDropdown.AddOptions(new List<string>(System.Enum.GetNames(typeof(EnemyDifficulty))));
+
+            // Ajusta valor inicial
+            difficultyDropdown.value = (int)difficulty;
+            difficultyDropdown.RefreshShownValue();
+
+            // Listener para trocar dificuldade
+            difficultyDropdown.onValueChanged.AddListener(OnDifficultyChanged);
+        }
+    }
+    private void OnDifficultyChanged(int index)
+    {
+        difficulty = (EnemyDifficulty)index;
+        Debug.Log($"🎚️ Dificuldade da IA alterada para: {difficulty}");
+    }
 
     private void Awake()
     {
@@ -26,7 +51,7 @@ public class EnemyAI : MonoBehaviour
         if (enemyDeckInBattle.Count == 0)
         {
             Debug.LogWarning("⚠️ EnemyAI não tem cartas para jogar!");
-    
+
         }
 
         CardData chosenCard = null;
@@ -170,152 +195,152 @@ public class EnemyAI : MonoBehaviour
     }
 
     private int EvaluateMove(BattleCardScreen battle, CardData card, Transform slot)
-{
-    int captures = 0;
-    int index = slot.GetSiblingIndex();
-    int row = index / 3;
-    int col = index % 3;
-
-    // Cima
-    if (row > 0)
     {
-        var neighbor = battle.boardArea.GetChild(index - 3);
-        if (neighbor.childCount > 0)
+        int captures = 0;
+        int index = slot.GetSiblingIndex();
+        int row = index / 3;
+        int col = index % 3;
+
+        // Cima
+        if (row > 0)
         {
-            var neighborUI = neighbor.GetChild(0).GetComponent<CardUI>();
-            if (neighborUI != null && neighborUI.owner == Owner.Player)
+            var neighbor = battle.boardArea.GetChild(index - 3);
+            if (neighbor.childCount > 0)
             {
-                if (card.top > neighborUI.cardData.bottom)
-                    captures++;
+                var neighborUI = neighbor.GetChild(0).GetComponent<CardUI>();
+                if (neighborUI != null && neighborUI.owner == Owner.Player)
+                {
+                    if (card.top > neighborUI.cardData.bottom)
+                        captures++;
+                }
             }
         }
-    }
 
-    // Baixo
-    if (row < 2)
-    {
-        var neighbor = battle.boardArea.GetChild(index + 3);
-        if (neighbor.childCount > 0)
+        // Baixo
+        if (row < 2)
         {
-            var neighborUI = neighbor.GetChild(0).GetComponent<CardUI>();
-            if (neighborUI != null && neighborUI.owner == Owner.Player)
+            var neighbor = battle.boardArea.GetChild(index + 3);
+            if (neighbor.childCount > 0)
             {
-                if (card.bottom > neighborUI.cardData.top)
-                    captures++;
+                var neighborUI = neighbor.GetChild(0).GetComponent<CardUI>();
+                if (neighborUI != null && neighborUI.owner == Owner.Player)
+                {
+                    if (card.bottom > neighborUI.cardData.top)
+                        captures++;
+                }
             }
         }
-    }
 
-    // Esquerda
-    if (col > 0)
-    {
-        var neighbor = battle.boardArea.GetChild(index - 1);
-        if (neighbor.childCount > 0)
+        // Esquerda
+        if (col > 0)
         {
-            var neighborUI = neighbor.GetChild(0).GetComponent<CardUI>();
-            if (neighborUI != null && neighborUI.owner == Owner.Player)
+            var neighbor = battle.boardArea.GetChild(index - 1);
+            if (neighbor.childCount > 0)
             {
-                if (card.left > neighborUI.cardData.right)
-                    captures++;
+                var neighborUI = neighbor.GetChild(0).GetComponent<CardUI>();
+                if (neighborUI != null && neighborUI.owner == Owner.Player)
+                {
+                    if (card.left > neighborUI.cardData.right)
+                        captures++;
+                }
             }
         }
-    }
 
-    // Direita
-    if (col < 2)
-    {
-        var neighbor = battle.boardArea.GetChild(index + 1);
-        if (neighbor.childCount > 0)
+        // Direita
+        if (col < 2)
         {
-            var neighborUI = neighbor.GetChild(0).GetComponent<CardUI>();
-            if (neighborUI != null && neighborUI.owner == Owner.Player)
+            var neighbor = battle.boardArea.GetChild(index + 1);
+            if (neighbor.childCount > 0)
             {
-                if (card.right > neighborUI.cardData.left)
-                    captures++;
+                var neighborUI = neighbor.GetChild(0).GetComponent<CardUI>();
+                if (neighborUI != null && neighborUI.owner == Owner.Player)
+                {
+                    if (card.right > neighborUI.cardData.left)
+                        captures++;
+                }
             }
         }
+
+        return captures;
     }
 
-    return captures;
-}
 
-
-   private int EvaluateRisk(BattleCardScreen battle, CardData card, Transform slot)
-{
-    int risk = 0;
-    int index = slot.GetSiblingIndex();
-    int row = index / 3;
-    int col = index % 3;
-
-    // Cima
-    if (row > 0)
+    private int EvaluateRisk(BattleCardScreen battle, CardData card, Transform slot)
     {
-        var neighbor = battle.boardArea.GetChild(index - 3);
-        if (neighbor.childCount == 0)
-        {
-            // Jogador pode colocar carta aqui no próximo turno
-            // Se existir alguma carta com "bottom > card.top", risco++
-            if (PlayerHasCounter(card.top, Side.Bottom))
-                risk++;
-        }
-    }
+        int risk = 0;
+        int index = slot.GetSiblingIndex();
+        int row = index / 3;
+        int col = index % 3;
 
-    // Baixo
-    if (row < 2)
+        // Cima
+        if (row > 0)
+        {
+            var neighbor = battle.boardArea.GetChild(index - 3);
+            if (neighbor.childCount == 0)
+            {
+                // Jogador pode colocar carta aqui no próximo turno
+                // Se existir alguma carta com "bottom > card.top", risco++
+                if (PlayerHasCounter(card.top, Side.Bottom))
+                    risk++;
+            }
+        }
+
+        // Baixo
+        if (row < 2)
+        {
+            var neighbor = battle.boardArea.GetChild(index + 3);
+            if (neighbor.childCount == 0)
+            {
+                if (PlayerHasCounter(card.bottom, Side.Top))
+                    risk++;
+            }
+        }
+
+        // Esquerda
+        if (col > 0)
+        {
+            var neighbor = battle.boardArea.GetChild(index - 1);
+            if (neighbor.childCount == 0)
+            {
+                if (PlayerHasCounter(card.left, Side.Right))
+                    risk++;
+            }
+        }
+
+        // Direita
+        if (col < 2)
+        {
+            var neighbor = battle.boardArea.GetChild(index + 1);
+            if (neighbor.childCount == 0)
+            {
+                if (PlayerHasCounter(card.right, Side.Left))
+                    risk++;
+            }
+        }
+
+        return risk;
+    }
+    private bool PlayerHasCounter(int enemyValue, Side side)
     {
-        var neighbor = battle.boardArea.GetChild(index + 3);
-        if (neighbor.childCount == 0)
+        var playerHand = BattleCardScreen.Instance.playerHandArea;
+        foreach (Transform cardObj in playerHand)
         {
-            if (PlayerHasCounter(card.bottom, Side.Top))
-                risk++;
+            var ui = cardObj.GetComponent<CardUI>();
+            if (ui == null) continue;
+            var card = ui.cardData;
+
+            switch (side)
+            {
+                case Side.Top: if (card.top > enemyValue) return true; break;
+                case Side.Bottom: if (card.bottom > enemyValue) return true; break;
+                case Side.Left: if (card.left > enemyValue) return true; break;
+                case Side.Right: if (card.right > enemyValue) return true; break;
+            }
         }
+        return false;
     }
 
-    // Esquerda
-    if (col > 0)
-    {
-        var neighbor = battle.boardArea.GetChild(index - 1);
-        if (neighbor.childCount == 0)
-        {
-            if (PlayerHasCounter(card.left, Side.Right))
-                risk++;
-        }
-    }
-
-    // Direita
-    if (col < 2)
-    {
-        var neighbor = battle.boardArea.GetChild(index + 1);
-        if (neighbor.childCount == 0)
-        {
-            if (PlayerHasCounter(card.right, Side.Left))
-                risk++;
-        }
-    }
-
-    return risk;
-}
-private bool PlayerHasCounter(int enemyValue, Side side)
-{
-    var playerHand = BattleCardScreen.Instance.playerHandArea;
-    foreach (Transform cardObj in playerHand)
-    {
-        var ui = cardObj.GetComponent<CardUI>();
-        if (ui == null) continue;
-        var card = ui.cardData;
-
-        switch (side)
-        {
-            case Side.Top: if (card.top > enemyValue) return true; break;
-            case Side.Bottom: if (card.bottom > enemyValue) return true; break;
-            case Side.Left: if (card.left > enemyValue) return true; break;
-            case Side.Right: if (card.right > enemyValue) return true; break;
-        }
-    }
-    return false;
-}
-
-public enum Side { Top, Bottom, Left, Right }
+    public enum Side { Top, Bottom, Left, Right }
 
 
     // ✅ Animação de jogar a carta
@@ -352,5 +377,5 @@ public enum Side { Top, Bottom, Left, Right }
         onComplete?.Invoke();
     }
 
-    
+
 }
