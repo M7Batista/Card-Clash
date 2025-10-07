@@ -11,16 +11,6 @@ public class CollectionScreen : MonoBehaviour
     public Transform scrollContent;
     public GameObject cardPrefab;
 
-    [Header("Preview")]
-    public GameObject previewPanel;
-    public Image previewImage;
-
-    [Header("Preview Status")]
-    public GameObject statusPanel;
-    public TextMeshProUGUI numTop, numRight, numBottom, numLeft;
-    public TextMeshProUGUI characterName, txtPower, txtID;
-    public RadarPolygon radarPolygon;
-
     [Header("UI Extra")]
     public TextMeshProUGUI totalCardsText;
     public TMP_Dropdown sortDropdown;   // 🔹 Dropdown para escolher a ordenação
@@ -29,6 +19,19 @@ public class CollectionScreen : MonoBehaviour
 
     private enum SortMode { ByID, ByName, ByRarity }
     private SortMode currentSort = SortMode.ByID;
+    public GameObject floatingMessagePrefab;
+    public Transform uiCanvas;
+
+    [Header("Preview")]
+    public GameObject previewPanel;
+    public Image previewImage;
+    public GameObject panelTop, panelBottom;
+    public TextMeshProUGUI numTop, numRight, numBottom, numLeft;
+    public TextMeshProUGUI characterName, txtID;
+    public RadarPolygon radarPolygon;
+    public Button fullScreenButton;
+    public Button setBackgroundButton;
+    public string currentCardID;
 
     void OnEnable()
     {
@@ -72,6 +75,7 @@ public class CollectionScreen : MonoBehaviour
 
     private void LoadCards()
     {
+        Debug.Log("Loading cards...");
         // Carregar cartas que o jogador possui
         playerOwnedCards.Clear();
         List<int> ownedIds = PlayerDeckManager.GetOwnedCards();
@@ -114,7 +118,7 @@ public class CollectionScreen : MonoBehaviour
                 cardUI.SetCard(card, Owner.None);
             else
                 cardUI.ShowBack();
-                //cardUI.SetCard(card, Owner.None); // aqui pode exibir bloqueada
+            //cardUI.SetCard(card, Owner.None); // aqui pode exibir bloqueada
 
             Button btn = cardGO.GetComponent<Button>();
             if (btn == null) btn = cardGO.AddComponent<Button>();
@@ -135,7 +139,8 @@ public class CollectionScreen : MonoBehaviour
     {
         previewImage.sprite = cardData.artwork;
         previewPanel.SetActive(true);
-        statusPanel.SetActive(true);
+        panelTop.SetActive(true);
+        panelBottom.SetActive(true);
 
         if (numTop) numTop.text = ConvertToString(cardData.top);
         if (numRight) numRight.text = ConvertToString(cardData.right);
@@ -152,12 +157,15 @@ public class CollectionScreen : MonoBehaviour
             radarPolygon.SetVerticesDirty();
         }
 
-        int power = cardData.top + cardData.right + cardData.bottom + cardData.left;
-        //txtPower.text = $"{power}";
+        //currentCardID = cardData.id.ToString(); // Armazena o ID do card atual
+        currentCardID = $"{cardData.id:D3}";
+
         txtID.text = $"{cardData.id}";
 
         var zoom = previewPanel.transform.GetChild(0).GetComponent<CardZoom>();
         if (zoom != null) zoom.ResetZoom();
+        fullScreenButton.onClick.AddListener(FullScreen);
+        setBackgroundButton.onClick.AddListener(AssignCharacterToHome);
     }
 
     string ConvertToString(int value)
@@ -165,5 +173,28 @@ public class CollectionScreen : MonoBehaviour
         if (value == 10) return "A";
         if (value == 11) return "B";
         return value.ToString();
+    }
+    void FullScreen()
+    {
+        panelTop.SetActive(!panelTop.activeSelf);
+        panelBottom.SetActive(!panelBottom.activeSelf);
+
+    }
+    void AssignCharacterToHome()
+    {
+        if (string.IsNullOrEmpty(currentCardID))
+        {
+            Debug.LogWarning("Nenhum card selecionado para definir como personagem inicial!");
+            return;
+        }
+
+        // Salva o card escolhido
+        PlayerPrefs.SetString("HomeCharacterID", currentCardID);
+        PlayerPrefs.Save();
+
+        Debug.Log($"Card '{currentCardID}' set on home screen");
+        GameObject go = Instantiate(floatingMessagePrefab, uiCanvas);
+        go.transform.localPosition = Vector3.zero; // aparece no centro
+        go.GetComponent<FloatingMessage>().Show($"Card '{currentCardID}' set on home screen");
     }
 }

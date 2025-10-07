@@ -1,7 +1,8 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
+using System.Collections.Generic;
 
 public class DeckEditorUI : MonoBehaviour
 {
@@ -18,17 +19,15 @@ public class DeckEditorUI : MonoBehaviour
     [Header("Prefabs")]
     public GameObject cardPrefab;
     public GameObject floatingMessagePrefab;
+
     [Header("Dados do Jogador")]
     public List<CardData> playerCollection = new List<CardData>();
     private List<CardData> activeDeck = new List<CardData>();
 
     private DeckSlot[] deckSlots;
-
-    // 🔑 Controle de seleção
     private CardUI selectedCollectionCardUI; // card clicado na coleção para substituir
 
     private void Awake() => Instance = this;
-
 
     void OnEnable()
     {
@@ -38,7 +37,6 @@ public class DeckEditorUI : MonoBehaviour
             scrollRect.vertical = true;
         }
 
-        Debug.Log("DeckEditorUI: OnScreenOpened called");
         deckSlots = deckSlotsContainer.GetComponentsInChildren<DeckSlot>();
 
         // Carrega coleção
@@ -51,11 +49,16 @@ public class DeckEditorUI : MonoBehaviour
         }
 
         PopulateCollection();
-        LoadActiveDeck();
+        StartCoroutine(LoadDeckWithDelay());
 
         saveButton.onClick.AddListener(SaveDeck);
         clearButton.onClick.AddListener(ClearSlot);
-       
+    }
+
+    private IEnumerator LoadDeckWithDelay()
+    {
+        yield return null;
+        LoadActiveDeck();
     }
 
     private void PopulateCollection()
@@ -76,47 +79,43 @@ public class DeckEditorUI : MonoBehaviour
         }
     }
 
-
     private void OnCollectionCardClicked(CardUI cardUI)
     {
-        // 🔹 Se o card já está no deck (check ativo) → remove uma ocorrência
+        // 🔹 Se o card já está no deck → remove uma ocorrência
         if (cardUI.isChecked)
         {
-            // procura um slot que contenha esse card
             DeckSlot slotWithCard = FindSlotWithCard(cardUI.cardData.id);
             if (slotWithCard != null)
             {
-                slotWithCard.ClearSlot();        // remove do deck
-                MarkCollectionCard(cardUI, false); // remove o checkmark
+                slotWithCard.ClearSlot();
+                RefreshMarksForCardID(cardUI.cardData.id);
                 RefreshActiveDeckList();
                 return;
             }
         }
 
-        // 1️⃣ Se ainda existe slot vazio → adiciona direto
+        // 🔹 Se ainda existe slot vazio → adiciona
         DeckSlot emptySlot = FindEmptySlot();
         if (emptySlot != null)
         {
             emptySlot.SetCard(cardUI.cardData);
-            MarkCollectionCard(cardUI, true);
+            RefreshMarksForCardID(cardUI.cardData.id);
             RefreshActiveDeckList();
             return;
         }
 
         UpdateCombatPower();
     }
+
     private DeckSlot FindSlotWithCard(int cardId)
     {
         foreach (var slot in deckSlots)
         {
             if (slot.CurrentCard != null && slot.CurrentCard.cardData.id == cardId)
-            {
                 return slot;
-            }
         }
         return null;
     }
-
 
     private void OnDeckSlotClicked(DeckSlot slot)
     {
@@ -126,27 +125,20 @@ public class DeckEditorUI : MonoBehaviour
         {
             // substituição
             CardData newCard = selectedCollectionCardUI.cardData;
-
-            // libera card antigo
-            UnmarkCollectionCard(slot.CurrentCard.cardData);
-
-            // coloca novo
             slot.SetCard(newCard);
-            MarkCollectionCard(selectedCollectionCardUI, true);
-
-            //ClearSubstitutionMode();
+            RefreshMarksForCardID(newCard.id);
         }
         else
         {
             // remove card do slot
-            UnmarkCollectionCard(slot.CurrentCard.cardData);
+            int id = slot.CurrentCard.cardData.id;
             slot.ClearSlot();
+            RefreshMarksForCardID(id);
         }
 
         RefreshActiveDeckList();
         UpdateCombatPower();
     }
-
 
     private DeckSlot FindEmptySlot()
     {
@@ -162,31 +154,51 @@ public class DeckEditorUI : MonoBehaviour
         cardUI.ShowCheckmark(selected);
     }
 
-    private void UnmarkCollectionCard(CardData cardData)
+    /// <summary>
+    /// Atualiza corretamente as marcas (checkmarks) para um determinado card ID,
+    /// levando em conta cópias repetidas.
+    /// </summary>
+    private void RefreshMarksForCardID(int cardId)
     {
-        foreach (Transform child in collectionContainer)
+        // Conta quantas cópias desse ID estão no deck
+        int countInDeck = CountCardCopiesInDeck(cardId);
+
+        // Pega todas as cópias na coleção
+        var copiesInCollection = FindCollectionUIs(cardId);
+
+        // Marca apenas a quantidade de cópias que estão no deck
+        for (int i = 0; i < copiesInCollection.Count; i++)
         {
-            var ui = child.GetComponent<CardUI>();
-            if (ui.cardData.id == cardData.id)
-            {
-                ui.ShowCheckmark(false);
-                break;
-            }
+            copiesInCollection[i].ShowCheckmark(i < countInDeck);
         }
     }
+
+    private void UnmarkCollectionCard(CardData cardData)
+    {
+        RefreshMarksForCardID(cardData.id);
+    }
+
     public void ClearSlot()
     {
         foreach (var slot in deckSlots)
         {
             if (slot.CurrentCard != null)
             {
-                UnmarkCollectionCard(slot.CurrentCard.cardData);
                 slot.ClearSlot();
             }
         }
+
+        // Atualiza todos os checkmarks após limpar
+        foreach (Transform child in collectionContainer)
+        {
+            var ui = child.GetComponent<CardUI>();
+            ui.ShowCheckmark(false);
+        }
+
         RefreshActiveDeckList();
         UpdateCombatPower();
     }
+
     private void RefreshActiveDeckList()
     {
         activeDeck.Clear();
@@ -206,50 +218,78 @@ public class DeckEditorUI : MonoBehaviour
 
         PlayerDeckManager.SaveDeck(deckIds);
 
-        Debug.Log("Deck salvo!");
-        // Exibe mensagem flutuante
         GameObject go = Instantiate(floatingMessagePrefab, uiCanvas);
-        go.transform.localPosition = Vector3.zero; // aparece no centro
+        go.transform.localPosition = Vector3.zero;
         go.GetComponent<FloatingMessage>().Show("Deck saved successfully!");
     }
 
     private void LoadActiveDeck()
     {
         List<int> deckIds = PlayerDeckManager.LoadDeck();
+
         for (int i = 0; i < deckSlots.Length; i++)
         {
             var slot = deckSlots[i];
-            if (i < deckIds.Count && deckIds[i] != -1)
-            {
-                var card = PlayerDeckManager.GetCardById(deckIds[i]);
-                slot.SetCard(card);
-                MarkCollectionCard(FindCollectionUI(card.id), true);
-            }
+            CardData card = null;
 
-            // clique no slot
+            if (i < deckIds.Count && deckIds[i] != -1)
+                card = PlayerDeckManager.GetCardById(deckIds[i]);
+
+            if (card != null && playerCollection.Contains(card))
+                slot.SetCard(card);
+            else
+                slot.ClearSlot();
+
             Button btn = slot.GetComponent<Button>();
             if (btn == null) btn = slot.gameObject.AddComponent<Button>();
+            btn.onClick.RemoveAllListeners();
             btn.onClick.AddListener(() => OnDeckSlotClicked(slot));
         }
+
+        // 🔹 Atualiza todos os checkmarks com base no deck carregado
+        RefreshAllMarks();
 
         RefreshActiveDeckList();
         UpdateCombatPower();
     }
 
-
-
-    private CardUI FindCollectionUI(int cardId)
+    private void RefreshAllMarks()
     {
+        HashSet<int> ids = new HashSet<int>();
+        foreach (var slot in deckSlots)
+        {
+            if (slot.CurrentCard != null)
+                ids.Add(slot.CurrentCard.cardData.id);
+        }
+
+        foreach (int id in ids)
+            RefreshMarksForCardID(id);
+    }
+
+    // Retorna todas as cópias de um ID
+    private List<CardUI> FindCollectionUIs(int cardId)
+    {
+        List<CardUI> list = new List<CardUI>();
         foreach (Transform child in collectionContainer)
         {
             var ui = child.GetComponent<CardUI>();
-            if (ui.cardData.id == cardId) return ui;
+            if (ui.cardData.id == cardId)
+                list.Add(ui);
         }
-        return null;
+        return list;
     }
-    /// <summary>
-    /// Calcula o poder de combate do deck atual e atualiza o TextMeshPro.
-    /// </summary>
+
+    private int CountCardCopiesInDeck(int cardId)
+    {
+        int count = 0;
+        foreach (var slot in deckSlots)
+        {
+            if (slot.CurrentCard != null && slot.CurrentCard.cardData.id == cardId)
+                count++;
+        }
+        return count;
+    }
+
     private void UpdateCombatPower()
     {
         int totalPower = 0;

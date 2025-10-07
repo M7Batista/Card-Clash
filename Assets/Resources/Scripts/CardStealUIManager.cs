@@ -33,9 +33,6 @@ public class CardStealUIManager : MonoBehaviour
     // Inicialização da tela de roubo
     public void OpenStealScreen(List<CardData> player, List<CardData> enemy, bool playerWon, bool isBoss)
     {
-        Debug.Log("Abrindo tela de roubo de cartas");
-        Debug.Log(player.Count + " cartas do jogador");
-        Debug.Log(enemy.Count + " cartas do inimigo");
         gameObject.SetActive(true);
 
         this.playerCards = player;
@@ -70,7 +67,6 @@ public class CardStealUIManager : MonoBehaviour
 
         foreach (var card in cards)
         {
-            Debug.Log($"Mostrando carta: {card.cardName} ({card.rarity})");
 
             GameObject cardIstance = GameObject.Instantiate(cardPrefab, stealCardContainer);
             CardUI cardUI = cardIstance.GetComponent<CardUI>();

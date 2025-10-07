@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.DeleteKey("PlayerDeck");
         PlayerPrefs.DeleteKey("PlayerCollection");
         PlayerPrefs.DeleteKey("UnlockedStage");
+        PlayerPrefs.DeleteKey("HomeCharacterID");
+        
 
 
         Debug.Log("⚠ Dados apagados com sucesso!");

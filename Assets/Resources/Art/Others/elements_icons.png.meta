@@ -1,19 +1,25 @@
 fileFormatVersion: 2
-guid: 91df0c117688717438756e765356c65a
+guid: 96c8ea88edd26a8429a41cfe5763e659
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -9112727301118051196
-    second: nav_icon_0
+      213: 2316063497137703484
+    second: elements_icons_0
   - first:
-      213: 5892841473057772149
-    second: nav_icon_1
+      213: -294895555547943715
+    second: elements_icons_1
   - first:
-      213: -1229097566553952508
-    second: nav_icon_2
+      213: -2727658785948960346
+    second: elements_icons_2
   - first:
-      213: 5356393624106044879
-    second: nav_icon_3
+      213: 6487545181199282121
+    second: elements_icons_3
+  - first:
+      213: 6452163491190058648
+    second: elements_icons_4
+  - first:
+      213: 4257457058872722944
+    second: elements_icons_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -109,7 +115,7 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: 50
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -122,13 +128,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: nav_icon_0
+      name: elements_icons_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 200
-        height: 200
+        width: 400
+        height: 400
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,42 +143,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 48cbad90dc6198180800000000000000
-      internalID: -9112727301118051196
+      spriteID: c3a4428ca7f442020800000000000000
+      internalID: 2316063497137703484
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: nav_icon_1
-      rect:
-        serializedVersion: 2
-        x: 200
-        y: 0
-        width: 200
-        height: 200
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5725c4f191497c150800000000000000
-      internalID: 5892841473057772149
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: nav_icon_2
+      name: elements_icons_1
       rect:
         serializedVersion: 2
         x: 400
         y: 0
-        width: 200
-        height: 200
+        width: 400
+        height: 400
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -181,20 +165,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 40f2147764e51fee0800000000000000
-      internalID: -1229097566553952508
+      spriteID: ddc29bdfd0258ebf0800000000000000
+      internalID: -294895555547943715
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: nav_icon_3
+      name: elements_icons_2
       rect:
         serializedVersion: 2
-        x: 600
+        x: 800
         y: 0
-        width: 200
-        height: 200
+        width: 400
+        height: 400
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -203,8 +187,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fcd020a2f9bb55a40800000000000000
-      internalID: 5356393624106044879
+      spriteID: 6a9f90339c8652ad0800000000000000
+      internalID: -2727658785948960346
       vertices: []
       indices: 
       edges: []
@@ -213,7 +197,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: edbdcd7e760b99c46a685a48a076ebc6
+    spriteID: 6fd5b4d66afa4c447b1cb1e10dfb2e7a
     internalID: 0
     vertices: []
     indices: 
@@ -223,12 +207,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":4.0,"y":1.0},"gridSpriteSize":{"x":200.0,"y":200.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":3.0,"y":1.0},"gridSpriteSize":{"x":400.0,"y":400.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      nav_icon_0: -9112727301118051196
-      nav_icon_1: 5892841473057772149
-      nav_icon_2: -1229097566553952508
-      nav_icon_3: 5356393624106044879
+      elements_icons_0: 2316063497137703484
+      elements_icons_1: -294895555547943715
+      elements_icons_2: -2727658785948960346
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
