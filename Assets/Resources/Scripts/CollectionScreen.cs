@@ -75,14 +75,15 @@ public class CollectionScreen : MonoBehaviour
 
     private void LoadCards()
     {
-        Debug.Log("Loading cards...");
         // Carregar cartas que o jogador possui
         playerOwnedCards.Clear();
         List<int> ownedIds = PlayerDeckManager.GetOwnedCards();
+
         foreach (int id in ownedIds)
         {
             var card = PlayerDeckManager.GetCardById(id);
-            if (card != null) playerOwnedCards.Add(card);
+            if (card != null)
+                playerOwnedCards.Add(card);
         }
 
         // 🔹 Carregar todas as cartas do jogo
@@ -106,7 +107,11 @@ public class CollectionScreen : MonoBehaviour
                     return a.id.CompareTo(b.id);
             }
         });
-
+        // Limpa o scroll content
+        foreach (Transform child in scrollContent)
+        {
+            Destroy(child.gameObject);
+        }
         // 🔹 Instanciar cartas na ordem
         foreach (CardData card in allCards)
         {
@@ -114,11 +119,13 @@ public class CollectionScreen : MonoBehaviour
             cardGO.name = $"{card.id}";
             CardUI cardUI = cardGO.GetComponent<CardUI>();
 
-            if (playerOwnedCards.Contains(card))
+            // ✅ Corrigido: compara pelo ID e não pela referência
+            bool playerHasThisCard = ownedIds.Contains(card.id);
+
+            if (playerHasThisCard)
                 cardUI.SetCard(card, Owner.None);
             else
                 cardUI.ShowBack();
-            //cardUI.SetCard(card, Owner.None); // aqui pode exibir bloqueada
 
             Button btn = cardGO.GetComponent<Button>();
             if (btn == null) btn = cardGO.AddComponent<Button>();
