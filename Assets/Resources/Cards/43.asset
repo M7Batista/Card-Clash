@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 5
   bottom: 7
   left: 8
-  artwork: {fileID: 21300000, guid: 35112383b338d6044be4a1f9fffa9a36, type: 3}
-  cardName: unknown
+  artwork: {fileID: 21300000, guid: 1fa3e66f9ee063644a7fa9d23bfc1435, type: 3}
+  cardName: Magenta

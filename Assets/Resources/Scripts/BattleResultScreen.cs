@@ -24,6 +24,7 @@ public class BattleResultScreen : MonoBehaviour
     // Chame esse método quando o jogo terminar
     public void ShowEndGame(int result)
     {
+        AudioManager.Instance.StopMusic();
         panel.SetActive(true);
         this.result = result;
         switch (result)

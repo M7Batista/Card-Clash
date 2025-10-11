@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 5
   bottom: 4
   left: 6
-  artwork: {fileID: 21300000, guid: 47c33311bcbda9242aa1e271cf8920e9, type: 3}
-  cardName: Flora
+  artwork: {fileID: 21300000, guid: b6bede6c1e13a41409fbb99837ce1fca, type: 3}
+  cardName: Penelope

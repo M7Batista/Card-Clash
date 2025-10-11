@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 4
   bottom: 3
   left: 1
-  artwork: {fileID: 21300000, guid: 70a8a0b3cf7bbc04aa9e59cc7b0ca15f, type: 3}
-  cardName: Zoe
+  artwork: {fileID: 21300000, guid: 855f19ca97426ff4185808c8c78c0b89, type: 3}
+  cardName: Tayumi

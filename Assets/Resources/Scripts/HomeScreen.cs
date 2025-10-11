@@ -15,6 +15,8 @@ public class HomeScreen : MonoBehaviour
     void OnEnable()
     {
         LoadCharacterImage();
+        AudioManager.Instance.PlayMusic(AudioManager.Instance.menuMusic);
+
     }
 
     void LoadCharacterImage()

@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 2
   bottom: 3
   left: 1
-  artwork: {fileID: 21300000, guid: 33b779af39a5ecb44b7c172020ff55ba, type: 3}
+  artwork: {fileID: 21300000, guid: 6439359a7e5c7ec4f919e593a2a51f7f, type: 3}
   cardName: Marine

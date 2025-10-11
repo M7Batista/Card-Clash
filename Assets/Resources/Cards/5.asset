@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 1
   bottom: 4
   left: 3
-  artwork: {fileID: 21300000, guid: cfcba88a7242aa34fb65e9738ddb4eec, type: 3}
-  cardName: Bony
+  artwork: {fileID: 21300000, guid: e3ee8a3f81dc4214cb300714090f2231, type: 3}
+  cardName: Epinel

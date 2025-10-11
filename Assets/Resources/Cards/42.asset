@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 7
   bottom: 5
   left: 6
-  artwork: {fileID: 21300000, guid: 35112383b338d6044be4a1f9fffa9a36, type: 3}
-  cardName: unknown
+  artwork: {fileID: 21300000, guid: c9b39a1fc29e5e6499157fc5bff4271f, type: 3}
+  cardName: Tess

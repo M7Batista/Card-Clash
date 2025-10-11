@@ -134,6 +134,8 @@ public class BattleCardScreen : MonoBehaviour
             cardPrefab
         ));
         BoardManager.Instance.UpdateBoardCounts(); // Atualiza contadores iniciais
+        AudioManager.Instance.PlayMusic(AudioManager.Instance.battleMusic);
+
 
     }
 

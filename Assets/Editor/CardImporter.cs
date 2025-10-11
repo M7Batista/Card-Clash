@@ -43,8 +43,7 @@ public class CardImporter : EditorWindow
             card.cardName = values[6].Trim();
 
             // --- NOVO: Carregando a imagem do Asset ---
-            string artworkFileName = values[7].Trim(); // Pega o nome do arquivo da 8ª coluna (índice 7)
-            string artworkPath = artworksFolder + artworkFileName + ".png"; // Constrói o caminho completo
+            string artworkPath = artworksFolder + card.cardName + ".png"; // Constrói o caminho completo
 
             // Carrega o Sprite do disco. Isso só funciona no Editor!
             Sprite cardArtwork = AssetDatabase.LoadAssetAtPath<Sprite>(artworkPath);

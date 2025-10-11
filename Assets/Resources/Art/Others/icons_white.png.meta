@@ -209,10 +209,10 @@ TextureImporter:
       name: icons_white_1
       rect:
         serializedVersion: 2
-        x: 67
-        y: 779
-        width: 193
-        height: 201
+        x: 60
+        y: 781
+        width: 200
+        height: 200
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -231,10 +231,10 @@ TextureImporter:
       name: icons_white_2
       rect:
         serializedVersion: 2
-        x: 350
-        y: 707
-        width: 216
-        height: 317
+        x: 334
+        y: 784
+        width: 190
+        height: 190
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -321,8 +321,8 @@ TextureImporter:
         serializedVersion: 2
         x: 1281
         y: 797
-        width: 175
-        height: 172
+        width: 170
+        height: 170
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -341,10 +341,10 @@ TextureImporter:
       name: icons_white_7
       rect:
         serializedVersion: 2
-        x: 61
+        x: 68
         y: 562
-        width: 213
-        height: 177
+        width: 190
+        height: 190
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -385,10 +385,10 @@ TextureImporter:
       name: icons_white_9
       rect:
         serializedVersion: 2
-        x: 343
-        y: 513
-        width: 176
-        height: 229
+        x: 341
+        y: 557
+        width: 190
+        height: 190
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -407,10 +407,10 @@ TextureImporter:
       name: icons_white_10
       rect:
         serializedVersion: 2
-        x: 561
-        y: 571
-        width: 195
-        height: 166
+        x: 582
+        y: 569
+        width: 180
+        height: 180
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -429,10 +429,10 @@ TextureImporter:
       name: icons_white_11
       rect:
         serializedVersion: 2
-        x: 823
-        y: 537
-        width: 161
-        height: 203
+        x: 809
+        y: 549
+        width: 190
+        height: 190
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -517,10 +517,10 @@ TextureImporter:
       name: icons_white_15
       rect:
         serializedVersion: 2
-        x: 80
-        y: 336
-        width: 160
-        height: 174
+        x: 78
+        y: 338
+        width: 170
+        height: 170
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -561,10 +561,10 @@ TextureImporter:
       name: icons_white_17
       rect:
         serializedVersion: 2
-        x: 574
+        x: 567
         y: 115
-        width: 188
-        height: 181
+        width: 180
+        height: 180
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -585,8 +585,8 @@ TextureImporter:
         serializedVersion: 2
         x: 574
         y: 339
-        width: 176
-        height: 178
+        width: 180
+        height: 180
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -605,10 +605,10 @@ TextureImporter:
       name: icons_white_19
       rect:
         serializedVersion: 2
-        x: 830
-        y: 321
-        width: 147
-        height: 176
+        x: 826
+        y: 345
+        width: 160
+        height: 160
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -627,10 +627,10 @@ TextureImporter:
       name: icons_white_20
       rect:
         serializedVersion: 2
-        x: 1087
-        y: 367
-        width: 43
-        height: 127
+        x: 1077
+        y: 357
+        width: 150
+        height: 150
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -646,35 +646,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: icons_white_21
-      rect:
-        serializedVersion: 2
-        x: 1159
-        y: 367
-        width: 42
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c9243ad96d46813c0800000000000000
-      internalID: -4388646963942047076
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: icons_white_22
       rect:
         serializedVersion: 2
-        x: 1283
-        y: 367
-        width: 167
-        height: 122
+        x: 1290
+        y: 355
+        width: 150
+        height: 150
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

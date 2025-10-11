@@ -7,6 +7,7 @@ public enum Owner { None, Player, Enemy }
 public class CardUI : MonoBehaviour
 {
     [Header("Referências Visuais")]
+    public Image backgroundImage;
     public Image artworkImage;
     public Image frameImage;
     public TextMeshProUGUI numTop;
@@ -20,9 +21,9 @@ public class CardUI : MonoBehaviour
     [HideInInspector] public CardData cardData;
     [HideInInspector] public Owner owner;
     public bool isChecked = false;
-    public GameObject checkmark;   // Ícone "✔"
-    public GameObject front; // arraste no Inspector
-    public GameObject back;  // arraste no Inspector
+    public GameObject checkmark;
+    public GameObject front;
+    public GameObject back;
 
 
     public void SetCard(CardData data, Owner newOwner)
@@ -34,6 +35,27 @@ public class CardUI : MonoBehaviour
         numRight.text = ConvertToString(data.right);
         numBottom.text = ConvertToString(data.bottom);
         numLeft.text = ConvertToString(data.left);
+        switch (data.rarity)
+        {
+            case CardRarity.Common:
+                backgroundImage.sprite = Resources.Load<Sprite>("Art/CardBase/background_common");
+                break;
+            case CardRarity.Uncommon:
+                backgroundImage.sprite = Resources.Load<Sprite>("Art/CardBase/background_uncommon");
+                break;
+            case CardRarity.Rare:
+                backgroundImage.sprite = Resources.Load<Sprite>("Art/CardBase/background_rare");
+                break;
+            case CardRarity.Epic:
+                backgroundImage.sprite = Resources.Load<Sprite>("Art/CardBase/background_epic");
+                break;
+            case CardRarity.Legendary:
+                backgroundImage.sprite = Resources.Load<Sprite>("Art/CardBase/background_legendary");
+                break;
+            default:
+                backgroundImage.sprite = Resources.Load<Sprite>("Art/CardBase/background_common");
+                break;
+        }
 
         SetOwner(newOwner);
     }
@@ -41,14 +63,14 @@ public class CardUI : MonoBehaviour
     public void SetOwner(Owner newOwner)
     {
         owner = newOwner;
-        if(newOwner == Owner.Player)
+        if (newOwner == Owner.Player)
             frameImage.color = new Color32(52, 125, 255, 255); // azul
         else
-        if(newOwner == Owner.Enemy)
+        if (newOwner == Owner.Enemy)
             frameImage.color = new Color32(255, 71, 71, 255); // vermelho
         else
             frameImage.color = Color.white; // neutro
-        
+
     }
     string ConvertToString(int value)
     {

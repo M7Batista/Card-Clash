@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 5
   bottom: 4
   left: 2
-  artwork: {fileID: 21300000, guid: af3794cb959ad824796cf644e377131a, type: 3}
-  cardName: Lactia
+  artwork: {fileID: 21300000, guid: 0204c825e9eb94c4d825839f166b46ac, type: 3}
+  cardName: Galia

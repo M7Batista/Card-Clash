@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 11
   bottom: 9
   left: 10
-  artwork: {fileID: 21300000, guid: 35112383b338d6044be4a1f9fffa9a36, type: 3}
-  cardName: unknown
+  artwork: {fileID: 21300000, guid: 3598b578a0ee5bd44870c7d127625e20, type: 3}
+  cardName: Kebi

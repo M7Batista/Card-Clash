@@ -27,11 +27,12 @@ public class CollectionScreen : MonoBehaviour
     public Image previewImage;
     public GameObject panelTop, panelBottom;
     public TextMeshProUGUI numTop, numRight, numBottom, numLeft;
-    public TextMeshProUGUI characterName, txtID;
+    public TextMeshProUGUI characterName, characterRarity, txtID;
     public RadarPolygon radarPolygon;
     public Button fullScreenButton;
     public Button setBackgroundButton;
-    public string currentCardID;
+    string currentCardName;
+    public Image backgroundImage;
 
     void OnEnable()
     {
@@ -154,6 +155,32 @@ public class CollectionScreen : MonoBehaviour
         if (numBottom) numBottom.text = ConvertToString(cardData.bottom);
         if (numLeft) numLeft.text = ConvertToString(cardData.left);
         if (characterName) characterName.text = cardData.cardName;
+        if (characterRarity)
+        {
+            characterRarity.text = cardData.rarity.ToString();
+
+            switch (cardData.rarity)
+            {
+                case CardRarity.Common:
+                    backgroundImage.sprite = Resources.Load<Sprite>("Art/CardBase/background_common");
+                    break;
+                case CardRarity.Uncommon:
+                    backgroundImage.sprite = Resources.Load<Sprite>("Art/CardBase/background_uncommon");
+                    break;
+                case CardRarity.Rare:
+                    backgroundImage.sprite = Resources.Load<Sprite>("Art/CardBase/background_rare");
+                    break;
+                case CardRarity.Epic:
+                    backgroundImage.sprite = Resources.Load<Sprite>("Art/CardBase/background_epic");
+                    break;
+                case CardRarity.Legendary:
+                    backgroundImage.sprite = Resources.Load<Sprite>("Art/CardBase/background_legendary");
+                    break;
+                default:
+                    backgroundImage.sprite = Resources.Load<Sprite>("Art/CardBase/background_common");
+                    break;
+            }
+        }
 
         if (radarPolygon != null)
         {
@@ -164,8 +191,7 @@ public class CollectionScreen : MonoBehaviour
             radarPolygon.SetVerticesDirty();
         }
 
-        //currentCardID = cardData.id.ToString(); // Armazena o ID do card atual
-        currentCardID = $"{cardData.id:D3}";
+        currentCardName = cardData.cardName;
 
         txtID.text = $"{cardData.id}";
 
@@ -189,19 +215,19 @@ public class CollectionScreen : MonoBehaviour
     }
     void AssignCharacterToHome()
     {
-        if (string.IsNullOrEmpty(currentCardID))
+        if (string.IsNullOrEmpty(currentCardName))
         {
             Debug.LogWarning("Nenhum card selecionado para definir como personagem inicial!");
             return;
         }
 
         // Salva o card escolhido
-        PlayerPrefs.SetString("HomeCharacterID", currentCardID);
+        PlayerPrefs.SetString("HomeCharacterID", currentCardName);
         PlayerPrefs.Save();
 
-        Debug.Log($"Card '{currentCardID}' set on home screen");
+        Debug.Log($"Card '{currentCardName}' set on home screen");
         GameObject go = Instantiate(floatingMessagePrefab, uiCanvas);
         go.transform.localPosition = Vector3.zero; // aparece no centro
-        go.GetComponent<FloatingMessage>().Show($"Card '{currentCardID}' set on home screen");
+        go.GetComponent<FloatingMessage>().Show($"Card '{currentCardName}' set on home screen");
     }
 }

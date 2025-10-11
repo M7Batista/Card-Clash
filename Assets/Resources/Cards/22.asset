@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 6
   bottom: 3
   left: 4
-  artwork: {fileID: 21300000, guid: c05713e1f7784124ba2eafab07d53457, type: 3}
-  cardName: Epinel
+  artwork: {fileID: 21300000, guid: 3e28d54243f98824188d2a076fe7bb76, type: 3}
+  cardName: Catia

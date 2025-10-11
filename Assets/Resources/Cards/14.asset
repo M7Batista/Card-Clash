@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 4
   bottom: 5
   left: 1
-  artwork: {fileID: 21300000, guid: 5b4c2319e246f2f46beee3bcc274e4e1, type: 3}
-  cardName: Galia
+  artwork: {fileID: 21300000, guid: 66c22653ef6e5cc44b5b50919dc1b6ef, type: 3}
+  cardName: Lana

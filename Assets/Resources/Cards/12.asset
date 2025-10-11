@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 5
   bottom: 2
   left: 4
-  artwork: {fileID: 21300000, guid: 8ef5a70f2ad189f4fa8a2de9e296ef52, type: 3}
-  cardName: "Pen\xE9lope"
+  artwork: {fileID: 21300000, guid: 4ff4c7d37248cb84b99517effa727063, type: 3}
+  cardName: Sonia

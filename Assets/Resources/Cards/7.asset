@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 2
   bottom: 1
   left: 4
-  artwork: {fileID: 21300000, guid: 1034b07c580fce4428fd71e2dddab9b0, type: 3}
-  cardName: Rachel
+  artwork: {fileID: 21300000, guid: 10eded835b2c6e14da48c02571f4a0cc, type: 3}
+  cardName: Makina
