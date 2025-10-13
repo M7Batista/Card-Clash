@@ -12,6 +12,7 @@ public class StageMapGenerator : MonoBehaviour
     public ScrollRect scrollRect;        // O Scroll View em si
     public GameObject stageButtonPrefab; // Prefab do botão de estágio (com número)
     public int unlockedStage = 1;
+    public int currentStage = 1;
     private Color unlockedColor = Color.white;
     private Color lockedColor = new Color32(150, 150, 150, 255);
 
@@ -83,11 +84,11 @@ public class StageMapGenerator : MonoBehaviour
     {
         Debug.Log("Jogador entrou no estágio " + index);
         BattleCardScreen.Instance.PrepareBattle(index);
-
+        currentStage = index;
     }
     public void UnlockNextStage()
     {
-        if (unlockedStage < totalStages)
+        if (unlockedStage < totalStages && currentStage == unlockedStage)
         {
             unlockedStage++;
             PlayerPrefs.SetInt("UnlockedStage", unlockedStage);

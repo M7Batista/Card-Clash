@@ -32,7 +32,7 @@ public class CardDealer : MonoBehaviour
             cardUI.SetCard(card, Owner.Player);
             cardIstance.AddComponent<DraggableCard>(); //Adicione o drag
             StartCoroutine(AnimateCard(cardIstance, playerHandArea));
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.2f);
         }
 
         // 🔹 Distribui cartas do inimigo
@@ -42,26 +42,15 @@ public class CardDealer : MonoBehaviour
             GameObject cardInstance = GameObject.Instantiate(cardPrefab, enemyHandArea);
             CardUI cardUI = cardInstance.GetComponent<CardUI>();
             cardUI.SetCard(card, Owner.Enemy);
-
             StartCoroutine(AnimateCard(cardInstance, enemyHandArea));
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.2f);
         }
         // desativa drag até começar o turno real
         DraggableCard.CanDrag = false;
 
         Debug.Log("Distribuição de cartas concluída.");
         yield return new WaitForSeconds(0.5f);
-        // 🔹 Agora que TODAS entraram, faz o flip de todas
-        /*foreach (Transform playerCard in playerHandArea.transform)
-        {
-            var flip = playerCard.GetComponent<CardFlip>();
-            if (flip != null) flip.FlipCard(Owner.Player);
-        }
-        foreach (Transform enemyCard in enemyHandArea.transform)
-        {
-            var flip = enemyCard.GetComponent<CardFlip>();
-            if (flip != null) flip.FlipCard(Owner.Enemy);
-        }*/
+        
     }
 
     IEnumerator AnimateCard(GameObject card, Transform handParent)
@@ -98,6 +87,7 @@ public class CardDealer : MonoBehaviour
         // Agora sim: volta pro layout
         card.transform.SetParent(handParent, false);
         rt.anchoredPosition = Vector2.zero; // LayoutGroup organiza certinho
+        AudioManager.Instance?.PlaySFX("card-slide-8");
     }
 
     void Shuffle(List<CardData> list)

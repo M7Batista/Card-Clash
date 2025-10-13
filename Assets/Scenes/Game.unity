@@ -8303,6 +8303,14 @@ MonoBehaviour:
   sfxClips:
   - {fileID: 8300000, guid: c47bd938231510143811320a020a0a5d, type: 3}
   - {fileID: 8300000, guid: e83e8c523cad7bd4684760a604fb0ac6, type: 3}
+  - {fileID: 8300000, guid: a010343ad0fb592438de02bbd995a4a4, type: 3}
+  - {fileID: 8300000, guid: b52c569cc62950248afcc091251f27bb, type: 3}
+  - {fileID: 8300000, guid: b1631a2e198e33b4594ba2ccd23cc21c, type: 3}
+  - {fileID: 8300000, guid: 822966a3fc6bc2841a4e0d6ca49fb471, type: 3}
+  - {fileID: 8300000, guid: 585d06bcc108eb144914671ff206b4fd, type: 3}
+  - {fileID: 8300000, guid: acf9287ebaa57314badaf9124d6e079d, type: 3}
+  - {fileID: 8300000, guid: 6d684b742c1294949a7e9d9b2636e0c0, type: 3}
+  - {fileID: 8300000, guid: b70519c5aa1b40a4981026d0f02f74a8, type: 3}
 --- !u!4 &746416949
 Transform:
   m_ObjectHideFlags: 0
@@ -17983,6 +17991,7 @@ MonoBehaviour:
   scrollRect: {fileID: 1752545288}
   stageButtonPrefab: {fileID: 4446984791325707922, guid: 5425da1e66c9c1b44a2a0d79c95fd425, type: 3}
   unlockedStage: 1
+  currentStage: 1
 --- !u!1 &1759273866
 GameObject:
   m_ObjectHideFlags: 0

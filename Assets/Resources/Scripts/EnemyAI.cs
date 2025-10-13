@@ -373,7 +373,7 @@ public class EnemyAI : MonoBehaviour
         rect.anchorMax = new Vector2(0.5f, 0.5f);
         rect.pivot = new Vector2(0.5f, 0.5f);
         rect.anchoredPosition = Vector2.zero;
-
+        AudioManager.Instance?.PlaySFX("card-slide-1");
         onComplete?.Invoke();
     }
 
