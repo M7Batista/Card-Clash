@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ed088e7e02f1c4b4fa67c3a048a0b495
+guid: c52b83d1fc059c541a0e2afb51487e86
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4232128033241883365
-    second: Vania_0
+      213: -3032999897667715315
+    second: Agner_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -98,7 +98,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: Android
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 50
     textureCompression: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Vania_0
+      name: Agner_0
       rect:
         serializedVersion: 2
-        x: 52
-        y: 71
-        width: 1079
-        height: 1923
+        x: 3
+        y: 41
+        width: 2037
+        height: 1939
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5e2ea51060a8bba30800000000000000
-      internalID: 4232128033241883365
+      spriteID: d0f38bf99ae98e5d0800000000000000
+      internalID: -3032999897667715315
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Vania_0: 4232128033241883365
+      Agner_0: -3032999897667715315
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

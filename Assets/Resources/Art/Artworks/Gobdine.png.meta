@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ed088e7e02f1c4b4fa67c3a048a0b495
+guid: 60aff19244fd1cc4bb0a38e1efd829e1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4232128033241883365
-    second: Vania_0
+      213: -1096394417072465624
+    second: Gobdine_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -98,7 +98,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: Android
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 50
     textureCompression: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Vania_0
+      name: Gobdine_0
       rect:
         serializedVersion: 2
-        x: 52
-        y: 71
-        width: 1079
-        height: 1923
+        x: 124
+        y: 19
+        width: 1656
+        height: 2011
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5e2ea51060a8bba30800000000000000
-      internalID: 4232128033241883365
+      spriteID: 8299cac2613d8c0f0800000000000000
+      internalID: -1096394417072465624
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Vania_0: 4232128033241883365
+      Gobdine_0: -1096394417072465624
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
