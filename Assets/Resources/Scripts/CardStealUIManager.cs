@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -48,9 +49,10 @@ public class CardStealUIManager : MonoBehaviour
         if (playerWon)
         {
             titleText.text = "Select 1 card you want!";
-        }else
+        }
+        else
         {
-            titleText.text = "you lost a card to the enemy!";
+            titleText.text = "You lost a card to the enemy!";
             // Derrota → inimigo rouba automaticamente
             Invoke(nameof(EnemyStealsCard), 2.5f);
         }
@@ -199,57 +201,69 @@ public class CardStealUIManager : MonoBehaviour
 
     }
 
-    private System.Collections.IEnumerator AnimateStolenCard(GameObject cardGO, bool playerStole, System.Action onComplete)
 
-{
-    RectTransform rect = cardGO.GetComponent<RectTransform>();
-
-    // 🔹 Garante que fique acima de todos elementos de UI
-    cardGO.transform.SetParent(transform, true); 
-    cardGO.transform.SetAsLastSibling();
-
-    Vector3 startPos = rect.position;
-    Vector3 centerPos = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
-
-    float elapsed = 0f;
-    float duration = 0.5f;
-
-    Vector3 targetScale = Vector3.one * 2f;
-    Vector3 originalScale = rect.localScale;
-
-    // 🔹 Move até o centro e aumenta o tamanho
-    while (elapsed < duration)
+    private IEnumerator AnimateStolenCard(GameObject cardGO, bool playerStole, System.Action onComplete)
     {
-        elapsed += Time.deltaTime;
-        float t = elapsed / duration;
-        rect.position = Vector3.Lerp(startPos, centerPos, t);
-        rect.localScale = Vector3.Lerp(originalScale, targetScale, t);
-        yield return null;
+        RectTransform rect = cardGO.GetComponent<RectTransform>();
+        Canvas canvas = rect.GetComponentInParent<Canvas>();
+        Camera uiCamera = canvas.renderMode == RenderMode.ScreenSpaceCamera ? canvas.worldCamera : null;
+
+        // 🔹 Garante que fique acima de todos os elementos de UI
+        cardGO.transform.SetParent(canvas.transform, true);
+        cardGO.transform.SetAsLastSibling();
+
+        Vector3 startPos = rect.position;
+
+        // 🔹 Calcula posição central no espaço do Canvas
+        Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        RectTransformUtility.ScreenPointToWorldPointInRectangle(
+            canvas.transform as RectTransform, screenCenter, uiCamera, out Vector3 worldCenterPos
+        );
+
+        float elapsed = 0f;
+        float duration = 0.5f;
+
+        Vector3 targetScale = Vector3.one * 2f;
+        Vector3 originalScale = rect.localScale;
+
+        // 🔹 Move até o centro e aumenta o tamanho
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            rect.position = Vector3.Lerp(startPos, worldCenterPos, t);
+            rect.localScale = Vector3.Lerp(originalScale, targetScale, t);
+            yield return null;
+        }
+
+        // 🔹 Pausa no centro
+        yield return new WaitForSeconds(1f);
+
+        // 🔹 Calcula posição final (fora da tela)
+        elapsed = 0f;
+        duration = 0.5f;
+
+        Vector2 screenEnd = playerStole
+            ? new Vector2(Screen.width / 2f, -Screen.height * 0.5f)   // jogador → para baixo
+            : new Vector2(Screen.width / 2f, Screen.height * 1.5f);   // inimigo → para cima
+
+        RectTransformUtility.ScreenPointToWorldPointInRectangle(
+            canvas.transform as RectTransform, screenEnd, uiCamera, out Vector3 worldEndPos
+        );
+
+        // 🔹 Move para fora da tela
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            rect.position = Vector3.Lerp(worldCenterPos, worldEndPos, t);
+            yield return null;
+        }
+
+        onComplete?.Invoke();
+        Destroy(cardGO);
     }
 
-    // 🔹 Pausa 1 segundo no centro
-    yield return new WaitForSeconds(1f);
-
-    // 🔹 Move para fora da tela (cima ou baixo)
-    elapsed = 0f;
-    duration = 0.5f;
-    Vector3 endPos = playerStole
-        ? new Vector3(Screen.width / 2f, -Screen.height, 0f)  // jogador → vai para baixo
-        : new Vector3(Screen.width / 2f, Screen.height * 2f, 0f); // inimigo → vai para cima
-
-    while (elapsed < duration)
-    {
-        elapsed += Time.deltaTime;
-        float t = elapsed / duration;
-        rect.position = Vector3.Lerp(centerPos, endPos, t);
-        yield return null;
-    }
-
-    onComplete?.Invoke();
-
-    // 🔹 Destroi a cópia temporária da carta
-    Destroy(cardGO);
-}
 
 
 }

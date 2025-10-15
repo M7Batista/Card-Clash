@@ -3,12 +3,12 @@ using UnityEngine.UI;
 
 public class RadarPolygon : Graphic
 {
-    [Range(0, 10)] public float top = 0f;
-    [Range(0, 10)] public float right = 0f;
-    [Range(0, 10)] public float bottom = 0f;
-    [Range(0, 10)] public float left = 0f;
+    [Range(0, 12)] public float top = 0f;
+    [Range(0, 12)] public float right = 0f;
+    [Range(0, 12)] public float bottom = 0f;
+    [Range(0, 12)] public float left = 0f;
 
-    float maxValue = 10f;
+    float maxValue = 12f;
 
     protected override void OnPopulateMesh(VertexHelper vh)
     {

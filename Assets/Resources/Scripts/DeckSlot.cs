@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class DeckSlot : MonoBehaviour
 {
     public CardUI CurrentCard;      // card atual no slot
-    public GameObject arrowReplace; // seta de substituição (ícone na UI)
+    //public GameObject arrowReplace; // seta de substituição (ícone na UI)
 
     public void SetCard(CardData data)
     {
@@ -25,9 +25,9 @@ public class DeckSlot : MonoBehaviour
         }
     }
 
-    public void ShowReplaceArrow(bool show)
+    /*public void ShowReplaceArrow(bool show)
     {
         if (arrowReplace != null)
             arrowReplace.SetActive(show);
-    }
+    }*/
 }

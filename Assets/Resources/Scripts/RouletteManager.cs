@@ -2,25 +2,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
-public class RouletteController : MonoBehaviour
+public class RouletteManager : MonoBehaviour
 {
     public RectTransform roulette; // Objeto da roleta (UI)
     public float spinDuration = 4f; // Duração do giro
     public float spinSpeed = 500f; // Velocidade inicial do giro
-    //public float idleSpinSpeed = 30f; // Velocidade lenta quando não usada
-
     private bool isSpinning = false;
-    //private bool finishedSpinning = false;
     public TextMeshProUGUI resultText; // Texto para mostrar o resultado
 
-    void Update()
-    {
-        // 🔹 Gira lentamente quando não está sendo usada
-        //if (!isSpinning && !finishedSpinning && roulette != null)
-        //{
-        //    roulette.Rotate(0, 0, -idleSpinSpeed * Time.deltaTime);
-        //}
-    }
     void Start()
     {
         // Inicializa o texto do resultado

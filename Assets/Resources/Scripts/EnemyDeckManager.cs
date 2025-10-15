@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//public enum CardRarity { Comum, Incomum, Raro, Epico, Lendario, UnicoBoss }
-
 
 [System.Serializable]
 public struct CardProbability

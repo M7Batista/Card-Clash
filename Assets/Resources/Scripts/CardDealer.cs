@@ -7,89 +7,154 @@ public class CardDealer : MonoBehaviour
     public static CardDealer Instance;
     public GameObject cardPrefab;
 
+    [Header("Animação")]
+    float dealDelay = 0.1f;       // tempo entre as cartas
+    float animDuration = 0.6f;    // duração da animação
+    float startOffsetX = -600f;   // posição inicial X fora da tela
+    float startOffsetY = 200f;    // altura inicial fora da tela
+
+    private Canvas mainCanvas;
+    private Camera uiCamera;
+
     private void Awake()
     {
         Instance = this;
     }
 
+    private void Start()
+    {
+        mainCanvas = FindObjectOfType<Canvas>();
+        if (mainCanvas != null && mainCanvas.renderMode == RenderMode.ScreenSpaceCamera)
+            uiCamera = mainCanvas.worldCamera;
+    }
+
     /// <summary>
-    /// Distribui as cartas do jogador (deck fixo) e inimigo para suas áreas na UI.
+    /// Distribui as cartas do jogador e inimigo com animação fluida e otimizada.
     /// </summary>
     public IEnumerator DealCards(
         List<CardData> playerDeck,
         List<CardData> enemyHand,
         Transform playerHandArea,
         Transform enemyHandArea,
-        GameObject cardPrefab
+        GameObject prefab = null
     )
     {
-        // 🔹 Distribui cartas do jogador
-        for (int i = 0; i < playerDeck.Count; i++)
+        if (prefab == null) prefab = cardPrefab;
+
+        // 🔹 Pré-carrega todos os cards em listas (para reduzir Instantiate no meio da animação)
+        List<GameObject> playerCards = new List<GameObject>();
+        List<GameObject> enemyCards = new List<GameObject>();
+
+        foreach (var card in playerDeck)
         {
-            CardData card = playerDeck[i];
-            GameObject cardIstance = GameObject.Instantiate(cardPrefab, playerHandArea);
-            CardUI cardUI = cardIstance.GetComponent<CardUI>();
-            cardUI.SetCard(card, Owner.Player);
-            cardIstance.AddComponent<DraggableCard>(); //Adicione o drag
-            StartCoroutine(AnimateCard(cardIstance, playerHandArea));
-            yield return new WaitForSeconds(0.2f);
+            var cardGO = Instantiate(prefab, playerHandArea.parent); // cria fora do layout
+            cardGO.SetActive(false);
+            var ui = cardGO.GetComponent<CardUI>();
+            ui.SetCard(card, Owner.Player);
+            cardGO.AddComponent<DraggableCard>();
+            playerCards.Add(cardGO);
         }
 
-        // 🔹 Distribui cartas do inimigo
-        for (int i = 0; i < enemyHand.Count; i++)
+        foreach (var card in enemyHand)
         {
-            CardData card = enemyHand[i];
-            GameObject cardInstance = GameObject.Instantiate(cardPrefab, enemyHandArea);
-            CardUI cardUI = cardInstance.GetComponent<CardUI>();
-            cardUI.SetCard(card, Owner.Enemy);
-            StartCoroutine(AnimateCard(cardInstance, enemyHandArea));
-            yield return new WaitForSeconds(0.2f);
+            var cardGO = Instantiate(prefab, enemyHandArea.parent);
+            cardGO.SetActive(false);
+            var ui = cardGO.GetComponent<CardUI>();
+            ui.SetCard(card, Owner.Enemy);
+            enemyCards.Add(cardGO);
         }
-        // desativa drag até começar o turno real
+
+        // 🔹 Distribuição animada do jogador
+        for (int i = 0; i < playerCards.Count; i++)
+        {
+            var cardGO = playerCards[i];
+            cardGO.SetActive(true);
+            StartCoroutine(AnimateCard(cardGO, playerHandArea));
+            yield return new WaitForSeconds(dealDelay);
+        }
+
+        // 🔹 Distribuição animada do inimigo
+        for (int i = 0; i < enemyCards.Count; i++)
+        {
+            var cardGO = enemyCards[i];
+            cardGO.SetActive(true);
+            StartCoroutine(AnimateCard(cardGO, enemyHandArea));
+            yield return new WaitForSeconds(dealDelay);
+        }
+
         DraggableCard.CanDrag = false;
+        Debug.Log("✅ Distribuição de cartas concluída.");
 
-        Debug.Log("Distribuição de cartas concluída.");
-        yield return new WaitForSeconds(0.5f);
-        
+        yield return new WaitForSeconds(0.3f);
     }
 
-    IEnumerator AnimateCard(GameObject card, Transform handParent)
+    /// <summary>
+    /// Anima a carta do ponto inicial até a mão do jogador/inimigo.
+    /// </summary>
+    private IEnumerator AnimateCard(GameObject card, Transform handParent)
     {
+        if (mainCanvas == null)
+        {
+            mainCanvas = FindObjectOfType<Canvas>();
+            if (mainCanvas != null && mainCanvas.renderMode == RenderMode.ScreenSpaceCamera)
+                uiCamera = mainCanvas.worldCamera;
+        }
+
         CanvasGroup cg = card.GetComponent<CanvasGroup>();
         if (cg == null) cg = card.AddComponent<CanvasGroup>();
 
         RectTransform rt = card.GetComponent<RectTransform>();
-
-        // Temporário: colocar fora do layout
-        Transform originalParent = card.transform.parent;
-        card.transform.SetParent(handParent.parent, true); // fora do VerticalLayoutGroup
-
         cg.alpha = 0f;
 
-        // Posição inicial (fora da tela, parte inferior)
-        Vector2 startPos = new Vector2(-Screen.width, Screen.height/2);
-        Vector2 endPos = handParent.position; // alvo = posição da mão
+        // 🔹 Define posição inicial (fora da tela)
+        Vector2 startScreenPos = new Vector2(
+            Screen.width / 2f + startOffsetX,
+            Screen.height / 2f + startOffsetY
+        );
 
-        rt.position = startPos;
+        Vector3 startWorldPos;
+        RectTransformUtility.ScreenPointToWorldPointInRectangle(
+            mainCanvas.transform as RectTransform,
+            startScreenPos,
+            uiCamera,
+            out startWorldPos
+        );
 
-        float t = 0f;
-        while (t < 1f)
+        rt.position = startWorldPos;
+
+        Vector3 endPos = handParent.position;
+        Vector3 originalScale = rt.localScale;
+
+        float elapsed = 0f;
+
+        while (elapsed < animDuration)
         {
-            t += Time.deltaTime * 2f; // 0.5s
+            elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / animDuration);
+
+            rt.position = Vector3.Lerp(startWorldPos, endPos, t);
             cg.alpha = Mathf.Lerp(0f, 1f, t);
-            rt.position = Vector2.Lerp(startPos, endPos, t);
+            rt.localScale = Vector3.Lerp(originalScale * 0.7f, originalScale, t);
+
             yield return null;
         }
 
-        // Garante posição final
+        // 🔹 Finaliza a animação
+        rt.position = endPos;
         cg.alpha = 1f;
+        rt.localScale = originalScale;
 
-        // Agora sim: volta pro layout
+        // 🔹 Reparenta ao layout (apenas uma vez)
         card.transform.SetParent(handParent, false);
-        rt.anchoredPosition = Vector2.zero; // LayoutGroup organiza certinho
+        rt.anchoredPosition = Vector2.zero;
+
+        // 🔊 Som de distribuição
         AudioManager.Instance?.PlaySFX("card-slide-8");
     }
 
+    /// <summary>
+    /// Embaralha uma lista de cartas.
+    /// </summary>
     void Shuffle(List<CardData> list)
     {
         for (int i = 0; i < list.Count; i++)
