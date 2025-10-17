@@ -19,8 +19,8 @@ public class BoardManager : MonoBehaviour
     public GameObject turnArrow;
 
     [Header("🔹 Regras Especiais (ativar no Inspector)")]
-    public bool ruleSame = false;  // Regra "MESMO"
-    public bool rulePlus = false;  // Regra "MAIS"
+    public bool ruleSame = true;  // Regra "MESMO"
+    public bool rulePlus = true;  // Regra "MAIS"
     public TextMeshProUGUI specialRuleText;   // Texto central exibido no meio do tabuleiro
     public AudioClip specialRuleSFX;          // Som tocado quando a regra ativa
     public float ruleTextDuration = 1.5f;     // Duração do fade-out do texto

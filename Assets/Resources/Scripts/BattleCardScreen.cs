@@ -37,8 +37,8 @@ public class BattleCardScreen : MonoBehaviour
     public TextMeshProUGUI enemyPowerText;
     public TextMeshProUGUI playerPowerText;
     public Button pStartBattleButton;
-
-
+    public Toggle ruleSameToggle;
+    public Toggle rulePlusToggle;
     public void OnScreenOpened()
     {
 
@@ -58,16 +58,22 @@ public class BattleCardScreen : MonoBehaviour
     void Start()
     {
         Instance = this;
-       
         startBattleButton.onClick.AddListener(StartBattleButtonClicked);
     }
-    void  StartBattleButtonClicked()
+    void StartBattleButtonClicked()
     {
-         int stage = PlayerPrefs.GetInt("UnlockedStage", 1);
+        int stage = PlayerPrefs.GetInt("UnlockedStage", 1);
         PrepareBattle(stage);
     }
     public void PrepareBattle(int currentStage)
     {
+        bool ruleSame = PlayerPrefs.GetInt("RuleSame", 0) == 1;
+        ruleSameToggle.isOn = ruleSame;
+        rulePlusToggle.onValueChanged.AddListener(SetRuleSame);
+        bool rulePlus = PlayerPrefs.GetInt("RulePlus", 0) == 1;
+        rulePlusToggle.isOn = rulePlus;
+        rulePlusToggle.onValueChanged.AddListener(SetRulePlus);
+
         // 🔹 Carregar o estágio atual
         // Prepara o deck do inimigo baseado no estágio atual
         enemyActiveDeck = EnemyDeckManager.Instance.GenerateEnemyDeck(currentStage);
@@ -205,7 +211,7 @@ public class BattleCardScreen : MonoBehaviour
                 draggable.enabled = canDrag;
         }
     }
-    
+
     public void PosBattleSetup(int result)
     {
         // Configurações pós-batalha, se necessário
@@ -290,6 +296,19 @@ public class BattleCardScreen : MonoBehaviour
         {
             Destroy(currentRoullet);
         }
+    }
+
+    public void SetRuleSame(bool active)
+    {
+        BoardManager.Instance.ruleSame = active;
+        PlayerPrefs.SetInt("RuleSame", active ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+    public void SetRulePlus(bool active)
+    {
+        BoardManager.Instance.rulePlus = active;
+        PlayerPrefs.SetInt("RulePlus", active ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
 }
