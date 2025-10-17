@@ -23,6 +23,7 @@ public class StageMapGenerator : MonoBehaviour
     {
         Instance = this;
         unlockedStage = PlayerPrefs.GetInt("UnlockedStage", 1);
+        currentStage = unlockedStage;
         GenerateStages();
 
         // 🔹 Garante que o Scroll sempre inicie no topo (estágio 1)
@@ -88,9 +89,12 @@ public class StageMapGenerator : MonoBehaviour
     }
     public void UnlockNextStage()
     {
+        Debug.Log("Desbloqueando próximo estágio...");
+        Debug.Log("Estágio atual: " + currentStage + ", Estágio desbloqueado: " + unlockedStage);
         if (unlockedStage < totalStages && currentStage == unlockedStage)
         {
             unlockedStage++;
+            currentStage = unlockedStage;
             PlayerPrefs.SetInt("UnlockedStage", unlockedStage);
             PlayerPrefs.Save();
 
