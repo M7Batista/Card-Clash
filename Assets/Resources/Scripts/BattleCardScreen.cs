@@ -39,20 +39,23 @@ public class BattleCardScreen : MonoBehaviour
     public Button pStartBattleButton;
     public Toggle ruleSameToggle;
     public Toggle rulePlusToggle;
+    public Canvas mainCanvas;
     public void OnScreenOpened()
     {
 
         Debug.Log("Tela de Batalha de Cartas aberta!");
-        // 🔹 Carregar os ids do deck ativo do jogador
-        List<int> playerDeckIds = PlayerDeckManager.LoadDeck();
+
+    }
+    void GetPlayerDeck()
+    {
         playerActiveDeck.Clear();
+        List<int> playerDeckIds = PlayerDeckManager.LoadDeck();
         foreach (int id in playerDeckIds)
         {
             CardData card = PlayerDeckManager.GetCardById(id);
             if (card != null)
                 playerActiveDeck.Add(card);
         }
-
     }
 
     void Start()
@@ -74,6 +77,8 @@ public class BattleCardScreen : MonoBehaviour
         rulePlusToggle.isOn = rulePlus;
         rulePlusToggle.onValueChanged.AddListener(SetRulePlus);
 
+
+        GetPlayerDeck();
         // 🔹 Carregar o estágio atual
         // Prepara o deck do inimigo baseado no estágio atual
         enemyActiveDeck = EnemyDeckManager.Instance.GenerateEnemyDeck(currentStage);
@@ -127,9 +132,12 @@ public class BattleCardScreen : MonoBehaviour
         }
         stageScreen.SetActive(false);
         battleScreen.SetActive(true);
-
         // 🔹 Criar roleta
-        currentRoullet = Instantiate(roulletPrefab, this.transform);
+        //currentRoullet = Instantiate(roulletPrefab);
+       
+
+
+        currentRoullet = Instantiate(roulletPrefab, mainCanvas.transform);
 
         // 🔹 Distribuir cartas na mão
         StartCoroutine(CardDealer.Instance.DealCards(

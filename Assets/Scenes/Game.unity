@@ -2548,7 +2548,7 @@ RectTransform:
   m_Father: {fileID: 1913337699}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5958,9 +5958,9 @@ RectTransform:
   m_Father: {fileID: 1752545287}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &597618227
 MonoBehaviour:
@@ -7162,13 +7162,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 656123227}
+  - component: {fileID: 656123229}
   m_Layer: 5
   m_Name: StageScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &656123227
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7191,6 +7192,14 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &656123229
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656123226}
+  m_CullTransparentMesh: 1
 --- !u!1 &665141540
 GameObject:
   m_ObjectHideFlags: 0
@@ -10003,7 +10012,6 @@ GameObject:
   - component: {fileID: 928715017}
   - component: {fileID: 928715019}
   - component: {fileID: 928715018}
-  - component: {fileID: 928715020}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -10178,38 +10186,6 @@ MonoBehaviour:
   enemyDeckInBattle: []
   difficulty: 1
   difficultyDropdown: {fileID: 441804225}
---- !u!114 &928715020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 928715011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2a6d5bff59555342b304b15d31445f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  playerActiveDeck: []
-  enemyActiveDeck: []
-  playerHandArea: {fileID: 165657210}
-  enemyHandArea: {fileID: 638206425}
-  boardArea: {fileID: 323047574}
-  roulletPrefab: {fileID: 1697671794205873989, guid: cc95fb98db426d748a65d77b8bbbd1ae, type: 3}
-  cardPrefab: {fileID: 1825409461321534248, guid: 8a8f4b99c6172b54391ffbf246ba9910, type: 3}
-  startBattleButton: {fileID: 1102898312}
-  stageScreen: {fileID: 0}
-  battleScreen: {fileID: 1933786978}
-  stealCardsScreen: {fileID: 756091706}
-  currentTurn: 0
-  filledSlots: 0
-  panelPrepareBattle: {fileID: 243971933}
-  stageText: {fileID: 458544944}
-  enemyPowerText: {fileID: 1065984116}
-  playerPowerText: {fileID: 1943010049}
-  pStartBattleButton: {fileID: 2090131508}
-  ruleSameToggle: {fileID: 1024952657}
-  rulePlusToggle: {fileID: 400926252}
 --- !u!1 &930911551
 GameObject:
   m_ObjectHideFlags: 0
@@ -16154,6 +16130,85 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1483201960}
   m_CullTransparentMesh: 1
+--- !u!1 &1501565232
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1501565234}
+  - component: {fileID: 1501565233}
+  - component: {fileID: 1501565235}
+  m_Layer: 0
+  m_Name: BatalheManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1501565233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1501565232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ff6fe41f4d8ca4a9d1d41c4abcfeec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BattleSetupManager
+  playerActiveDeck: []
+  enemyActiveDeck: []
+--- !u!4 &1501565234
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1501565232}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1501565235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1501565232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2a6d5bff59555342b304b15d31445f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  playerActiveDeck: []
+  enemyActiveDeck: []
+  playerHandArea: {fileID: 165657210}
+  enemyHandArea: {fileID: 638206425}
+  boardArea: {fileID: 323047574}
+  roulletPrefab: {fileID: 1697671794205873989, guid: cc95fb98db426d748a65d77b8bbbd1ae, type: 3}
+  cardPrefab: {fileID: 1825409461321534248, guid: 8a8f4b99c6172b54391ffbf246ba9910, type: 3}
+  startBattleButton: {fileID: 1102898312}
+  stageScreen: {fileID: 656123226}
+  battleScreen: {fileID: 1933786978}
+  stealCardsScreen: {fileID: 756091706}
+  currentTurn: 0
+  filledSlots: 0
+  panelPrepareBattle: {fileID: 243971933}
+  stageText: {fileID: 458544944}
+  enemyPowerText: {fileID: 1065984116}
+  playerPowerText: {fileID: 1943010049}
+  pStartBattleButton: {fileID: 2090131508}
+  ruleSameToggle: {fileID: 1024952657}
+  rulePlusToggle: {fileID: 400926252}
 --- !u!1 &1520959756
 GameObject:
   m_ObjectHideFlags: 0
@@ -17324,7 +17379,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 50}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1584869124
 MonoBehaviour:
@@ -24317,6 +24372,7 @@ SceneRoots:
   - {fileID: 1899071591}
   - {fileID: 118410441}
   - {fileID: 928715012}
+  - {fileID: 1501565234}
   - {fileID: 746416949}
   - {fileID: 17173623}
   - {fileID: 1357906864}
