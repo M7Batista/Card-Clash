@@ -77,8 +77,7 @@ public static class PlayerDeckManager
         // 🔹 Caso não exista coleção salva, o jogador recebe cartas aleatórias
         if (!PlayerPrefs.HasKey(COLLECTION_KEY))
         {
-            // Garante que existem pelo menos 10 cartas no banco
-            //int maxPool = Mathf.Min(10, _allCardsCache.Count);
+            Dialog.Instance.ShowMessage("You will start with 5 common cards!");
 
             List<int> starterCollection = new List<int>();
             for (int i = 0; i < 6; i++)

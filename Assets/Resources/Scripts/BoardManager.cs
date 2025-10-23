@@ -255,24 +255,17 @@ public class BoardManager : MonoBehaviour
         BattleResultScreen.instance.ShowEndGame(result);
     }
 
-    // ...existing code...
     public void UpdateTurnArrow(Transform handArea)
     {
         if (turnArrow == null || handArea == null) return;
-
         // turnArrow posiciona no eixo y do handAarea e no eixo x do canto direito da tela
         var arrowRT = turnArrow.GetComponent<RectTransform>();
         var handRT = handArea.GetComponent<RectTransform>();
-        Vector2 offset = new Vector2(450f, 0f); // ajuste conforme necessário
-        arrowRT.anchoredPosition = handRT.anchoredPosition + offset;
-
+        arrowRT.anchoredPosition = new Vector2(450f, handRT.anchoredPosition.y);
         turnArrow.SetActive(true);
     }
-    // ...existing code...
 
     public void HideTurnArrow() => turnArrow.SetActive(false);
-
-
 
     private void ShowSpecialRuleText(string ruleName)
     {

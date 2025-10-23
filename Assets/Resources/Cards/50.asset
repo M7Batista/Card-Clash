@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 7
   bottom: 8
   left: 6
-  artwork: {fileID: 21300000, guid: 647d48e9dd82a1846be1b71a9ebb20ab, type: 3}
-  cardName: Zaria
+  artwork: {fileID: 21300000, guid: 0cc9d7ce060035243b8aa56e591a6f16, type: 3}
+  cardName: Pompea

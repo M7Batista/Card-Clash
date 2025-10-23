@@ -91,6 +91,9 @@ public class CardStealUIManager : MonoBehaviour
 
     private void OnEnemyCardClicked(CardData card, GameObject go)
     {
+        // Se o modal de confirmação já está ativo, ignora cliques adicionais
+        if (confirmModal != null && confirmModal.activeSelf) return;
+        
         selectedCard = card;
         selectedCardGO = go;
 
