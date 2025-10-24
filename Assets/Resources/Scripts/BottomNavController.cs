@@ -19,7 +19,7 @@ public class BottomNavController : MonoBehaviour
     private RectTransform nextScreen;
 
     private Color normalColor = Color.white;
-    private Color selectedColor = Color.green; // Cor do botão ativo
+    private Color selectedColor = Color.yellow; // Cor do botão ativo
     private float transitionDuration = 0.4f;
 
     // 🔹 Guardar todos botões e telas

@@ -2,9 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-
+using TMPro;
 public class HomeScreen : MonoBehaviour
 {
+    public TextMeshProUGUI txtTickets;
     [Header("Imagem onde o personagem será exibido")]
     public Image characterImage;
 
@@ -16,6 +17,7 @@ public class HomeScreen : MonoBehaviour
     {
         LoadCharacterImage();
         AudioManager.Instance.PlayMusic(AudioManager.Instance.menuMusic);
+        txtTickets.text = $"{BattleTicketSystem.Instance.GetCurrentTickets()}/30";
 
     }
 

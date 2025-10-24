@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 97a204d044609034f95786c887a11711
+guid: 577036bce6d37e6498a7b6bbd544664b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6743243474991480926
-    second: Nadia_0
+      213: -417175886673496334
+    second: Zaleia_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,7 +49,7 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 0
-  alignment: 3
+  alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Nadia_0
+      name: Zaleia_0
       rect:
         serializedVersion: 2
-        x: 112
-        y: 56
-        width: 1848
-        height: 1930
+        x: 3
+        y: 18
+        width: 2041
+        height: 1998
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2af792769cf2b62a0800000000000000
-      internalID: -6743243474991480926
+      spriteID: 2f6b7f9cdb4e53af0800000000000000
+      internalID: -417175886673496334
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Nadia_0: -6743243474991480926
+      Zaleia_0: -417175886673496334
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

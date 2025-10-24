@@ -116,6 +116,12 @@ public class BattleCardScreen : MonoBehaviour
     }
     public void StartBattle()
     {
+        if (!BattleTicketSystem.Instance.ConsumeTicket())
+        {
+            Dialog.Instance.ShowMessage("You don't have enough tickets to start the game!");
+            Debug.LogError("❌ Você não tem tickets suficientes! O jogo não pode iniciar!");
+            return;
+        } 
         // 🔹 Verifica se o deck do jogador está válido
         if (playerActiveDeck == null || playerActiveDeck.Count < 5)
         {
