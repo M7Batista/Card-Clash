@@ -116,6 +116,7 @@ public class BattleCardScreen : MonoBehaviour
     }
     public void StartBattle()
     {
+        // 🔹 Verifica se o jogador tem tickets suficientes
         if (!BattleTicketSystem.Instance.ConsumeTicket())
         {
             Dialog.Instance.ShowMessage("You don't have enough tickets to start the game!");
@@ -129,7 +130,7 @@ public class BattleCardScreen : MonoBehaviour
             Debug.LogError("❌ O jogador não possui 5 cartas definidas no deck. O jogo não pode iniciar!");
             return;
         }
-        // Verifica se o inimigo tem cartas
+        // 🔹 Verifica se o inimigo tem cartas
         if (enemyActiveDeck == null || enemyActiveDeck.Count < 5)
         {
             Dialog.Instance.ShowMessage("Enemy deck is not set! Cannot start the game.");
@@ -138,10 +139,6 @@ public class BattleCardScreen : MonoBehaviour
         }
         stageScreen.SetActive(false);
         battleScreen.SetActive(true);
-        // 🔹 Criar roleta
-        //currentRoullet = Instantiate(roulletPrefab);
-       
-
 
         currentRoullet = Instantiate(roulletPrefab, mainCanvas.transform);
 

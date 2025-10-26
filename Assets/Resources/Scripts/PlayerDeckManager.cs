@@ -70,6 +70,7 @@ public static class PlayerDeckManager
         Debug.Log($"[DeckManager] Coleção salva com {ownedIds.Count} cartas (pode conter duplicatas).");
     }
 
+    // ...existing code...
     public static List<int> GetOwnedCards()
     {
         EnsureCacheLoaded();
@@ -77,13 +78,23 @@ public static class PlayerDeckManager
         // 🔹 Caso não exista coleção salva, o jogador recebe cartas aleatórias
         if (!PlayerPrefs.HasKey(COLLECTION_KEY))
         {
-            Dialog.Instance.ShowMessage("You will start with 5 common cards!");
+            Dialog.Instance.ShowMessage("You will start with 6 common cards!");
 
             List<int> starterCollection = new List<int>();
+
+            // Seleciona apenas cards com id entre 1 e 20 (inclusive)
+            List<CardData> candidates = _allCardsCache.FindAll(c => c != null && c.id >= 1 && c.id <= 20);
+
+            if (candidates.Count == 0)
+            {
+                Debug.LogWarning("[PlayerDeckManager] Nenhum card com id 1..20 encontrado. Usando todo o cache como fallback.");
+                candidates = new List<CardData>(_allCardsCache);
+            }
+
             for (int i = 0; i < 6; i++)
             {
-                int randIndex = Random.Range(0, 20);
-                starterCollection.Add(_allCardsCache[randIndex].id);
+                int randIndex = Random.Range(0, candidates.Count);
+                starterCollection.Add(candidates[randIndex].id);
             }
 
             // 🔹 Salva a coleção inicial
@@ -105,6 +116,7 @@ public static class PlayerDeckManager
 
         return new List<int>(ids);
     }
+// ...existing code...
 
 
     // ======================================================

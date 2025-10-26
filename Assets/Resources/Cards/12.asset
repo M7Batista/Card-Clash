@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 5
   bottom: 2
   left: 4
-  artwork: {fileID: 21300000, guid: 4ff4c7d37248cb84b99517effa727063, type: 3}
-  cardName: Sonia
+  artwork: {fileID: -8498974344573237730, guid: 4a2cbee69fec5234ebe460f720b8c327, type: 3}
+  cardName: Dafine

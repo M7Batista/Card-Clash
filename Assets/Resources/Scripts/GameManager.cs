@@ -28,13 +28,16 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.DeleteKey("UnlockedStage");
         PlayerPrefs.DeleteKey("HomeCharacterID");
         
-
-
-        Debug.Log("⚠ Dados apagados com sucesso!");
+        // 🔹 Limpa chaves usadas pelo CurrencyManager
+        PlayerPrefs.DeleteKey("PLAYER_TICKETS");
+        PlayerPrefs.DeleteKey("LAST_RECHARGE_DATE");
+        
 
         // 🔹 Opcional: recarregar cena para resetar UI
-         UnityEngine.SceneManagement.SceneManager.LoadScene(
-             UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+        //UnityEngine.SceneManagement.SceneManager.LoadScene(
+            //UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+        Dialog.Instance.ShowMessage("All data has been cleared!");
+        Debug.Log("⚠ Dados apagados com sucesso!");
     }
 
 }

@@ -7,7 +7,7 @@ public class BattleTicketSystem : MonoBehaviour
 
     [Header("Configurações de Tickets")]
     public int maxTickets = 30;
-    public int dailyRecharge = 10;
+    public int dailyRecharge = 30;
 
     [Header("Estado Atual")]
     [SerializeField] private int currentTickets = 0;
@@ -69,7 +69,7 @@ public class BattleTicketSystem : MonoBehaviour
             currentTickets = Mathf.Min(currentTickets + dailyRecharge, maxTickets);
             lastRechargeDate = now;
             SaveTickets();
-
+            Dialog.Instance.ShowMessage("You have received your daily battle tickets!");
             Debug.Log($"Tickets recarregados automaticamente! ({currentTickets}/{maxTickets})");
         }
     }
