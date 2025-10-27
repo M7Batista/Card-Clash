@@ -11,7 +11,6 @@ public class BannerSystem : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     public ScrollRect scrollRect;
     public RectTransform bannerContainer;
     public RectTransform dotContainer;
-    public GameObject dotPrefab;
 
     [Header("Config")]
     public float slideInterval = 4f;
@@ -21,7 +20,38 @@ public class BannerSystem : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     private List<Image> dotImages = new List<Image>();
     private Coroutine autoSlideRoutine;
     private bool userDragging = false;
+    private void Awake()
+    {
+        
 
+        // se o ScrollRect existir e não for o mesmo GameObject deste componente,
+        // adiciona/encaminha eventos BeginDrag/EndDrag para este BannerSystem
+        if (scrollRect != null && scrollRect.gameObject != this.gameObject)
+        {
+            var et = scrollRect.gameObject.GetComponent<EventTrigger>() ?? scrollRect.gameObject.AddComponent<EventTrigger>();
+
+            bool hasBegin = false, hasEnd = false;
+            foreach (var entry in et.triggers)
+            {
+                if (entry.eventID == EventTriggerType.BeginDrag) hasBegin = true;
+                if (entry.eventID == EventTriggerType.EndDrag) hasEnd = true;
+            }
+
+            if (!hasBegin)
+            {
+                var begin = new EventTrigger.Entry { eventID = EventTriggerType.BeginDrag };
+                begin.callback.AddListener((data) => OnBeginDrag((PointerEventData)data));
+                et.triggers.Add(begin);
+            }
+
+            if (!hasEnd)
+            {
+                var end = new EventTrigger.Entry { eventID = EventTriggerType.EndDrag };
+                end.callback.AddListener((data) => OnEndDrag((PointerEventData)data));
+                et.triggers.Add(end);
+            }
+        }
+    }
     private void Start()
     {
         SetupDots();
@@ -43,20 +73,36 @@ public class BannerSystem : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         scrollRect.normalizedPosition = new Vector2(0, 0);
     }
 
+
     private void SetupDots()
     {
-        foreach (Transform t in dotContainer)
-            Destroy(t.gameObject);
+        // Agora os dots devem ser configurados manualmente no inspector (cada filho de dotContainer)
         dotImages.Clear();
 
         int bannerCount = bannerContainer.childCount;
-        for (int i = 0; i < bannerCount; i++)
+        int dotCount = dotContainer.childCount;
+        if (dotCount != bannerCount)
         {
-            GameObject dot = Instantiate(dotPrefab, dotContainer);
-            Image img = dot.GetComponent<Image>();
-            dotImages.Add(img);
+            Debug.LogWarning($"[BannerSystem] dotContainer child count ({dotCount}) != banner count ({bannerCount}). Dots should match banners.");
         }
+
+        foreach (Transform t in dotContainer)
+        {
+            Image img = t.GetComponent<Image>();
+            if (img != null)
+                dotImages.Add(img);
+            else
+            {
+                Debug.LogWarning("[BannerSystem] Dot child missing Image component. Placeholder added.");
+                dotImages.Add(null);
+            }
+        }
+
+        // Se houver menos dots que banners, completa com nulls para evitar erros de índice
+        while (dotImages.Count < bannerCount)
+            dotImages.Add(null);
     }
+
 
     private void UpdateDots()
     {
@@ -102,7 +148,6 @@ public class BannerSystem : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     public void OnBeginDrag(PointerEventData eventData)
     {
         userDragging = true;
-
         // 🔹 Pausa o auto-slide imediatamente
         if (autoSlideRoutine != null)
             StopCoroutine(autoSlideRoutine);

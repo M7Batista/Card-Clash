@@ -39,10 +39,11 @@ public class BattleResultScreen : MonoBehaviour
                 resultImage.sprite = spriteDraw;
                 break;
         }
-       
+
         StartCoroutine(FadeIn());
 
     }
+
     private System.Collections.IEnumerator FadeIn()
     {
         float elapsedTime = 0f;
@@ -57,12 +58,15 @@ public class BattleResultScreen : MonoBehaviour
 
         }
 
-        //resultImage.GetComponent<Image>().alpha = 1f; // garante que fica 100% visível
-        yield return new WaitForSeconds(2f);
+        //yield return new WaitForSeconds(2f);
+        //panel.SetActive(false);
+        //BattleCardScreen.Instance.PosBattleSetup(result);
+    }
+    public void ClosePanel()
+    {
         panel.SetActive(false);
         BattleCardScreen.Instance.PosBattleSetup(result);
     }
-    
 
 }
 

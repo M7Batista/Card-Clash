@@ -1,12 +1,12 @@
 # ninja log v5
-55	1108	7829742256204392	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	18dbb7b12fc8d0b9
-1110	1248	7829742257540813	D:/Mike/Projetos/Card Clash/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2g41712y/obj/arm64-v8a/libswappywrapper.so	969f1384e00f2ae4
-31	1894	7829742264039812	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	bcf370677a4f19e7
-23	1919	7829742264309102	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	67aed77073508475
-12	1933	7829742264438770	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	446f27aafcc6d9b5
-48	1953	7829742264648213	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	a0f155be1e0e7507
-1	1996	7829742265037142	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	dea21638aa23b0f
-18	2180	7829742266932849	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	9789b129d5b86932
-40	2260	7829742267750559	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	d2a98667470e033c
-7	2304	7829742268169697	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	e9e909719da751ac
-2304	2388	7829742269054513	D:/Mike/Projetos/Card Clash/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2g41712y/obj/arm64-v8a/libgame.so	705128030ca0bc67
+43	687	7832205253490850	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	18dbb7b12fc8d0b9
+689	973	7832205255605789	D:/Mike/Projetos/Card Clash/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2g41712y/obj/arm64-v8a/libswappywrapper.so	969f1384e00f2ae4
+26	1668	7832205263313526	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	67aed77073508475
+16	1682	7832205263443192	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	bcf370677a4f19e7
+12	1714	7832205263767341	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	446f27aafcc6d9b5
+37	1724	7832205263879746	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	a0f155be1e0e7507
+6	1753	7832205264205230	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	dea21638aa23b0f
+20	1978	7832205266445945	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	9789b129d5b86932
+1	2067	7832205267329898	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	e9e909719da751ac
+31	2092	7832205267590189	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	d2a98667470e033c
+2092	2191	7832205268575472	D:/Mike/Projetos/Card Clash/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2g41712y/obj/arm64-v8a/libgame.so	705128030ca0bc67

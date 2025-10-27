@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 
+
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
@@ -16,6 +17,10 @@ public class AudioManager : MonoBehaviour
     public List<AudioClip> sfxClips; // Lista de efeitos sonoros
 
     private Dictionary<string, AudioClip> sfxDict = new Dictionary<string, AudioClip>();
+
+    // target volume usado para fade-in quando uma música começa
+    private float targetMusicVolume = 1f;
+    private Coroutine musicFadeCoroutine;
 
     void Awake()
     {
@@ -41,16 +46,22 @@ public class AudioManager : MonoBehaviour
         float musicVol = PlayerPrefs.GetFloat("MusicVolume", 1f);
         float sfxVol = PlayerPrefs.GetFloat("SFXVolume", 1f);
 
+        // garante que targetMusicVolume seja usado como destino de fade-in
+        targetMusicVolume = musicVol;
         SetMusicVolume(musicVol);
         SetSFXVolume(sfxVol);
     }
-
 
     // 🔹 Tocar música de fundo
     public void PlayMusic(AudioClip clip, float fadeDuration = 1f)
     {
         if (clip == null) return;
-        StartCoroutine(FadeMusic(clip, fadeDuration));
+
+        // evita coroutines concorrentes
+        if (musicFadeCoroutine != null)
+            StopCoroutine(musicFadeCoroutine);
+
+        musicFadeCoroutine = StartCoroutine(FadeMusic(clip, fadeDuration));
     }
 
     // 🔹 Fade suave entre músicas
@@ -60,22 +71,27 @@ public class AudioManager : MonoBehaviour
 
         float startVolume = musicSource.volume;
 
-        // Fade out
+        // Fade out (usa duration)
         for (float t = 0; t < duration; t += Time.deltaTime)
         {
-            musicSource.volume = Mathf.Lerp(startVolume, 0, t / duration);
+            musicSource.volume = Mathf.Lerp(startVolume, 0f, t / duration);
             yield return null;
         }
+        musicSource.volume = 0f;
 
         musicSource.clip = newClip;
         musicSource.Play();
 
-        // Fade in
+        // Fade in até o volume alvo (targetMusicVolume), não até startVolume antigo
+        float targetVol = targetMusicVolume;
         for (float t = 0; t < duration; t += Time.deltaTime)
         {
-            musicSource.volume = Mathf.Lerp(0, startVolume, t / duration);
+            musicSource.volume = Mathf.Lerp(0f, targetVol, t / duration);
             yield return null;
         }
+        musicSource.volume = targetVol;
+
+        musicFadeCoroutine = null;
     }
 
     // 🔹 Tocar efeito sonoro
@@ -92,22 +108,33 @@ public class AudioManager : MonoBehaviour
     }
     public void StopMusic()
     {
+        // cancela qualquer fade atual e inicia fade-out/stop
+        if (musicFadeCoroutine != null)
+        {
+            StopCoroutine(musicFadeCoroutine);
+            musicFadeCoroutine = null;
+        }
         StartCoroutine(FadeOutAndStop());
     }
 
     private IEnumerator FadeOutAndStop()
     {
-        for (float v = musicSource.volume; v >= 0; v -= Time.deltaTime)
+        float start = musicSource.volume;
+        float duration = 0.5f; // ajuste se quiser fade-out mais lento
+        for (float t = 0; t < duration; t += Time.deltaTime)
         {
-            musicSource.volume = v;
+            musicSource.volume = Mathf.Lerp(start, 0f, t / duration);
             yield return null;
         }
+        musicSource.volume = 0f;
 
         musicSource.Stop();
         musicSource.clip = null;
     }
+
     public void SetMusicVolume(float value)
     {
+        targetMusicVolume = value;
         musicSource.volume = value;
     }
 
@@ -124,6 +151,4 @@ public class AudioManager : MonoBehaviour
     {
         sfxSource.mute = isMuted;
     }
-
-
 }
