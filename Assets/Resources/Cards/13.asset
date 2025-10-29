@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 2
   bottom: 4
   left: 1
-  artwork: {fileID: 0}
+  artwork: {fileID: 21300000, guid: dca1a930d27bc184584d24acc05d588d, type: 3}
   cardName: Stela

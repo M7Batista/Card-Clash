@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 10
   bottom: 7
   left: 9
-  artwork: {fileID: 21300000, guid: d54674a8f3f8bd74f9856425868a0e47, type: 3}
-  cardName: unknown
+  artwork: {fileID: 21300000, guid: ce8bd24ec430ec946b31a0d5d5a808f6, type: 3}
+  cardName: Sarina
