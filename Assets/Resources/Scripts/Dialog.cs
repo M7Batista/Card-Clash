@@ -4,7 +4,8 @@ using System.Collections;
 
 public class Dialog : MonoBehaviour
 {
-    public static Dialog Instance;
+    public static Dialog Instance { get; private set; }
+
 
     [Header("Referências")]
     public GameObject panel;
@@ -20,8 +21,10 @@ public class Dialog : MonoBehaviour
     private CanvasGroup canvasGroup;
     private Coroutine activeRoutine;
 
-    private void Awake()
+
+    void Awake()
     {
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         if (panel != null)
         {

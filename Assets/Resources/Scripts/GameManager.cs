@@ -1,8 +1,11 @@
 using System.IO;
 using UnityEngine;
-
+using System.Collections;
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
+    public Transform uiCanvas;
+    public GameObject floatingMessagePrefab;
     public void ClearCache()
     {
         // Pega o caminho completo do diretório de dados persistentes
@@ -22,22 +25,17 @@ public class GameManager : MonoBehaviour
     }
     public void ClearData()
     {
-        // 🔹 Limpa chaves usadas pelo PlayerDeckManager
+        // 🔹 Limpa PlayerPrefs (mesmo que já fazia)
         PlayerPrefs.DeleteKey("PlayerDeck");
         PlayerPrefs.DeleteKey("PlayerCollection");
         PlayerPrefs.DeleteKey("UnlockedStage");
         PlayerPrefs.DeleteKey("HomeCharacterID");
-        
-        // 🔹 Limpa chaves usadas pelo CurrencyManager
         PlayerPrefs.DeleteKey("PLAYER_TICKETS");
         PlayerPrefs.DeleteKey("LAST_RECHARGE_DATE");
-        
+        PlayerPrefs.Save();
 
-        // 🔹 Opcional: recarregar cena para resetar UI
-        //UnityEngine.SceneManagement.SceneManager.LoadScene(
-            //UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
-        Dialog.Instance.ShowMessage("All data has been cleared!");
-        Debug.Log("⚠ Dados apagados com sucesso!");
+        GameObject go = Instantiate(floatingMessagePrefab, uiCanvas);
+        go.transform.localPosition = Vector3.zero;
+        go.GetComponent<FloatingMessage>().Show("Dados do jogo apagados.");
     }
-
 }

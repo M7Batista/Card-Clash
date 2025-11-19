@@ -116,23 +116,11 @@ public class HomeScreen : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         float targetWidth = targetHeight * spriteAspect;
 
         // Aplica ao RectTransform (centrado)
-        backgroundRect.anchorMin = new Vector2(0.5f, 0.5f);
-        backgroundRect.anchorMax = new Vector2(0.5f, 0.5f);
-        backgroundRect.pivot = new Vector2(0.5f, 0.5f);
-        backgroundRect.sizeDelta = new Vector2(targetWidth, targetHeight);
-        backgroundRect.anchoredPosition = Vector2.zero;
-
-        // Parenta o personagem ao background e centraliza
-        /*if (characterImage != null)
-        {
-            var charRT = characterImage.GetComponent<RectTransform>();
-            if (charRT != null)
-            {
-                charRT.SetParent(backgroundRect, worldPositionStays: false);
-                charRT.anchoredPosition = Vector2.zero;
-                charRT.localScale = Vector3.one;
-            }
-        }*/
+        //backgroundRect.anchorMin = new Vector2(0.5f, 0.5f);
+        //backgroundRect.anchorMax = new Vector2(0.5f, 0.5f);
+        //backgroundRect.pivot = new Vector2(0.5f, 0.5f);
+        //backgroundRect.sizeDelta = new Vector2(targetWidth, targetHeight);
+        //backgroundRect.anchoredPosition = Vector2.zero;
 
         // Calcula limites de arrasto horizontal (mantendo background centrado)
         float viewWidth = canvasRect.rect.width;

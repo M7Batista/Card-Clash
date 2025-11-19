@@ -5,7 +5,7 @@ using System.Collections;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager Instance;
+    public static AudioManager Instance { get; private set; }
 
     [Header("Audio Sources")]
     public AudioSource musicSource;
@@ -24,23 +24,17 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null)
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+        // Preenche o dicionário com base nos nomes dos clipes
+        foreach (var clip in sfxClips)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-
-            // Preenche o dicionário com base nos nomes dos clipes
-            foreach (var clip in sfxClips)
-            {
-                if (clip != null && !sfxDict.ContainsKey(clip.name))
-                    sfxDict.Add(clip.name, clip);
-            }
-        }
-        else
-        {
-            Destroy(gameObject);
+            if (clip != null && !sfxDict.ContainsKey(clip.name))
+                sfxDict.Add(clip.name, clip);
         }
     }
+
     void Start()
     {
         float musicVol = PlayerPrefs.GetFloat("MusicVolume", 1f);

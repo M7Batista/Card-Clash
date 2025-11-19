@@ -119,48 +119,7 @@ public class BottomNavController : MonoBehaviour
             Debug.Log("Chamando OnScreenOpened em " + screenLogic.GetType().Name);
 
         }
-    
     }
-
-    /*IEnumerator SlideTransition(RectTransform fromScreen, RectTransform toScreen, bool slideLeft)
-    {
-        float elapsed = 0f;
-        Vector2 startFrom = fromScreen.anchoredPosition;
-        Vector2 startTo = new Vector2(slideLeft ? Screen.width : -Screen.width, 0);
-        Vector2 endFrom = new Vector2(slideLeft ? -Screen.width : Screen.width, 0);
-        Vector2 endTo = Vector2.zero;
-
-        toScreen.anchoredPosition = startTo;
-
-        while (elapsed < transitionDuration)
-        {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / transitionDuration);
-
-            fromScreen.anchoredPosition = Vector2.Lerp(startFrom, endFrom, t);
-            toScreen.anchoredPosition = Vector2.Lerp(startTo, endTo, t);
-
-            yield return null;
-        }
-
-        fromScreen.gameObject.SetActive(false);
-        currentScreen = toScreen;
-
-        // 🔹 Verifica se a nova tela tem algum script de "screen"
-        var screenLogic = currentScreen.GetComponent<MonoBehaviour>();
-        if (screenLogic != null)
-        {
-            // Chama o método se existir
-            var method = screenLogic.GetType().GetMethod("OnScreenOpened");
-            Debug.Log("Chamando OnScreenOpened em " + screenLogic.GetType().Name);
-            if (method != null)
-            {
-                method.Invoke(screenLogic, null);
-            }
-        }
-    }*/
-
-
 
     void UpdateAllButtons(Button selectedButton)
     {
@@ -194,17 +153,4 @@ public class BottomNavController : MonoBehaviour
         selectable.OnDeselect(null);
     }
 
-    // 🔹 Decide direção do slide
-    /*bool IsSlideLeft(RectTransform from, RectTransform to)
-    {
-        List<RectTransform> order = new List<RectTransform>()
-        {
-            homeScreen, collectionScreen, battleCardScreen
-        };
-
-        int fromIndex = order.IndexOf(from);
-        int toIndex = order.IndexOf(to);
-
-        return toIndex > fromIndex; // se for para frente → slide left
-    }*/
 }

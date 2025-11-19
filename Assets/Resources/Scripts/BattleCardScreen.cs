@@ -37,6 +37,7 @@ public class BattleCardScreen : MonoBehaviour
     public TextMeshProUGUI enemyPowerText;
     public TextMeshProUGUI playerPowerText;
     public Button pStartBattleButton;
+    public Button pCancelBattleButton;
     public Toggle ruleSameToggle;
     public Toggle rulePlusToggle;
     public Canvas mainCanvas;
@@ -72,7 +73,7 @@ public class BattleCardScreen : MonoBehaviour
     {
         bool ruleSame = PlayerPrefs.GetInt("RuleSame", 0) == 1;
         ruleSameToggle.isOn = ruleSame;
-        rulePlusToggle.onValueChanged.AddListener(SetRuleSame);
+        ruleSameToggle.onValueChanged.AddListener(SetRuleSame);
         bool rulePlus = PlayerPrefs.GetInt("RulePlus", 0) == 1;
         rulePlusToggle.isOn = rulePlus;
         rulePlusToggle.onValueChanged.AddListener(SetRulePlus);
@@ -99,14 +100,28 @@ public class BattleCardScreen : MonoBehaviour
         }
         playerPowerText.text = playerPower.ToString();
 
-        panelPrepareBattle.SetActive(true);
+        
         stageText.text = "Stage " + currentStage;
 
         pStartBattleButton.onClick.RemoveAllListeners();
         pStartBattleButton.onClick.AddListener(() =>
         {
-            panelPrepareBattle.SetActive(false);
+            // se o painel tiver SlidePanel, use HideImmediate para esconder sem esperar animação
+            var slider = panelPrepareBattle.GetComponent<SlidePanel>();
+            if (slider != null) slider.HideImmediate();
+            else panelPrepareBattle.SetActive(false);
             StartBattle();
+        });
+        // mostra com animação se possível
+        var sliderShow = panelPrepareBattle.GetComponent<SlidePanel>();
+        if (sliderShow != null) sliderShow.Show();
+        else panelPrepareBattle.SetActive(true);
+        pCancelBattleButton.onClick.RemoveAllListeners();
+        pCancelBattleButton.onClick.AddListener(() =>
+        {
+            var slider = panelPrepareBattle.GetComponent<SlidePanel>();
+            if (slider != null) slider.Hide();
+            else panelPrepareBattle.SetActive(false);
         });
 
     }

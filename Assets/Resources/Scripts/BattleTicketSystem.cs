@@ -6,7 +6,7 @@ public class BattleTicketSystem : MonoBehaviour
     public static BattleTicketSystem Instance;
 
     [Header("Configurações de Tickets")]
-    public int maxTickets = 30;
+    public int maxTickets = 60;
     public int dailyRecharge = 30;
 
     [Header("Estado Atual")]
