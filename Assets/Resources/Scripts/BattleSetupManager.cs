@@ -13,8 +13,14 @@ public class BattleSetupManager : MonoBehaviour
     public static BattleSetupManager Instance { get; private set; }
     public List<CardData> playerActiveDeck = new List<CardData>();   // 🔹 As 5 cartas escolhidas pelo jogador para a partida
     public List<CardData> enemyActiveDeck = new List<CardData>();    // 🔹 As 5 cartas que o inimigo usará na partida
-    bool ruleSame = false;
-    bool rulePlus = false;
+    public bool ruleSame = false;
+    public bool rulePlus = false;
+
+    void Start()
+    {
+        Instance = this;
+    }
+
     void LoadRules()
     {
         ruleSame = PlayerPrefs.GetInt("RuleSame", 0) == 1;

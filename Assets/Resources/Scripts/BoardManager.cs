@@ -19,8 +19,8 @@ public class BoardManager : MonoBehaviour
     public GameObject turnArrow;
 
     [Header("🔹 Regras Especiais (ativar no Inspector)")]
-    public bool ruleSame = true;  // Regra "MESMO"
-    public bool rulePlus = true;  // Regra "MAIS"
+    public bool ruleSame;  // Regra "MESMO"
+    public bool rulePlus;  // Regra "MAIS"
     public TextMeshProUGUI specialRuleText;   // Texto central exibido no meio do tabuleiro
     public AudioClip specialRuleSFX;          // Som tocado quando a regra ativa
     public float ruleTextDuration = 1.5f;     // Duração do fade-out do texto
@@ -28,6 +28,11 @@ public class BoardManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+    void OnEnable()
+    {
+        ruleSame = BattleSetupManager.Instance.ruleSame;
+        rulePlus = BattleSetupManager.Instance.rulePlus;
     }
 
     // ===============================

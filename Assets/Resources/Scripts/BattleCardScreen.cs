@@ -326,13 +326,13 @@ public class BattleCardScreen : MonoBehaviour
 
     public void SetRuleSame(bool active)
     {
-        BoardManager.Instance.ruleSame = active;
+        BattleSetupManager.Instance.ruleSame = active;
         PlayerPrefs.SetInt("RuleSame", active ? 1 : 0);
         PlayerPrefs.Save();
     }
     public void SetRulePlus(bool active)
     {
-        BoardManager.Instance.rulePlus = active;
+        BattleSetupManager.Instance.rulePlus = active;
         PlayerPrefs.SetInt("RulePlus", active ? 1 : 0);
         PlayerPrefs.Save();
     }

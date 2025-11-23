@@ -14,6 +14,7 @@ public class CardStealUIManager : MonoBehaviour
     public TMP_Text titleText;
     public Button confirmYesButton;
     public Button confirmNoButton;
+    public Button skipButtom;
 
     [Header("Dados")]
     private List<CardData> playerCards = new List<CardData>();
@@ -29,6 +30,10 @@ public class CardStealUIManager : MonoBehaviour
     {
         Instance = this;
         //gameObject.SetActive(false);
+    }
+    void Start()
+    {
+         skipButtom.onClick.AddListener(() => EndStealScreen());
     }
 
     // Inicialização da tela de roubo
@@ -98,7 +103,7 @@ public class CardStealUIManager : MonoBehaviour
         selectedCardGO = go;
 
         // animação simples: mover um pouco para cima
-        selectedCardGO.transform.localPosition += Vector3.up * 20f;
+        selectedCardGO.transform.localPosition += Vector3.up * 40f;
 
         confirmModal.SetActive(true);
         //confirmText.text = $"Deseja roubar a carta \"{card.cardName}\" ({card.rarity})?";
