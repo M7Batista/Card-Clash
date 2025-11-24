@@ -26,9 +26,8 @@ public class StageMapGenerator : MonoBehaviour
         currentStage = unlockedStage;
         GenerateStages();
 
-        // 🔹 Garante que o Scroll sempre inicie no topo (estágio 1)
-        Canvas.ForceUpdateCanvases();
-        scrollRect.verticalNormalizedPosition = 1f;
+        // 🔹 Após gerar os estágios, rola automaticamente até o estágio atual
+        ScrollToStage(currentStage);
     }
 
     private void GenerateStages()
@@ -100,7 +99,44 @@ public class StageMapGenerator : MonoBehaviour
 
             // Regenera tela com novo desbloqueio
             GenerateStages();
+            // manter o foco no estágio desbloqueado
+            ScrollToStage(currentStage);
         }
+    }
+
+    // Rola o ScrollRect para centralizar (ou aproximar) o botão do estágio especificado
+    private void ScrollToStage(int stageIndex)
+    {
+        if (content == null || scrollRect == null) return;
+
+        Canvas.ForceUpdateCanvases();
+
+        Transform targetT = content.Find("Stage_" + stageIndex);
+        if (targetT == null) return;
+
+        RectTransform target = targetT as RectTransform;
+        RectTransform viewport = scrollRect.viewport != null ? scrollRect.viewport : scrollRect.transform.Find("Viewport") as RectTransform;
+        if (viewport == null) return;
+
+        float contentHeight = content.rect.height;
+        float viewportHeight = viewport.rect.height;
+
+        // posição local do centro do alvo dentro do content (y aumenta para cima)
+        // target.anchoredPosition.y costuma ser negativo quando itens são posicionados abaixo
+        float targetCenterLocalY = -target.anchoredPosition.y + (target.rect.height * 0.5f);
+
+        float scrollableHeight = contentHeight - viewportHeight;
+        if (scrollableHeight <= 0f)
+        {
+            // não há espaço para rolar
+            scrollRect.verticalNormalizedPosition = 1f;
+            return;
+        }
+
+        // queremos que o centro do target fique no meio da viewport
+        float normalized = 1f - Mathf.Clamp01((targetCenterLocalY - (viewportHeight * 0.5f)) / scrollableHeight);
+
+        scrollRect.verticalNormalizedPosition = normalized;
     }
 
 }

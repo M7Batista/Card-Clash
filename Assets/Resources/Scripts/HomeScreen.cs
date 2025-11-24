@@ -35,7 +35,6 @@ public class HomeScreen : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
             txtTickets.text = $"{BattleTicketSystem.Instance.GetCurrentTickets()}/30";
 
         SetupBackgroundScaleAndLimits();
-        Debug.Log("HomeScreen ativada.");
     }
 
     void LoadCharacterImage()

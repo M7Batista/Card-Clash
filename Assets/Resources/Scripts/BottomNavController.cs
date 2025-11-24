@@ -56,14 +56,7 @@ public class BottomNavController : MonoBehaviour
 
         nextScreen = targetScreen;
         nextScreen.gameObject.SetActive(true);
-
-        // Direção do slide
-        //bool slideLeft = IsSlideLeft(currentScreen, nextScreen);
-
-        //StartCoroutine(SlideTransition(currentScreen, nextScreen, slideLeft));
         StartCoroutine(FadeTransition(currentScreen, nextScreen));
-
-
         // Atualiza botões
         UpdateAllButtons(clickedButton);
     }
@@ -105,20 +98,7 @@ public class BottomNavController : MonoBehaviour
         toGroup.blocksRaycasts = true;
 
         currentScreen = toScreen;
-        // 🔹 Verifica se a nova tela tem algum script de "screen"
-        var screenLogic = currentScreen.GetComponent<MonoBehaviour>();
-        if (screenLogic != null)
-        {
-            // Chama o método se existir
-            var method = screenLogic.GetType().GetMethod("OnScreenOpened");
-            Debug.Log("Chamando OnScreenOpened em " + screenLogic.GetType().Name);
-            if (method != null)
-            {
-                method.Invoke(screenLogic, null);
-            }
-            Debug.Log("Chamando OnScreenOpened em " + screenLogic.GetType().Name);
-
-        }
+        
     }
 
     void UpdateAllButtons(Button selectedButton)
