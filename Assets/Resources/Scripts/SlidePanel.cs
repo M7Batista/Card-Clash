@@ -4,11 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(RectTransform))]
 public class SlidePanel : MonoBehaviour
 {
-    public float duration = 0.35f;
-    public float extraMargin = 20f;
+    float duration = 0.35f;
     public bool useCanvasGroupFade = true;
-    public bool deactivateOnHide = true;
-
     float positionHideedOffsetY = -350f;
     float positionShowedOffsetY = 350f;
 
@@ -25,13 +22,13 @@ public class SlidePanel : MonoBehaviour
         rt = GetComponent<RectTransform>();
         parentCanvas = GetComponentInParent<Canvas>();
         if (parentCanvas != null) canvasRect = parentCanvas.GetComponent<RectTransform>();
-        canvasGroup = useCanvasGroupFade ? (GetComponent<CanvasGroup>() ?? gameObject.AddComponent<CanvasGroup>()) : null;
+        canvasGroup = GetComponent<CanvasGroup>();
+        //canvasGroup = useCanvasGroupFade ? (GetComponent<CanvasGroup>() ?? gameObject.AddComponent<CanvasGroup>()) : null;
     }
 
     public void Show()
     {
         if (anim != null) StopCoroutine(anim);
-        gameObject.SetActive(true);
         shownPos = new Vector2(rt.anchoredPosition.x, positionShowedOffsetY);
         anim = StartCoroutine(MoveTo(shownPos));
     }
@@ -48,7 +45,6 @@ public class SlidePanel : MonoBehaviour
         float t = 0f;
         Vector2 from = rt.anchoredPosition;
         Vector2 to = toPos;
-        Debug.Log("Moving panel to: " + toPos);
         if (canvasGroup != null) canvasGroup.blocksRaycasts = false;
 
         while (t < 1f)
@@ -67,8 +63,6 @@ public class SlidePanel : MonoBehaviour
     {
         if (anim != null) StopCoroutine(anim);
         rt.anchoredPosition = hiddenPos;
-        if (canvasGroup != null) { canvasGroup.alpha = 0f; canvasGroup.blocksRaycasts = false; }
-        if (deactivateOnHide) gameObject.SetActive(false);
         anim = null;
     }
 
@@ -76,9 +70,7 @@ public class SlidePanel : MonoBehaviour
     public void ShowImmediate()
     {
         if (anim != null) StopCoroutine(anim);
-        gameObject.SetActive(true);
         rt.anchoredPosition = shownPos;
-        if (canvasGroup != null) { canvasGroup.alpha = 1f; canvasGroup.blocksRaycasts = true; }
         anim = null;
     }
 }

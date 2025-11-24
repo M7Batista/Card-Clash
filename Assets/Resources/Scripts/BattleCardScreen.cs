@@ -113,15 +113,7 @@ public class BattleCardScreen : MonoBehaviour
         
         stageText.text = "Stage " + currentStage;
 
-        pStartBattleButton.onClick.RemoveAllListeners();
-        pStartBattleButton.onClick.AddListener(() =>
-        {
-            // se o painel tiver SlidePanel, use HideImmediate para esconder sem esperar animação
-            var slider = panelPrepareBattle.GetComponent<SlidePanel>();
-            if (slider != null) slider.HideImmediate();
-            else panelPrepareBattle.SetActive(false);
-            StartBattle();
-        });
+        
 
 
         // mostra com animação se possível
@@ -132,12 +124,20 @@ public class BattleCardScreen : MonoBehaviour
             Canvas.ForceUpdateCanvases();
             sliderShow.Show();
         }
+        pStartBattleButton.onClick.RemoveAllListeners();
+        pStartBattleButton.onClick.AddListener(() =>
+        {
+            Debug.Log("Iniciando Batalha a partir do painel de preparação...");
+            var slider = panelPrepareBattle.GetComponent<SlidePanel>();
+            if (slider != null) slider.HideImmediate();
+            StartBattle();
+        });
         pCancelBattleButton.onClick.RemoveAllListeners();
         pCancelBattleButton.onClick.AddListener(() =>
         {
+            Debug.Log("Cancelando Batalha a partir do painel de preparação...");
             var slider = panelPrepareBattle.GetComponent<SlidePanel>();
             if (slider != null) slider.Hide();
-            else panelPrepareBattle.SetActive(false);
         });
 
     }

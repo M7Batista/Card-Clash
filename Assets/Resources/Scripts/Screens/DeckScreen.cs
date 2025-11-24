@@ -10,8 +10,11 @@ public class DeckScreen : MonoBehaviour
     void OnEnable()
     {
         Debug.Log("DeckScreen OnEnable");
+        // Inicialmente, a aba Deck está selecionada
+        tabSelected.transform.SetParent(buttonTabDeck.transform, false);
         tabDeck.SetActive(true);
         tabCollection.SetActive(false);
+
         buttonTabDeck.onClick.AddListener(OnClickTabDeck);
         buttonTabCollection.onClick.AddListener(OnClickTabCollection);
     }

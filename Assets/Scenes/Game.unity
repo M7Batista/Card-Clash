@@ -3089,10 +3089,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e3d8e071624b541bd1b6420bdd3f4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlidePanel
-  duration: 0.3
-  extraMargin: 20
-  useCanvasGroupFade: 1
-  deactivateOnHide: 1
+  useCanvasGroupFade: 0
 --- !u!1 &245597943
 GameObject:
   m_ObjectHideFlags: 0
