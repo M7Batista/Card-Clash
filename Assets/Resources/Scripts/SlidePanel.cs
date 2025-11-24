@@ -6,9 +6,11 @@ public class SlidePanel : MonoBehaviour
 {
     public float duration = 0.35f;
     public float extraMargin = 20f;
-    public bool startHidden = true;
     public bool useCanvasGroupFade = true;
     public bool deactivateOnHide = true;
+
+    float positionHideedOffsetY = -350f;
+    float positionShowedOffsetY = 350f;
 
     RectTransform rt;
     RectTransform canvasRect;
@@ -26,68 +28,27 @@ public class SlidePanel : MonoBehaviour
         canvasGroup = useCanvasGroupFade ? (GetComponent<CanvasGroup>() ?? gameObject.AddComponent<CanvasGroup>()) : null;
     }
 
-    void Start()
-    {
-        // assume panel is placed at desired shown position in editor
-        shownPos = rt.anchoredPosition;
-
-        // calcula posição escondida (abaixo da área visível do canvas)
-        float offY = 0f;
-        if (canvasRect != null)
-        {
-            offY = - (canvasRect.rect.height * 0.5f) - (rt.rect.height * 0.5f) - extraMargin;
-        }
-        else
-        {
-            offY = -Screen.height - rt.rect.height - extraMargin;
-        }
-        hiddenPos = new Vector2(shownPos.x, offY);
-
-        if (startHidden)
-        {
-            rt.anchoredPosition = hiddenPos;
-            if (canvasGroup != null) { canvasGroup.alpha = 0f; canvasGroup.blocksRaycasts = false; }
-            if (deactivateOnHide) gameObject.SetActive(false);
-        }
-    }
-
     public void Show()
     {
         if (anim != null) StopCoroutine(anim);
         gameObject.SetActive(true);
-        anim = StartCoroutine(DoShow());
-    }
-
-    IEnumerator DoShow()
-    {
-        float t = 0f;
-        Vector2 from = rt.anchoredPosition;
-        Vector2 to = shownPos;
-        if (canvasGroup != null) { canvasGroup.blocksRaycasts = true; }
-
-        while (t < 1f)
-        {
-            t += Time.deltaTime / Mathf.Max(0.0001f, duration);
-            rt.anchoredPosition = Vector2.Lerp(from, to, Mathf.SmoothStep(0f,1f,t));
-            if (canvasGroup != null) canvasGroup.alpha = Mathf.Lerp(canvasGroup.alpha, 1f, t);
-            yield return null;
-        }
-        rt.anchoredPosition = to;
-        if (canvasGroup != null) { canvasGroup.alpha = 1f; canvasGroup.blocksRaycasts = true; }
-        anim = null;
+        shownPos = new Vector2(rt.anchoredPosition.x, positionShowedOffsetY);
+        anim = StartCoroutine(MoveTo(shownPos));
     }
 
     public void Hide()
     {
         if (anim != null) StopCoroutine(anim);
-        anim = StartCoroutine(DoHide());
+        hiddenPos = new Vector2(rt.anchoredPosition.x, positionHideedOffsetY);
+        anim = StartCoroutine(MoveTo(hiddenPos));
     }
 
-    IEnumerator DoHide()
+    IEnumerator MoveTo(Vector2 toPos)
     {
         float t = 0f;
         Vector2 from = rt.anchoredPosition;
-        Vector2 to = hiddenPos;
+        Vector2 to = toPos;
+        Debug.Log("Moving panel to: " + toPos);
         if (canvasGroup != null) canvasGroup.blocksRaycasts = false;
 
         while (t < 1f)
@@ -98,8 +59,6 @@ public class SlidePanel : MonoBehaviour
             yield return null;
         }
         rt.anchoredPosition = to;
-        if (canvasGroup != null) canvasGroup.alpha = 0f;
-        if (deactivateOnHide) gameObject.SetActive(false);
         anim = null;
     }
 

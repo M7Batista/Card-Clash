@@ -66,17 +66,27 @@ public class BattleCardScreen : MonoBehaviour
     }
     void StartBattleButtonClicked()
     {
+        Debug.Log("Botão Iniciar Batalha clicado!");
         int stage = PlayerPrefs.GetInt("UnlockedStage", 1);
         PrepareBattle(stage);
     }
     public void PrepareBattle(int currentStage)
     {
+        // Segurança: evita adicionar múltiplos listeners a cada chamada
         bool ruleSame = PlayerPrefs.GetInt("RuleSame", 0) == 1;
-        ruleSameToggle.isOn = ruleSame;
-        ruleSameToggle.onValueChanged.AddListener(SetRuleSame);
+        if (ruleSameToggle != null)
+        {
+            ruleSameToggle.onValueChanged.RemoveAllListeners();
+            ruleSameToggle.isOn = ruleSame;
+            ruleSameToggle.onValueChanged.AddListener(SetRuleSame);
+        }
         bool rulePlus = PlayerPrefs.GetInt("RulePlus", 0) == 1;
-        rulePlusToggle.isOn = rulePlus;
-        rulePlusToggle.onValueChanged.AddListener(SetRulePlus);
+        if (rulePlusToggle != null)
+        {
+            rulePlusToggle.onValueChanged.RemoveAllListeners();
+            rulePlusToggle.isOn = rulePlus;
+            rulePlusToggle.onValueChanged.AddListener(SetRulePlus);
+        }
 
 
         GetPlayerDeck();
@@ -112,10 +122,16 @@ public class BattleCardScreen : MonoBehaviour
             else panelPrepareBattle.SetActive(false);
             StartBattle();
         });
+
+
         // mostra com animação se possível
-        var sliderShow = panelPrepareBattle.GetComponent<SlidePanel>();
-        if (sliderShow != null) sliderShow.Show();
-        else panelPrepareBattle.SetActive(true);
+        var sliderShow = panelPrepareBattle != null ? panelPrepareBattle.GetComponent<SlidePanel>() : null;
+        if (sliderShow != null)
+        {
+            // Força atualização de canvas para evitar condições de layout que impeçam a animação
+            Canvas.ForceUpdateCanvases();
+            sliderShow.Show();
+        }
         pCancelBattleButton.onClick.RemoveAllListeners();
         pCancelBattleButton.onClick.AddListener(() =>
         {

@@ -29,6 +29,7 @@ public class HomeScreen : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     void OnEnable()
     {
+        Debug.Log("HomeScreen OnEnable");
         LoadCharacterImage();
         AudioManager.Instance?.PlayMusic(AudioManager.Instance.menuMusic);
         if (BattleTicketSystem.Instance != null && txtTickets != null)
