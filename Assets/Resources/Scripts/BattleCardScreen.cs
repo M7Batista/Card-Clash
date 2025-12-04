@@ -38,8 +38,7 @@ public class BattleCardScreen : MonoBehaviour
     public TextMeshProUGUI playerPowerText;
     public Button pStartBattleButton;
     public Button pCancelBattleButton;
-    public Toggle ruleSameToggle;
-    public Toggle rulePlusToggle;
+
     public Canvas mainCanvas;
     public void OnScreenOpened()
     {
@@ -72,21 +71,6 @@ public class BattleCardScreen : MonoBehaviour
     }
     public void PrepareBattle(int currentStage)
     {
-        // Segurança: evita adicionar múltiplos listeners a cada chamada
-        bool ruleSame = PlayerPrefs.GetInt("RuleSame", 0) == 1;
-        if (ruleSameToggle != null)
-        {
-            ruleSameToggle.onValueChanged.RemoveAllListeners();
-            ruleSameToggle.isOn = ruleSame;
-            ruleSameToggle.onValueChanged.AddListener(SetRuleSame);
-        }
-        bool rulePlus = PlayerPrefs.GetInt("RulePlus", 0) == 1;
-        if (rulePlusToggle != null)
-        {
-            rulePlusToggle.onValueChanged.RemoveAllListeners();
-            rulePlusToggle.isOn = rulePlus;
-            rulePlusToggle.onValueChanged.AddListener(SetRulePlus);
-        }
 
 
         GetPlayerDeck();
@@ -113,31 +97,17 @@ public class BattleCardScreen : MonoBehaviour
         
         stageText.text = "Stage " + currentStage;
 
-        
-
-
-        // mostra com animação se possível
-        var sliderShow = panelPrepareBattle != null ? panelPrepareBattle.GetComponent<SlidePanel>() : null;
-        if (sliderShow != null)
-        {
-            // Força atualização de canvas para evitar condições de layout que impeçam a animação
-            Canvas.ForceUpdateCanvases();
-            sliderShow.Show();
-        }
+        panelPrepareBattle.SetActive(true);
         pStartBattleButton.onClick.RemoveAllListeners();
         pStartBattleButton.onClick.AddListener(() =>
         {
-            Debug.Log("Iniciando Batalha a partir do painel de preparação...");
-            var slider = panelPrepareBattle.GetComponent<SlidePanel>();
-            if (slider != null) slider.HideImmediate();
+            panelPrepareBattle.SetActive(false);
             StartBattle();
         });
         pCancelBattleButton.onClick.RemoveAllListeners();
         pCancelBattleButton.onClick.AddListener(() =>
         {
-            Debug.Log("Cancelando Batalha a partir do painel de preparação...");
-            var slider = panelPrepareBattle.GetComponent<SlidePanel>();
-            if (slider != null) slider.Hide();
+            panelPrepareBattle.SetActive(false);
         });
 
     }

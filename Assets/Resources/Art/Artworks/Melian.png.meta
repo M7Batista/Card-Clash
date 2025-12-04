@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 05d633219f3464c49b1c1f680e657afc
+guid: 92c1c47909804564a85cf171edb23f67
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1221239696203997432
-    second: Damia_0
+      213: -2383525868994644063
+    second: Melian_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Damia_0
+      name: Melian_0
       rect:
         serializedVersion: 2
-        x: 103
-        y: 10
-        width: 1843
-        height: 2014
+        x: 29
+        y: 21
+        width: 2008
+        height: 2008
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8f068d58807b2f010800000000000000
-      internalID: 1221239696203997432
+      spriteID: 1a7be91c9d30ceed0800000000000000
+      internalID: -2383525868994644063
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Damia_0: 1221239696203997432
+      Melian_0: -2383525868994644063
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
