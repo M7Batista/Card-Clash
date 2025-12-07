@@ -26,7 +26,7 @@ public class HomeScreen : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     private Vector2 bgStartAnchored;
     private float minX;
     private float maxX;
-
+    
     void OnEnable()
     {
         Debug.Log("HomeScreen OnEnable");

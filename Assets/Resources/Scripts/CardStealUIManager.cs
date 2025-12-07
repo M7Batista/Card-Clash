@@ -49,14 +49,14 @@ public class CardStealUIManager : MonoBehaviour
         ClearContainers();
         PopulateCards(playerWon);
 
-
-
         if (playerWon)
         {
             titleText.text = "Select 1 card you want!";
+            skipButtom.gameObject.SetActive(true);
         }
         else
         {
+            skipButtom.gameObject.SetActive(false);
             titleText.text = "You lost a card to the enemy!";
             // Derrota → inimigo rouba automaticamente
             Invoke(nameof(EnemyStealsCard), 2.5f);
@@ -135,7 +135,7 @@ public class CardStealUIManager : MonoBehaviour
     {
         // Volta a carta para posição original
         if (selectedCardGO != null)
-            selectedCardGO.transform.localPosition -= Vector3.up * 20f;
+            selectedCardGO.transform.localPosition -= Vector3.up * 40f;
 
         confirmModal.SetActive(false);
         selectedCard = null;
