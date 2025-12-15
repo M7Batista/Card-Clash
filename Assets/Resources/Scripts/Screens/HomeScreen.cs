@@ -116,11 +116,11 @@ public class HomeScreen : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         float targetWidth = targetHeight * spriteAspect;
 
         // Aplica ao RectTransform (centrado)
-        //backgroundRect.anchorMin = new Vector2(0.5f, 0.5f);
-        //backgroundRect.anchorMax = new Vector2(0.5f, 0.5f);
-        //backgroundRect.pivot = new Vector2(0.5f, 0.5f);
-        //backgroundRect.sizeDelta = new Vector2(targetWidth, targetHeight);
-        //backgroundRect.anchoredPosition = Vector2.zero;
+        backgroundRect.anchorMin = new Vector2(0.5f, 0.5f);
+        backgroundRect.anchorMax = new Vector2(0.5f, 0.5f);
+        backgroundRect.pivot = new Vector2(0.5f, 0.5f);
+        backgroundRect.sizeDelta = new Vector2(targetWidth, targetHeight);
+        backgroundRect.anchoredPosition = Vector2.zero;
 
         // Calcula limites de arrasto horizontal (mantendo background centrado)
         float viewWidth = canvasRect.rect.width;

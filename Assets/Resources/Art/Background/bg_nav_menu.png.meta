@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 780fa9113fcfb364ea28cbd9ae220bf1
+guid: 2c56a996f5799fb4c8d8dcd07737a624
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2266738854742490002
-    second: catia_chibi_0
+      213: -6934053804799987106
+    second: bg_nav_menu_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -109,17 +109,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: catia_chibi_0
+      name: bg_nav_menu_0
       rect:
         serializedVersion: 2
-        x: 102
-        y: 67
-        width: 1139
-        height: 1469
+        x: 0
+        y: 0
+        width: 1024
+        height: 616
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 29b708b8af2157f10800000000000000
-      internalID: 2266738854742490002
+      spriteID: e52737f7dca45cf90800000000000000
+      internalID: -6934053804799987106
       vertices: []
       indices: 
       edges: []
@@ -148,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      catia_chibi_0: 2266738854742490002
+      bg_nav_menu_0: -6934053804799987106
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

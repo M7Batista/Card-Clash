@@ -82,6 +82,7 @@ public class CardStealUIManager : MonoBehaviour
             if (playerWon) // se o jogador venceu, pode clicar nas cartas inimigas
             {
                 cardUI.SetCard(card, Owner.Enemy);
+                cardUI.ShowBack(); // mostra o verso da carta
                 cardIstance.AddComponent<Button>();
                 Button btn = cardIstance.GetComponent<Button>();
                 btn.onClick.AddListener(() => OnEnemyCardClicked(card, cardIstance));
@@ -106,8 +107,7 @@ public class CardStealUIManager : MonoBehaviour
         selectedCardGO.transform.localPosition += Vector3.up * 40f;
 
         confirmModal.SetActive(true);
-        //confirmText.text = $"Deseja roubar a carta \"{card.cardName}\" ({card.rarity})?";
-        confirmText.text = $"Do you want to get the \"{card.cardName}\" ({card.rarity}) card?";
+        confirmText.text = "Do you wish to choose this Card?";
 
         confirmYesButton.onClick.RemoveAllListeners();
         confirmYesButton.onClick.AddListener(() => ConfirmSteal());
@@ -120,7 +120,9 @@ public class CardStealUIManager : MonoBehaviour
     private void ConfirmSteal()
     {
         Debug.Log($"Jogador roubou: {selectedCard.cardName} ({selectedCard.rarity})");
-
+        // Faz um flip na carta para mostrar a frente
+        CardUI cardUI = selectedCardGO.GetComponent<CardUI>();
+        cardUI.ShowFront();
         // Salvar na coleção oficial
         PlayerDeckManager.AddCardToCollection(selectedCard.id);
 
@@ -245,7 +247,7 @@ public class CardStealUIManager : MonoBehaviour
         }
 
         // 🔹 Pausa no centro
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
 
         // 🔹 Calcula posição final (fora da tela)
         elapsed = 0f;

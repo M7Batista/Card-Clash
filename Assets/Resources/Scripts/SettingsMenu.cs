@@ -6,34 +6,28 @@ public class SettingsMenu : MonoBehaviour
     [Header("UI Elements")]
     public Slider musicSlider;
     public Slider sfxSlider;
-    public Toggle musicMuteToggle;
-    public Toggle sfxMuteToggle;
+    public Button clearDataButton;
+    public GameObject floatingMessagePrefab;
+    public Transform uiCanvas;
 
     private void Start()
     {
         // 🔹 Carrega preferências salvas
         float musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
         float sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
-        bool musicMuted = PlayerPrefs.GetInt("MusicMuted", 0) == 1;
-        bool sfxMuted = PlayerPrefs.GetInt("SFXMuted", 0) == 1;
 
         // 🔹 Atualiza UI
         musicSlider.value = musicVolume;
         sfxSlider.value = sfxVolume;
-        musicMuteToggle.isOn = musicMuted;
-        sfxMuteToggle.isOn = sfxMuted;
 
         // 🔹 Aplica configurações
         AudioManager.Instance.SetMusicVolume(musicVolume);
         AudioManager.Instance.SetSFXVolume(sfxVolume);
-        AudioManager.Instance.MuteMusic(musicMuted);
-        AudioManager.Instance.MuteSFX(sfxMuted);
 
         // 🔹 Listeners
         musicSlider.onValueChanged.AddListener(SetMusicVolume);
         sfxSlider.onValueChanged.AddListener(SetSFXVolume);
-        musicMuteToggle.onValueChanged.AddListener(SetMusicMute);
-        sfxMuteToggle.onValueChanged.AddListener(SetSFXMute);
+        clearDataButton.onClick.AddListener(ClearData);
     }
 
     public void SetMusicVolume(float value)
@@ -50,22 +44,21 @@ public class SettingsMenu : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void SetMusicMute(bool isMuted)
+    public void ClearData()
     {
-        AudioManager.Instance.MuteMusic(isMuted);
-        PlayerPrefs.SetInt("MusicMuted", isMuted ? 1 : 0);
+        // 🔹 Limpa PlayerPrefs (mesmo que já fazia)
+        PlayerPrefs.DeleteKey("PlayerDeck");
+        PlayerPrefs.DeleteKey("PlayerCollection");
+        PlayerPrefs.DeleteKey("UnlockedStage");
+        PlayerPrefs.DeleteKey("HomeCharacterID");
+        PlayerPrefs.DeleteKey("PLAYER_TICKETS");
+        PlayerPrefs.DeleteKey("LAST_RECHARGE_DATE");
         PlayerPrefs.Save();
-    }
 
-    public void SetSFXMute(bool isMuted)
-    {
-        AudioManager.Instance.MuteSFX(isMuted);
-        PlayerPrefs.SetInt("SFXMuted", isMuted ? 1 : 0);
-        PlayerPrefs.Save();
-    }
-
-    public void CloseSettings()
-    {
-        gameObject.SetActive(false);
+        GameObject go = Instantiate(floatingMessagePrefab, uiCanvas);
+        go.transform.localPosition = Vector3.zero;
+        go.GetComponent<FloatingMessage>().Show("Dados do jogo apagados.");
+        // Reinicia a cena para atualizar o estado do jogo
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 }
