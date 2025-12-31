@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 5
   bottom: 7
   left: 4
-  artwork: {fileID: 21300000, guid: d54674a8f3f8bd74f9856425868a0e47, type: 3}
-  cardName: unknown
+  artwork: {fileID: 21300000, guid: dd03054fac37e6d43b23d78d6628d8f6, type: 3}
+  cardName: Mimosa

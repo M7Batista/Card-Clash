@@ -58,7 +58,7 @@ public class SettingsMenu : MonoBehaviour
         GameObject go = Instantiate(floatingMessagePrefab, uiCanvas);
         go.transform.localPosition = Vector3.zero;
         go.GetComponent<FloatingMessage>().Show("Dados do jogo apagados.");
-        // Reinicia a cena para atualizar o estado do jogo
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        // Reinicia o jogo
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
     }
 }

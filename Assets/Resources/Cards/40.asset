@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 5
   bottom: 4
   left: 6
-  artwork: {fileID: 21300000, guid: cf51c08d137880943a3a9161dc8ce40c, type: 3}
-  cardName: Pameli
+  artwork: {fileID: 21300000, guid: d54674a8f3f8bd74f9856425868a0e47, type: 3}
+  cardName: unknown

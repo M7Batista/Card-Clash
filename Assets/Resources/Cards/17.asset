@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 4
   bottom: 3
   left: 1
-  artwork: {fileID: 21300000, guid: 855f19ca97426ff4185808c8c78c0b89, type: 3}
-  cardName: Tayumi
+  artwork: {fileID: 4833778037354278333, guid: fb5d9716c13b28d46988aa1f39531711, type: 3}
+  cardName: Sate

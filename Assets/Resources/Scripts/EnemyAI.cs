@@ -12,23 +12,9 @@ public class EnemyAI : MonoBehaviour
     public static EnemyAI Instance;
     public List<CardData> enemyDeckInBattle = new List<CardData>();
     public EnemyDifficulty difficulty = EnemyDifficulty.Hard; // 🔹 Configurável no Inspetor
-    [Header("UI Debug")]
-    public TMP_Dropdown difficultyDropdown;
-    private void Start()
-    {
-        if (difficultyDropdown != null)
-        {
-            difficultyDropdown.ClearOptions();
-            difficultyDropdown.AddOptions(new List<string>(System.Enum.GetNames(typeof(EnemyDifficulty))));
 
-            // Ajusta valor inicial
-            difficultyDropdown.value = (int)difficulty;
-            difficultyDropdown.RefreshShownValue();
 
-            // Listener para trocar dificuldade
-            difficultyDropdown.onValueChanged.AddListener(OnDifficultyChanged);
-        }
-    }
+    
     private void OnDifficultyChanged(int index)
     {
         difficulty = (EnemyDifficulty)index;
@@ -39,6 +25,63 @@ public class EnemyAI : MonoBehaviour
     {
         Instance = this;
     }
+
+    /// <summary>
+    /// Define a dificuldade da IA baseada no número do estágio (1-100)
+    /// </summary>
+    public void SetDifficultyByStage(int stageNumber)
+    {
+        EnemyDifficulty baseDifficulty;
+
+        if (stageNumber >= 1 && stageNumber <= 25)
+        {
+            baseDifficulty = EnemyDifficulty.Easy;
+        }
+        else if (stageNumber >= 26 && stageNumber <= 50)
+        {
+            baseDifficulty = EnemyDifficulty.Medium;
+        }
+        else if (stageNumber >= 51 && stageNumber <= 75)
+        {
+            baseDifficulty = EnemyDifficulty.Hard;
+        }
+        else if (stageNumber >= 76 && stageNumber <= 100)
+        {
+            baseDifficulty = EnemyDifficulty.Advanced;
+        }
+        else
+        {
+            // Fallback para Hard se fora do range
+            baseDifficulty = EnemyDifficulty.Hard;
+        }
+
+        // Para estágios chefes (múltiplos de 10), aumentar a dificuldade
+        if (stageNumber % 10 == 0)
+        {
+            switch (baseDifficulty)
+            {
+                case EnemyDifficulty.Easy:
+                    difficulty = EnemyDifficulty.Medium;
+                    break;
+                case EnemyDifficulty.Medium:
+                    difficulty = EnemyDifficulty.Hard;
+                    break;
+                case EnemyDifficulty.Hard:
+                    difficulty = EnemyDifficulty.Advanced;
+                    break;
+                case EnemyDifficulty.Advanced:
+                    difficulty = EnemyDifficulty.Advanced; // Já é o máximo
+                    break;
+            }
+        }
+        else
+        {
+            difficulty = baseDifficulty;
+        }
+
+        Debug.Log($"🎚️ Dificuldade da IA definida para estágio {stageNumber}: {difficulty}");
+    }
+
     public void SetEnemyDeck(List<CardData> deck)
     {
         enemyDeckInBattle = new List<CardData>(deck);

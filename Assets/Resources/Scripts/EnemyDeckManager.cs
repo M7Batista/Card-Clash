@@ -106,70 +106,131 @@ public class EnemyDeckManager : MonoBehaviour
     /// </summary>
     private void LoadProbabilities()
     {
-        int[,] table = new int[,] {
-            // Estagio, comum, incomum, raro, epico, lendario
-            {0,100,0,0,0,0},
-            { 1,70,30,0,0,0},
-            { 2,70,30,0,0,0},
-            { 3,70,30,0,0,0},
-            { 4,70,30,0,0,0},
-            { 5,70,30,0,0,0},
-            {6,50,35,15,0,0},
-            { 7,50,35,15,0,0},
-            { 8,50,35,15,0,0},
-            { 9,50,35,15,0,0},
-            {10,20,30,30,15,5},
-            {11,40,35,25,0,0},
-            { 12,40,35,25,0,0},
-            { 13,40,35,25,0,0},
-            { 14,40,35,25,0,0},
-            { 15,40,35,25,0,0},
-            {16,25,40,30,5,0},
-            { 17,25,40,30,5,0},
-            { 18,25,40,30,5,0},
-            { 19,25,40,30,5,0},
-            {20,10,25,35,20,10},
-            {21,20,30,35,15,0},
-            { 22,20,30,35,15,0},{23,20,30,35,15,0},{24,20,30,35,15,0},{25,20,30,35,15,0},
-            {26,10,25,35,25,5},{27,10,25,35,25,5},{28,10,25,35,25,5},{29,10,25,35,25,5},
-            {30,5,15,30,30,20},
-            {31,8,22,40,25,5},{32,8,22,40,25,5},{33,8,22,40,25,5},{34,8,22,40,25,5},{35,8,22,40,25,5},
-            {36,5,20,40,30,5},{37,5,20,40,30,5},{38,5,20,40,30,5},{39,5,20,40,30,5},
-            {40,2,10,35,33,20},
-            {41,5,18,40,30,7},{42,5,18,40,30,7},{43,5,18,40,30,7},{44,5,18,40,30,7},{45,5,18,40,30,7},
-            {46,3,15,40,32,10},{47,3,15,40,32,10},{48,3,15,40,32,10},{49,3,15,40,32,10},
-            {50,1,10,30,34,25},
-            {51,3,12,35,35,15},{52,3,12,35,35,15},{53,3,12,35,35,15},{54,3,12,35,35,15},{55,3,12,35,35,15},
-            {56,2,10,32,36,20},{57,2,10,32,36,20},{58,2,10,32,36,20},{59,2,10,32,36,20},
-            {60,1,8,25,36,30},
-            {61,2,8,30,40,20},{62,2,8,30,40,20},{63,2,8,30,40,20},{64,2,8,30,40,20},{65,2,8,30,40,20},
-            {66,1,6,28,40,25},{67,1,6,28,40,25},{68,1,6,28,40,25},{69,1,6,28,40,25},
-            {70,1,5,20,39,35},
-            {71,1,5,25,40,29},{72,1,5,25,40,29},{73,1,5,25,40,29},{74,1,5,25,40,29},{75,1,5,25,40,29},
-            {76,1,4,20,40,35},{77,1,4,20,40,35},{78,1,4,20,40,35},{79,1,4,20,40,35},
-            {80,1,3,15,41,40},
-            {81,1,3,18,42,36},{82,1,3,18,42,36},{83,1,3,18,42,36},{84,1,3,18,42,36},{85,1,3,18,42,36},
-            {86,1,2,15,42,40},{87,1,2,15,42,40},{88,1,2,15,42,40},{89,1,2,15,42,40},
-            {90,1,2,8,39,50},
-            {91,1,2,12,40,45},{92,1,2,12,40,45},{93,1,2,12,40,45},{94,1,2,12,40,45},{95,1,2,12,40,45},
-            {96,1,1,10,39,49},{97,1,1,10,39,49},{98,1,1,10,39,49},{99,1,1,10,39,49},
-            {100,0,1,5,44,50}
-        };
-
         stageProbabilities.Clear();
 
-        for (int i = 0; i < table.GetLength(0); i++)
+        for (int stage = 1; stage <= 100; stage++)
         {
-            stageProbabilities.Add(
-                new CardProbability(
-                    table[i,0],
-                    table[i,1],
-                    table[i,2],
-                    table[i,3],
-                    table[i,4],
-                    table[i,5]
-                )
-            );
+            bool isBoss = stage % 10 == 0;
+            float comum = 0, incomum = 0, raro = 0, epico = 0, lendario = 0;
+
+            if (stage <= 5)
+            {
+                comum = 100;
+            }
+            else if (stage <= 9)
+            {
+                comum = 70;
+                incomum = 30;
+            }
+            else
+            {
+                int group = (stage - 1) / 10 + 1; // 2 for 10-19, 3 for 20-29, etc.
+                int maxRarity = group;
+                if (isBoss) maxRarity++;
+                if (maxRarity > 5) maxRarity = 5;
+
+                // Define probabilities based on maxRarity
+                if (maxRarity == 3) // 10-19, non-boss: common, uncommon, rare
+                {
+                    if (isBoss)
+                    {
+                        comum = 20; incomum = 30; raro = 30; epico = 15; lendario = 5;
+                    }
+                    else
+                    {
+                        comum = 40; incomum = 35; raro = 25;
+                    }
+                }
+                else if (maxRarity == 4) // 20-29, non-boss: up to epic
+                {
+                    if (isBoss)
+                    {
+                        comum = 10; incomum = 25; raro = 35; epico = 20; lendario = 10;
+                    }
+                    else
+                    {
+                        comum = 20; incomum = 30; raro = 35; epico = 15;
+                    }
+                }
+                else if (maxRarity == 5) // 30+, up to legendary
+                {
+                    if (isBoss)
+                    {
+                        // For bosses, adjust based on stage
+                        if (stage == 30)
+                        {
+                            comum = 5; incomum = 15; raro = 30; epico = 30; lendario = 20;
+                        }
+                        else if (stage == 40)
+                        {
+                            comum = 2; incomum = 10; raro = 35; epico = 33; lendario = 20;
+                        }
+                        else if (stage == 50)
+                        {
+                            comum = 1; incomum = 10; raro = 30; epico = 34; lendario = 25;
+                        }
+                        else if (stage == 60)
+                        {
+                            comum = 1; incomum = 8; raro = 25; epico = 36; lendario = 30;
+                        }
+                        else if (stage == 70)
+                        {
+                            comum = 1; incomum = 5; raro = 20; epico = 39; lendario = 35;
+                        }
+                        else if (stage == 80)
+                        {
+                            comum = 1; incomum = 3; raro = 15; epico = 41; lendario = 40;
+                        }
+                        else if (stage == 90)
+                        {
+                            comum = 1; incomum = 2; raro = 8; epico = 39; lendario = 50;
+                        }
+                        else if (stage == 100)
+                        {
+                            comum = 0; incomum = 1; raro = 5; epico = 44; lendario = 50;
+                        }
+                        else
+                        {
+                            // For other bosses, use similar to 30
+                            comum = 5; incomum = 15; raro = 30; epico = 30; lendario = 20;
+                        }
+                    }
+                    else
+                    {
+                        // For non-bosses in higher groups, use values similar to previous
+                        if (stage <= 39)
+                        {
+                            comum = 8; incomum = 22; raro = 40; epico = 25; lendario = 5;
+                        }
+                        else if (stage <= 49)
+                        {
+                            comum = 5; incomum = 18; raro = 40; epico = 30; lendario = 7;
+                        }
+                        else if (stage <= 59)
+                        {
+                            comum = 3; incomum = 12; raro = 35; epico = 35; lendario = 15;
+                        }
+                        else if (stage <= 69)
+                        {
+                            comum = 2; incomum = 8; raro = 30; epico = 40; lendario = 20;
+                        }
+                        else if (stage <= 79)
+                        {
+                            comum = 1; incomum = 5; raro = 25; epico = 40; lendario = 29;
+                        }
+                        else if (stage <= 89)
+                        {
+                            comum = 1; incomum = 3; raro = 18; epico = 42; lendario = 36;
+                        }
+                        else if (stage <= 99)
+                        {
+                            comum = 1; incomum = 2; raro = 12; epico = 40; lendario = 45;
+                        }
+                    }
+                }
+            }
+
+            stageProbabilities.Add(new CardProbability(stage, comum, incomum, raro, epico, lendario));
         }
     }
 }
