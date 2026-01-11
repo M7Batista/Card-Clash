@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using System.Globalization;
 
 
 [System.Serializable]
@@ -74,6 +76,8 @@ public class EnemyDeckManager : MonoBehaviour
                 enemyDeck.Add(allCards[Random.Range(0, allCards.Count)]);
             }
         }
+        Debug.Log("Probabilidades usadas para estágio " + stageNumber + ": " +
+                  $"Comum: {prob.comum}%, Incomum: {prob.incomum}%, Raro: {prob.raro}%, Épico: {prob.epico}%, Lendário: {prob.lendario}%");
 
         return enemyDeck;
     }
@@ -102,9 +106,50 @@ public class EnemyDeckManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Preenche a lista de probabilidades (dados embutidos)
+    /// Carrega as probabilidades de um arquivo CSV ou usa valores padrão
     /// </summary>
     private void LoadProbabilities()
+    {
+        TextAsset csvFile = Resources.Load<TextAsset>("Files/Probabilities");
+        if (csvFile != null)
+        {
+            stageProbabilities.Clear();
+            string[] lines = csvFile.text.Split('\n');
+            bool isFirstLine = true;
+            foreach (string line in lines)
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+                if (isFirstLine)
+                {
+                    isFirstLine = false; // skip header
+                    continue;
+                }
+                string[] values = line.Split(',');
+                if (values.Length >= 6)
+                {
+                    int stage = int.Parse(values[0]);
+                    float comum = float.Parse(values[1], CultureInfo.InvariantCulture);
+                    float incomum = float.Parse(values[2], CultureInfo.InvariantCulture);
+                    float raro = float.Parse(values[3], CultureInfo.InvariantCulture);
+                    float epico = float.Parse(values[4], CultureInfo.InvariantCulture);
+                    float lendario = float.Parse(values[5], CultureInfo.InvariantCulture);
+                    stageProbabilities.Add(new CardProbability(stage, comum, incomum, raro, epico, lendario));
+                }
+            }
+            Debug.Log("Probabilidades carregadas do arquivo CSV.");
+        }
+        else
+        {
+            // fallback: carregar valores embutidos
+            LoadHardcodedProbabilities();
+            Debug.Log("Arquivo CSV não encontrado. Usando probabilidades embutidas.");
+        }
+    }
+
+    /// <summary>
+    /// Preenche a lista de probabilidades (dados embutidos)
+    /// </summary>
+    private void LoadHardcodedProbabilities()
     {
         stageProbabilities.Clear();
 

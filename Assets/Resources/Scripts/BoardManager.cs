@@ -283,6 +283,9 @@ public class BoardManager : MonoBehaviour
         if (specialRuleSFX != null && AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX("specialRuleSFX");
 
+        // Vibração no dispositivo
+        Handheld.Vibrate();
+
         StopAllCoroutines(); // evita sobreposição
         StartCoroutine(FadeRuleText());
     }

@@ -12,7 +12,7 @@ public class DeckEditorUI : MonoBehaviour
     public Transform uiCanvas;
     public Transform collectionContainer;
     public Transform deckSlotsContainer;
-    public Button saveButton, clearButton;
+    public Button clearButton, autoAssignButton;
     public TextMeshProUGUI combatPowerText;
     public ScrollRect scrollRect;
 
@@ -51,8 +51,8 @@ public class DeckEditorUI : MonoBehaviour
         PopulateCollection();
         StartCoroutine(LoadDeckWithDelay());
 
-        saveButton.onClick.AddListener(SaveDeck);
         clearButton.onClick.AddListener(ClearSlot);
+        autoAssignButton.onClick.AddListener(AutoAssignStrongestCards);
     }
 
     private IEnumerator LoadDeckWithDelay()
@@ -90,6 +90,7 @@ public class DeckEditorUI : MonoBehaviour
                 slotWithCard.ClearSlot();
                 RefreshMarksForCardID(cardUI.cardData.id);
                 RefreshActiveDeckList();
+                AutoSaveDeck();
                 return;
             }
         }
@@ -101,6 +102,7 @@ public class DeckEditorUI : MonoBehaviour
             emptySlot.SetCard(cardUI.cardData);
             RefreshMarksForCardID(cardUI.cardData.id);
             RefreshActiveDeckList();
+            AutoSaveDeck();
             return;
         }
 
@@ -138,6 +140,7 @@ public class DeckEditorUI : MonoBehaviour
 
         RefreshActiveDeckList();
         UpdateCombatPower();
+        AutoSaveDeck();
     }
 
     private DeckSlot FindEmptySlot()
@@ -197,6 +200,7 @@ public class DeckEditorUI : MonoBehaviour
 
         RefreshActiveDeckList();
         UpdateCombatPower();
+        AutoSaveDeck();
     }
 
     private void RefreshActiveDeckList()
@@ -210,17 +214,13 @@ public class DeckEditorUI : MonoBehaviour
         UpdateCombatPower();
     }
 
-    private void SaveDeck()
+    private void AutoSaveDeck()
     {
         List<int> deckIds = new List<int>();
         foreach (var slot in deckSlots)
             deckIds.Add(slot.CurrentCard != null ? slot.CurrentCard.cardData.id : -1);
 
         PlayerDeckManager.SaveDeck(deckIds);
-
-        GameObject go = Instantiate(floatingMessagePrefab, uiCanvas);
-        go.transform.localPosition = Vector3.zero;
-        go.GetComponent<FloatingMessage>().Show("Deck saved successfully!");
     }
 
     private void LoadActiveDeck()
@@ -305,5 +305,33 @@ public class DeckEditorUI : MonoBehaviour
 
         if (combatPowerText != null)
             combatPowerText.text = totalPower.ToString();
+    }
+
+    private void AutoAssignStrongestCards()
+    {
+        // Limpa o deck atual
+        ClearSlot();
+
+        // Ordena a coleção por poder total (descendente)
+        List<CardData> sortedCards = new List<CardData>(playerCollection);
+        sortedCards.Sort((a, b) => 
+        {
+            int powerA = a.top + a.right + a.bottom + a.left;
+            int powerB = b.top + b.right + b.bottom + b.left;
+            return powerB.CompareTo(powerA); // Descendente
+        });
+
+        // Adiciona as 5 cartas mais fortes ao deck
+        int count = Mathf.Min(5, sortedCards.Count, deckSlots.Length);
+        for (int i = 0; i < count; i++)
+        {
+            DeckSlot slot = deckSlots[i];
+            slot.SetCard(sortedCards[i]);
+            RefreshMarksForCardID(sortedCards[i].id);
+        }
+
+        RefreshActiveDeckList();
+        UpdateCombatPower();
+        AutoSaveDeck();
     }
 }

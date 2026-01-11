@@ -18,6 +18,8 @@ public class BattleCardScreen : MonoBehaviour
     public GameObject cardPrefab;
 
     public Button startBattleButton;
+    public Button exitBattleButton;
+    public Button restartBattleButton;
 
     [Header("Telas")]
     public GameObject stageScreen;
@@ -62,6 +64,8 @@ public class BattleCardScreen : MonoBehaviour
     {
         Instance = this;
         startBattleButton.onClick.AddListener(StartBattleButtonClicked);
+        exitBattleButton.onClick.AddListener(ExitBattle);
+        restartBattleButton.onClick.AddListener(RestartBattle);
     }
     void StartBattleButtonClicked()
     {
@@ -257,6 +261,8 @@ public class BattleCardScreen : MonoBehaviour
         BoardManager.Instance.HideTurnArrow();
         stealCardsScreen.SetActive(false);
         ClearBattleState();
+        // interrompe qualquer música de batalha
+        AudioManager.Instance.StopMusic();
     }
     public void OnScreenClosed()
     {

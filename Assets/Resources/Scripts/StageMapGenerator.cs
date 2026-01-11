@@ -13,8 +13,8 @@ public class StageMapGenerator : MonoBehaviour
     public GameObject stageButtonPrefab; // Prefab do botão de estágio (com número)
     public int unlockedStage = 1;
     public int currentStage = 1;
-    private Color unlockedColor = Color.white;
-    private Color lockedColor = new Color32(150, 150, 150, 255);
+    public Color unlockedColor = new Color32(255, 117, 194, 255);
+    public Color lockedColor = new Color32(150, 150, 150, 255);
 
     public static StageMapGenerator Instance;
 
@@ -76,7 +76,7 @@ public class StageMapGenerator : MonoBehaviour
             {
                 Image img = newButton.GetComponent<Image>();
                 if (img != null)
-                    img.color = Color.yellow;
+                    img.color = Color.blue;
             }
         }
     }
