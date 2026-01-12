@@ -1,13 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-/// <summary>
-/// Responsável por preparar a configuração da batalha:
-/// - gerar deck inimigo por estágio
-/// - aplicar regras especiais (RuleSame / RulePlus)
-/// - configurar dificuldade (salvar em PlayerPrefs e notificar AI se disponível)
-/// </summary>
 public class BattleSetupManager : MonoBehaviour
 {
     public static BattleSetupManager Instance { get; private set; }
@@ -20,7 +13,7 @@ public class BattleSetupManager : MonoBehaviour
     {
         Instance = this;
     }
-    void LoadPlayerActiveDeck()
+    public void SetPlayerActiveDeck()
     {
 
         // 🔹 Carregar os ids do deck ativo do jogador
@@ -35,11 +28,12 @@ public class BattleSetupManager : MonoBehaviour
         }
 
     }
-    void LoadEnemyActiveDeck(int stageNumber)
+    public void SetEnemyActiveDeck(int stageNumber)
     {
         // 🔹 Gerar deck inimigo baseado no estágio atual
         enemyActiveDeck.Clear();
         enemyActiveDeck = EnemyDeckManager.Instance.GenerateEnemyDeck(stageNumber);
-        EnemyAI.Instance.SetEnemyDeck(enemyActiveDeck);
+
     }
+    
 }

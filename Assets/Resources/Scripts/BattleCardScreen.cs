@@ -6,9 +6,6 @@ using TMPro;
 
 public class BattleCardScreen : MonoBehaviour
 {
-    [Header("Listas de Cards")]
-    public List<CardData> playerActiveDeck = new List<CardData>();   // 🔹 As 5 cartas escolhidas pelo jogador para a partida
-    public List<CardData> enemyActiveDeck = new List<CardData>();    // 🔹 As 5 cartas que o inimigo usará na partida
 
     [Header("Referências na UI")]
     public Transform playerHandArea;
@@ -17,7 +14,6 @@ public class BattleCardScreen : MonoBehaviour
     public GameObject roulletPrefab;
     public GameObject cardPrefab;
 
-    public Button startBattleButton;
     public Button exitBattleButton;
     public Button restartBattleButton;
 
@@ -33,92 +29,22 @@ public class BattleCardScreen : MonoBehaviour
     public Owner currentTurn = Owner.None;
     public int filledSlots = 0;
     public static BattleCardScreen Instance;
-    [Header("Preparação de Batalha")]
-    public GameObject panelPrepareBattle;
-    public TextMeshProUGUI stageText;
-    public TextMeshProUGUI enemyPowerText;
-    public TextMeshProUGUI playerPowerText;
-    public Button pStartBattleButton;
-    public Button pCancelBattleButton;
+    
 
     public Canvas mainCanvas;
     public void OnScreenOpened()
     {
-
         Debug.Log("Tela de Batalha de Cartas aberta!");
-
     }
-    void GetPlayerDeck()
-    {
-        playerActiveDeck.Clear();
-        List<int> playerDeckIds = PlayerDeckManager.LoadDeck();
-        foreach (int id in playerDeckIds)
-        {
-            CardData card = PlayerDeckManager.GetCardById(id);
-            if (card != null)
-                playerActiveDeck.Add(card);
-        }
-    }
+    
 
     void Start()
     {
         Instance = this;
-        startBattleButton.onClick.AddListener(StartBattleButtonClicked);
         exitBattleButton.onClick.AddListener(ExitBattle);
         restartBattleButton.onClick.AddListener(RestartBattle);
     }
-    void StartBattleButtonClicked()
-    {
-        Debug.Log("Botão Iniciar Batalha clicado!");
-        int stage = PlayerPrefs.GetInt("UnlockedStage", 1);
-        PrepareBattle(stage);
-    }
-    public void PrepareBattle(int currentStage)
-    {
 
-        GetPlayerDeck();
-        // 🔹 Carregar o estágio atual
-        // Prepara o deck do inimigo baseado no estágio atual
-        enemyActiveDeck = EnemyDeckManager.Instance.GenerateEnemyDeck(currentStage);
-        //SetEnemyDeck(EnemyDeckManager.Instance.GenerateEnemyDeck(currentStage));
-        EnemyAI.Instance.SetEnemyDeck(enemyActiveDeck);
-        EnemyAI.Instance.SetDifficultyByStage(currentStage);
-        // Calcula o poder do inimigo
-        int enemyPower = 0;
-        foreach (var card in enemyActiveDeck)
-        {
-            enemyPower += (card.top + card.bottom + card.left + card.right);
-        }
-        enemyPowerText.text = enemyPower.ToString();
-        // Calcula o poder do jogador
-        int playerPower = 0;
-        foreach (var card in playerActiveDeck)
-        {
-            playerPower += (card.top + card.bottom + card.left + card.right);
-        }
-        playerPowerText.text = playerPower.ToString();
-
-        
-        stageText.text = "Stage " + currentStage;
-
-        panelPrepareBattle.SetActive(true);
-        pStartBattleButton.onClick.RemoveAllListeners();
-        pStartBattleButton.onClick.AddListener(() =>
-        {
-            panelPrepareBattle.SetActive(false);
-            StartBattle();
-        });
-        pCancelBattleButton.onClick.RemoveAllListeners();
-        pCancelBattleButton.onClick.AddListener(() =>
-        {
-            panelPrepareBattle.SetActive(false);
-        });
-
-    }
-    public void SetEnemyDeck(List<CardData> enemyDeck)
-    {
-        enemyActiveDeck = enemyDeck;
-    }
     public void StartBattle()
     {
         // 🔹 Verifica se o jogador tem tickets suficientes
@@ -129,14 +55,14 @@ public class BattleCardScreen : MonoBehaviour
             return;
         } 
         // 🔹 Verifica se o deck do jogador está válido
-        if (playerActiveDeck == null || playerActiveDeck.Count < 5)
+        if (BattleSetupManager.Instance.playerActiveDeck == null || BattleSetupManager.Instance.playerActiveDeck.Count < 5)
         {
             Dialog.Instance.ShowMessage("Choose your cards before starting the game!");
             Debug.LogError("❌ O jogador não possui 5 cartas definidas no deck. O jogo não pode iniciar!");
             return;
         }
         // 🔹 Verifica se o inimigo tem cartas
-        if (enemyActiveDeck == null || enemyActiveDeck.Count < 5)
+        if (BattleSetupManager.Instance.enemyActiveDeck == null || BattleSetupManager.Instance.enemyActiveDeck.Count < 5)
         {
             Dialog.Instance.ShowMessage("Enemy deck is not set! Cannot start the game.");
             Debug.LogError("❌ O deck do inimigo não está definido. O jogo não pode iniciar!");
@@ -145,20 +71,26 @@ public class BattleCardScreen : MonoBehaviour
         stageScreen.SetActive(false);
         battleScreen.SetActive(true);
 
-        currentRoullet = Instantiate(roulletPrefab, mainCanvas.transform);
+        // 🔹 Inicia a distribuição de cartas e depois a roleta
+        StartCoroutine(StartBattleSequence());
+    }
 
+    private IEnumerator StartBattleSequence()
+    {
         // 🔹 Distribuir cartas na mão
-        StartCoroutine(CardDealer.Instance.DealCards(
-            playerActiveDeck,
-            enemyActiveDeck,
+        yield return StartCoroutine(CardDealer.Instance.DealCards(
+            BattleSetupManager.Instance.playerActiveDeck,
+            BattleSetupManager.Instance.enemyActiveDeck,
             playerHandArea,
             enemyHandArea,
             cardPrefab
         ));
+
+        // 🔹 Agora instancia a roleta após as cartas serem distribuídas
+        currentRoullet = Instantiate(roulletPrefab, mainCanvas.transform);
+
         BoardManager.Instance.UpdateBoardCounts(); // Atualiza contadores iniciais
         AudioManager.Instance.PlayMusic(AudioManager.Instance.battleMusic);
-
-
     }
 
 
@@ -188,8 +120,6 @@ public class BattleCardScreen : MonoBehaviour
         int index = cardUI.transform.parent.GetSiblingIndex();
         Debug.Log("Jogador jogou: " + cardUI.cardData.cardName + " no slot " + index);
         filledSlots++;
-        //playerActiveDeck.Remove(cardUI.cardData);
-        // 🔹 Usa o BoardManager para capturas
         bool anyCapture = BoardManager.Instance.CheckCaptures(index);
         currentTurn = Owner.Enemy;
         NextTurn();
@@ -237,11 +167,11 @@ public class BattleCardScreen : MonoBehaviour
         if (result == 0)
         {
 
-            CardStealUIManager.Instance.OpenStealScreen(playerActiveDeck, enemyActiveDeck, true, false);
+            CardStealUIManager.Instance.OpenStealScreen(BattleSetupManager.Instance.playerActiveDeck, BattleSetupManager.Instance.enemyActiveDeck, true, false);
         }
         else if (result == 1)
         {
-            CardStealUIManager.Instance.OpenStealScreen(playerActiveDeck, enemyActiveDeck, false, false);
+            CardStealUIManager.Instance.OpenStealScreen(BattleSetupManager.Instance.playerActiveDeck, BattleSetupManager.Instance.enemyActiveDeck, false, false);
         }
         else
         {
@@ -275,8 +205,8 @@ public class BattleCardScreen : MonoBehaviour
         // Limpa o estado da batalha (opcional)
         filledSlots = 0;
         currentTurn = Owner.None;
-        playerActiveDeck.Clear();
-        enemyActiveDeck.Clear();
+        BattleSetupManager.Instance.playerActiveDeck.Clear();
+        BattleSetupManager.Instance.enemyActiveDeck.Clear();
 
         foreach (Transform child in playerHandArea) Destroy(child.gameObject);
         foreach (Transform child in enemyHandArea) Destroy(child.gameObject);
@@ -287,14 +217,7 @@ public class BattleCardScreen : MonoBehaviour
                 Destroy(card.gameObject); // só destrói a carta dentro do slot
             }
         }
-        // Recarrega o deck do jogador
-        List<int> playerDeckIds = PlayerDeckManager.LoadDeck();
-        foreach (int id in playerDeckIds)
-        {
-            CardData card = PlayerDeckManager.GetCardById(id);
-            if (card != null)
-                playerActiveDeck.Add(card);
-        }
+        
     }
     void ClearBattleState()
     {
@@ -316,17 +239,5 @@ public class BattleCardScreen : MonoBehaviour
         }
     }
 
-    public void SetRuleSame(bool active)
-    {
-        BattleSetupManager.Instance.ruleSame = active;
-        PlayerPrefs.SetInt("RuleSame", active ? 1 : 0);
-        PlayerPrefs.Save();
-    }
-    public void SetRulePlus(bool active)
-    {
-        BattleSetupManager.Instance.rulePlus = active;
-        PlayerPrefs.SetInt("RulePlus", active ? 1 : 0);
-        PlayerPrefs.Save();
-    }
-
+   
 }

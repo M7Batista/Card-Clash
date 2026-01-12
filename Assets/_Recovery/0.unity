@@ -960,7 +960,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 40, y: -40}
+  m_AnchoredPosition: {x: 50, y: -40}
   m_SizeDelta: {x: 40, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &78983374
@@ -2382,7 +2382,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 110}
-  m_SizeDelta: {x: 300, y: 112}
+  m_SizeDelta: {x: 340, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &184621107
 MonoBehaviour:
@@ -2473,7 +2473,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -359524001, guid: fd6cb592190e4d0478872c048c13d0cc, type: 3}
+  m_Sprite: {fileID: 1042990174, guid: fd6cb592190e4d0478872c048c13d0cc, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3211,14 +3211,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c30587c061d2d324889a6deb036ca43f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PrepareBattleScreen
+  playerActiveDeck: []
+  enemyActiveDeck: []
   stageText: {fileID: 458544944}
   enemyPowerText: {fileID: 492427711}
   playerPowerText: {fileID: 1943010049}
   pStartBattleButton: {fileID: 2090131508}
   pCancelBattleButton: {fileID: 164153169}
-  playerHandArea: {fileID: 872996367}
-  enemyHandArea: {fileID: 1867474685}
-  cardPrefab: {fileID: 1825409461321534248, guid: 8a8f4b99c6172b54391ffbf246ba9910, type: 3}
 --- !u!1 &247693498
 GameObject:
   m_ObjectHideFlags: 0
@@ -4509,7 +4508,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -250}
+  m_AnchoredPosition: {x: 0, y: -286}
   m_SizeDelta: {x: -100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &323383770
@@ -4755,7 +4754,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 112}
+  m_SizeDelta: {x: 340, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &393342574
 MonoBehaviour:
@@ -4821,8 +4820,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1592617755, guid: fd6cb592190e4d0478872c048c13d0cc, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 1099718238, guid: fd6cb592190e4d0478872c048c13d0cc, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -6570,7 +6569,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: -70}
-  m_SizeDelta: {x: 300, y: 112}
+  m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &598974268
 MonoBehaviour:
@@ -8595,7 +8594,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 4.799999}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &705673467
@@ -8645,8 +8644,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -9629,7 +9628,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 5.5999985}
+  m_AnchoredPosition: {x: 0, y: 11.299999}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &758365010
@@ -9654,15 +9653,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: MY DECK
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5405d6911e002d047909917d2a8d73d1, type: 2}
-  m_sharedMaterial: {fileID: 2645611059184206327, guid: 5405d6911e002d047909917d2a8d73d1, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c11ebb5630e471b429818607337a76d0, type: 2}
+  m_sharedMaterial: {fileID: -6441004883435496499, guid: c11ebb5630e471b429818607337a76d0, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4280554497
+  m_fontColor: {r: 0.003921569, g: 0.078431375, b: 0.14117648, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -10267,7 +10266,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Your Deck
+  m_text: Deck
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c11ebb5630e471b429818607337a76d0, type: 2}
   m_sharedMaterial: {fileID: -6441004883435496499, guid: c11ebb5630e471b429818607337a76d0, type: 2}
@@ -10300,7 +10299,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -10549,7 +10548,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 4}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &851273582
@@ -10574,15 +10573,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Close
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5405d6911e002d047909917d2a8d73d1, type: 2}
-  m_sharedMaterial: {fileID: 2645611059184206327, guid: 5405d6911e002d047909917d2a8d73d1, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c11ebb5630e471b429818607337a76d0, type: 2}
+  m_sharedMaterial: {fileID: -6441004883435496499, guid: c11ebb5630e471b429818607337a76d0, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4281545523
+  m_fontColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -11230,6 +11229,8 @@ GameObject:
   - component: {fileID: 928715014}
   - component: {fileID: 928715016}
   - component: {fileID: 928715017}
+  - component: {fileID: 928715019}
+  - component: {fileID: 928715018}
   - component: {fileID: 928715020}
   m_Layer: 0
   m_Name: GameManager
@@ -11378,6 +11379,33 @@ MonoBehaviour:
   clearDataButton: {fileID: 1761067775}
   floatingMessagePrefab: {fileID: 3610297412550946047, guid: 01694b7b93e92b84ba2d076e8816e9f8, type: 3}
   uiCanvas: {fileID: 17173623}
+--- !u!114 &928715018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928715011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8383f62ba189a314a834611f1e829bec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDeckManager
+  allCards: []
+--- !u!114 &928715019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928715011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bebadc33a7b5494b9ce09b39cf537ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
+  enemyDeckInBattle: []
+  difficulty: 1
 --- !u!114 &928715020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13094,7 +13122,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 150}
-  m_SizeDelta: {x: 300, y: 112}
+  m_SizeDelta: {x: 350, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1102898312
 MonoBehaviour:
@@ -13173,7 +13201,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 1812132976, guid: fd6cb592190e4d0478872c048c13d0cc, type: 3}
-  m_Type: 2
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -15143,7 +15171,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 130, y: -40}
-  m_SizeDelta: {x: 100, y: 60}
+  m_SizeDelta: {x: 80, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1306208806
 MonoBehaviour:
@@ -16241,15 +16269,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: AUTO EQUIP
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5405d6911e002d047909917d2a8d73d1, type: 2}
-  m_sharedMaterial: {fileID: 2645611059184206327, guid: 5405d6911e002d047909917d2a8d73d1, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c11ebb5630e471b429818607337a76d0, type: 2}
+  m_sharedMaterial: {fileID: -6441004883435496499, guid: c11ebb5630e471b429818607337a76d0, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278199129
+  m_fontColor: {r: 0.34901962, g: 0.13725491, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -16266,8 +16294,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -17229,8 +17257,6 @@ GameObject:
   - component: {fileID: 1501565234}
   - component: {fileID: 1501565233}
   - component: {fileID: 1501565235}
-  - component: {fileID: 1501565237}
-  - component: {fileID: 1501565236}
   m_Layer: 0
   m_Name: BatalheManager
   m_TagString: Untagged
@@ -17281,6 +17307,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2a6d5bff59555342b304b15d31445f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  playerActiveDeck: []
+  enemyActiveDeck: []
   playerHandArea: {fileID: 165657210}
   enemyHandArea: {fileID: 638206425}
   boardArea: {fileID: 323047574}
@@ -17293,34 +17321,13 @@ MonoBehaviour:
   stealCardsScreen: {fileID: 756091706}
   currentTurn: 0
   filledSlots: 0
+  panelPrepareBattle: {fileID: 243971933}
+  stageText: {fileID: 458544944}
+  enemyPowerText: {fileID: 0}
+  playerPowerText: {fileID: 1943010049}
+  pStartBattleButton: {fileID: 2090131508}
+  pCancelBattleButton: {fileID: 164153169}
   mainCanvas: {fileID: 17173622}
---- !u!114 &1501565236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1501565232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8383f62ba189a314a834611f1e829bec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyDeckManager
-  allCards: []
---- !u!114 &1501565237
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1501565232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bebadc33a7b5494b9ce09b39cf537ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
-  enemyDeckInBattle: []
-  difficulty: 1
 --- !u!1 &1520959756
 GameObject:
   m_ObjectHideFlags: 0
@@ -20304,7 +20311,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: -182, y: 0}
-  m_SizeDelta: {x: 240, y: 112}
+  m_SizeDelta: {x: 260, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1761067775
 MonoBehaviour:
@@ -20346,7 +20353,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1761067778}
+  m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -20378,8 +20385,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 137539899, guid: fd6cb592190e4d0478872c048c13d0cc, type: 3}
-  m_Type: 2
+  m_Sprite: {fileID: 778286872, guid: fd6cb592190e4d0478872c048c13d0cc, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -20882,15 +20889,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Challenge
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5405d6911e002d047909917d2a8d73d1, type: 2}
-  m_sharedMaterial: {fileID: 2645611059184206327, guid: 5405d6911e002d047909917d2a8d73d1, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c11ebb5630e471b429818607337a76d0, type: 2}
+  m_sharedMaterial: {fileID: -6441004883435496499, guid: c11ebb5630e471b429818607337a76d0, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278199129
+  m_fontColor: {r: 0.34901962, g: 0.13725491, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -21531,7 +21538,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535

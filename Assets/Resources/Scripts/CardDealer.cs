@@ -82,7 +82,6 @@ public class CardDealer : MonoBehaviour
             yield return new WaitForSeconds(dealDelay);
         }
 
-        DraggableCard.CanDrag = false;
         Debug.Log("✅ Distribuição de cartas concluída.");
 
         yield return new WaitForSeconds(0.3f);

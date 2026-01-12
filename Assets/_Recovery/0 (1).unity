@@ -11230,6 +11230,8 @@ GameObject:
   - component: {fileID: 928715014}
   - component: {fileID: 928715016}
   - component: {fileID: 928715017}
+  - component: {fileID: 928715019}
+  - component: {fileID: 928715018}
   - component: {fileID: 928715020}
   m_Layer: 0
   m_Name: GameManager
@@ -11378,6 +11380,33 @@ MonoBehaviour:
   clearDataButton: {fileID: 1761067775}
   floatingMessagePrefab: {fileID: 3610297412550946047, guid: 01694b7b93e92b84ba2d076e8816e9f8, type: 3}
   uiCanvas: {fileID: 17173623}
+--- !u!114 &928715018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928715011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8383f62ba189a314a834611f1e829bec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDeckManager
+  allCards: []
+--- !u!114 &928715019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928715011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bebadc33a7b5494b9ce09b39cf537ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
+  enemyDeckInBattle: []
+  difficulty: 1
 --- !u!114 &928715020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17229,8 +17258,6 @@ GameObject:
   - component: {fileID: 1501565234}
   - component: {fileID: 1501565233}
   - component: {fileID: 1501565235}
-  - component: {fileID: 1501565237}
-  - component: {fileID: 1501565236}
   m_Layer: 0
   m_Name: BatalheManager
   m_TagString: Untagged
@@ -17294,33 +17321,6 @@ MonoBehaviour:
   currentTurn: 0
   filledSlots: 0
   mainCanvas: {fileID: 17173622}
---- !u!114 &1501565236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1501565232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8383f62ba189a314a834611f1e829bec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyDeckManager
-  allCards: []
---- !u!114 &1501565237
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1501565232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bebadc33a7b5494b9ce09b39cf537ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
-  enemyDeckInBattle: []
-  difficulty: 1
 --- !u!1 &1520959756
 GameObject:
   m_ObjectHideFlags: 0

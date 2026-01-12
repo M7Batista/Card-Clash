@@ -55,7 +55,8 @@ public class EnemyDeckManager : MonoBehaviour
         List<CardData> enemyDeck = new List<CardData>();
 
         bool isBoss = stageNumber % 10 == 0;
-        int deckSize = isBoss ? 6 : 5;
+        //int deckSize = isBoss ? 6 : 5;
+        int deckSize = 5;
 
         CardProbability prob = stageProbabilities.Find(p => p.stage == stageNumber);
 

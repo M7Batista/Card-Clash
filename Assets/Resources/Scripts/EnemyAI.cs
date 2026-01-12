@@ -11,7 +11,7 @@ public class EnemyAI : MonoBehaviour
 {
     public static EnemyAI Instance;
     public List<CardData> enemyDeckInBattle = new List<CardData>();
-    public EnemyDifficulty difficulty = EnemyDifficulty.Hard; // 🔹 Configurável no Inspetor
+    EnemyDifficulty difficulty = EnemyDifficulty.Medium;
 
 
     
@@ -26,9 +26,6 @@ public class EnemyAI : MonoBehaviour
         Instance = this;
     }
 
-    /// <summary>
-    /// Define a dificuldade da IA baseada no número do estágio (1-100)
-    /// </summary>
     public void SetDifficultyByStage(int stageNumber)
     {
         EnemyDifficulty baseDifficulty;
@@ -81,7 +78,6 @@ public class EnemyAI : MonoBehaviour
 
         Debug.Log($"🎚️ Dificuldade da IA definida para estágio {stageNumber}: {difficulty}");
     }
-
     public void SetEnemyDeck(List<CardData> deck)
     {
         enemyDeckInBattle = new List<CardData>(deck);
@@ -89,6 +85,7 @@ public class EnemyAI : MonoBehaviour
 
     public void PlayTurn()
     {
+        
         var battle = BattleCardScreen.Instance;
 
         if (enemyDeckInBattle.Count == 0)

@@ -57,11 +57,13 @@ public class DraggableCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void OnEndDrag(PointerEventData eventData)
     {
         if (!CanDrag) return;
+        Debug.Log("OnEndDrag chamado");
 
         canvasGroup.blocksRaycasts = true;
         canvasGroup.alpha = 1f;
 
         GameObject target = eventData.pointerEnter;
+        Debug.Log("Carta solta sobre: " + (target != null ? target.name : "nada"));
 
         // 🔹 Verifica se soltou sobre um slot válido
         if (target != null && target.CompareTag("Slot"))
@@ -84,6 +86,7 @@ public class DraggableCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         {
             // 🔹 Volta para a mão do jogador com animação suave
             StartCoroutine(ReturnToHand());
+            Debug.Log("Carta retornou para a mão.");
         }
     }
 
