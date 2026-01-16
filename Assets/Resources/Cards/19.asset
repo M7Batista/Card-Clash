@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 1
   bottom: 5
   left: 4
-  artwork: {fileID: 21300000, guid: 60aff19244fd1cc4bb0a38e1efd829e1, type: 3}
-  cardName: Gobdine
+  artwork: {fileID: 21300000, guid: fb5d9716c13b28d46988aa1f39531711, type: 3}
+  cardName: Sate

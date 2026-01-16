@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 4
   bottom: 5
   left: 1
-  artwork: {fileID: 21300000, guid: ef44f7304da4fe14bbd72f56f54c46ee, type: 3}
-  cardName: Ravena
+  artwork: {fileID: 21300000, guid: 195da0ca696380f4dbc255e214610ff1, type: 3}
+  cardName: Tania

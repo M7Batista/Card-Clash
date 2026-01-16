@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1c590842f3dfdf341a43f8181a08fed4
+guid: dcd5150257d87bb448d171a51ef66a30
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7696121266164234668
-    second: Polygon 3_0
+      213: -3610764537554185192
+    second: Nymp_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -100,12 +100,25 @@ TextureImporter:
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 50
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 1
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
@@ -113,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Polygon 3_0
+      name: Nymp_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 142
-        height: 142
+        x: 14
+        y: 43
+        width: 1993
+        height: 1986
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 45683f5fb72e13590800000000000000
-      internalID: -7696121266164234668
+      spriteID: 8145183a8ccf3edc0800000000000000
+      internalID: -3610764537554185192
       vertices: []
       indices: 
       edges: []
@@ -148,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Polygon 3_0: -7696121266164234668
+      Nymp_0: -3610764537554185192
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
