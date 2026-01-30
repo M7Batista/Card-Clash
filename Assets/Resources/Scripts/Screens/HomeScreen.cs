@@ -6,23 +6,18 @@ using TMPro;
 
 public class HomeScreen : MonoBehaviour
 {
-    public TextMeshProUGUI txtTickets;
-
+   
     [Header("Personagem (Image UI)")]
     public Image characterImage;              // personagem que deve ficar centralizado no background
 
     [Header("Transições")]
     public float fadeDuration = 0.8f;
-
     
     void OnEnable()
     {
         Debug.Log("HomeScreen OnEnable");
         LoadCharacterImage();
         AudioManager.Instance?.PlayMusic(AudioManager.Instance.menuMusic);
-        if (BattleTicketSystem.Instance != null && txtTickets != null)
-            txtTickets.text = $"{BattleTicketSystem.Instance.GetCurrentTickets()}/30";
-
     }
 
     void LoadCharacterImage()
@@ -67,6 +62,6 @@ public class HomeScreen : MonoBehaviour
         color.a = 1f;
         characterImage.color = color;
     }
-
+   
     
 }

@@ -13,14 +13,6 @@ public class EnemyAI : MonoBehaviour
     public List<CardData> enemyDeckInBattle = new List<CardData>();
     EnemyDifficulty difficulty = EnemyDifficulty.Medium;
 
-
-    
-    private void OnDifficultyChanged(int index)
-    {
-        difficulty = (EnemyDifficulty)index;
-        Debug.Log($"🎚️ Dificuldade da IA alterada para: {difficulty}");
-    }
-
     private void Awake()
     {
         Instance = this;
@@ -28,53 +20,28 @@ public class EnemyAI : MonoBehaviour
 
     public void SetDifficultyByStage(int stageNumber)
     {
-        EnemyDifficulty baseDifficulty;
-
         if (stageNumber >= 1 && stageNumber <= 25)
         {
-            baseDifficulty = EnemyDifficulty.Easy;
+            difficulty = EnemyDifficulty.Easy;
         }
         else if (stageNumber >= 26 && stageNumber <= 50)
         {
-            baseDifficulty = EnemyDifficulty.Medium;
+            difficulty = EnemyDifficulty.Medium;
         }
         else if (stageNumber >= 51 && stageNumber <= 75)
         {
-            baseDifficulty = EnemyDifficulty.Hard;
+            difficulty = EnemyDifficulty.Hard;
         }
         else if (stageNumber >= 76 && stageNumber <= 100)
         {
-            baseDifficulty = EnemyDifficulty.Advanced;
+            difficulty = EnemyDifficulty.Advanced;
         }
         else
         {
             // Fallback para Hard se fora do range
-            baseDifficulty = EnemyDifficulty.Hard;
+            difficulty = EnemyDifficulty.Medium;
         }
 
-        // Para estágios chefes (múltiplos de 10), aumentar a dificuldade
-        if (stageNumber % 10 == 0)
-        {
-            switch (baseDifficulty)
-            {
-                case EnemyDifficulty.Easy:
-                    difficulty = EnemyDifficulty.Medium;
-                    break;
-                case EnemyDifficulty.Medium:
-                    difficulty = EnemyDifficulty.Hard;
-                    break;
-                case EnemyDifficulty.Hard:
-                    difficulty = EnemyDifficulty.Advanced;
-                    break;
-                case EnemyDifficulty.Advanced:
-                    difficulty = EnemyDifficulty.Advanced; // Já é o máximo
-                    break;
-            }
-        }
-        else
-        {
-            difficulty = baseDifficulty;
-        }
 
         Debug.Log($"🎚️ Dificuldade da IA definida para estágio {stageNumber}: {difficulty}");
     }

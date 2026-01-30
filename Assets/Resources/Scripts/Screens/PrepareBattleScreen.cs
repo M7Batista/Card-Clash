@@ -10,19 +10,50 @@ public class PrepareBattleScreen : MonoBehaviour
     public TextMeshProUGUI stageText;
     public TextMeshProUGUI enemyPowerText;
     public TextMeshProUGUI playerPowerText;
-    public Button pStartBattleButton;
-    public Button pCancelBattleButton;
-
+    public Button ButtonStartBattle;
+    public Button ButtonReturn;
+    public Button ButtonEditDeck;
     public Transform playerHandArea;
     public Transform enemyHandArea;
     public GameObject cardPrefab;
+    public GameObject EditDeckScreen;
+    private bool buttonsInitialized = false;
 
     void OnEnable()
     {
         Debug.Log("PrepareBattleScreen Opened");
         int stage = PlayerPrefs.GetInt("UnlockedStage", 1);
+        
+        if (!buttonsInitialized)
+        {
+            InitializeButtons();
+            buttonsInitialized = true;
+        }
+        
         PrepareBattle(stage);
+    }
 
+    void InitializeButtons()
+    {
+        ButtonStartBattle.onClick.RemoveAllListeners();
+        ButtonStartBattle.onClick.AddListener(() =>
+        {
+            BattleCardScreen.Instance.StartBattle();
+            this.gameObject.SetActive(false);
+        });
+
+        ButtonReturn.onClick.RemoveAllListeners();
+        ButtonReturn.onClick.AddListener(() =>
+        {
+            this.gameObject.SetActive(false);
+        });
+
+        ButtonEditDeck.onClick.RemoveAllListeners();
+        ButtonEditDeck.onClick.AddListener(() =>
+        {
+            this.gameObject.SetActive(false);
+            EditDeckScreen.SetActive(true);
+        });
     }
     public void PrepareBattle(int currentStage)
     {
@@ -47,30 +78,26 @@ public class PrepareBattleScreen : MonoBehaviour
             playerPower += (card.top + card.bottom + card.left + card.right);
         }
         playerPowerText.text = playerPower.ToString();
-
-
         stageText.text = "Stage " + currentStage;
-
-        pStartBattleButton.onClick.RemoveAllListeners();
-        pStartBattleButton.onClick.AddListener(() =>
-        {
-
-            BattleCardScreen.Instance.StartBattle();
-            //Desativa essa tela
-            this.gameObject.SetActive(false);
-
-        });
-        pCancelBattleButton.onClick.RemoveAllListeners();
-        pCancelBattleButton.onClick.AddListener(() =>
-        {
-
-        });
 
         InstantiateCardsInHand(playerHandArea, playerActiveDeck);
         InstantiateCardsInHand(enemyHandArea, enemyActiveDeck);
 
     }
     
+    void OnDisable()
+    {
+        // Limpa as cartas ao desativar para não manter estado
+        foreach (Transform child in playerHandArea)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (Transform child in enemyHandArea)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
     //instancia as cartas na tela de preparação
     void InstantiateCardsInHand(Transform handArea, List<CardData> deck)
     {

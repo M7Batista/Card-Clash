@@ -48,9 +48,7 @@ public class StageMapGenerator : MonoBehaviour
 
             posX = (i % 2 == 0) ? 200 : -200;
             posY -= 150;
-            //newButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(posX, posY);
-            //content.sizeDelta = new Vector2(content.sizeDelta.x, Mathf.Abs(posY) + 150);
-            // imagem
+
             var image = newButton.GetComponent<Image>();
             var button = newButton.GetComponent<Button>();
 

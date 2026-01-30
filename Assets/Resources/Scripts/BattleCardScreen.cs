@@ -13,13 +13,14 @@ public class BattleCardScreen : MonoBehaviour
     public Transform boardArea;
     public GameObject roulletPrefab;
     public GameObject cardPrefab;
+    public Canvas mainCanvas;
 
     public Button exitBattleButton;
     public Button restartBattleButton;
 
     [Header("Telas")]
-    public GameObject stageScreen;
     public GameObject battleScreen;
+    public GameObject boardScreen;
     public GameObject stealCardsScreen;
 
 
@@ -30,8 +31,6 @@ public class BattleCardScreen : MonoBehaviour
     public int filledSlots = 0;
     public static BattleCardScreen Instance;
     
-
-    public Canvas mainCanvas;
     public void OnScreenOpened()
     {
         Debug.Log("Tela de Batalha de Cartas aberta!");
@@ -43,10 +42,15 @@ public class BattleCardScreen : MonoBehaviour
         Instance = this;
         exitBattleButton.onClick.AddListener(ExitBattle);
         restartBattleButton.onClick.AddListener(RestartBattle);
+        
+        // Botões desativados inicialmente
+        exitBattleButton.interactable = false;
+        restartBattleButton.interactable = false;
     }
 
     public void StartBattle()
     {
+        
         // 🔹 Verifica se o jogador tem tickets suficientes
         if (!BattleTicketSystem.Instance.ConsumeTicket())
         {
@@ -68,8 +72,7 @@ public class BattleCardScreen : MonoBehaviour
             Debug.LogError("❌ O deck do inimigo não está definido. O jogo não pode iniciar!");
             return;
         }
-        stageScreen.SetActive(false);
-        battleScreen.SetActive(true);
+        boardScreen.SetActive(true);
 
         // 🔹 Inicia a distribuição de cartas e depois a roleta
         StartCoroutine(StartBattleSequence());
@@ -93,6 +96,12 @@ public class BattleCardScreen : MonoBehaviour
         AudioManager.Instance.PlayMusic(AudioManager.Instance.battleMusic);
     }
 
+
+    public void EnableControlButtons()
+    {
+        exitBattleButton.interactable = true;
+        restartBattleButton.interactable = true;
+    }
 
     public void StartPlayerTurn()
     {
@@ -161,7 +170,7 @@ public class BattleCardScreen : MonoBehaviour
     public void PosBattleSetup(int result)
     {
         // Configurações pós-batalha, se necessário
-        battleScreen.SetActive(false);
+        boardScreen.SetActive(false);
         stealCardsScreen.SetActive(true);
 
         if (result == 0)
@@ -175,7 +184,7 @@ public class BattleCardScreen : MonoBehaviour
         }
         else
         {
-            stageScreen.SetActive(true);
+            battleScreen.SetActive(true);
             ExitBattle();
         }
     }
@@ -186,57 +195,29 @@ public class BattleCardScreen : MonoBehaviour
     }
     public void ExitBattle()
     {
-        battleScreen.SetActive(false);
-        stageScreen.SetActive(true);
+        ClearBattleState();
+        boardScreen.SetActive(false);
+        battleScreen.SetActive(true);
         BoardManager.Instance.HideTurnArrow();
         stealCardsScreen.SetActive(false);
-        ClearBattleState();
         // interrompe qualquer música de batalha
         AudioManager.Instance.StopMusic();
     }
-    public void OnScreenClosed()
-    {
-        Debug.Log("Tela de Batalha de Cartas fechada!");
 
-        battleScreen.SetActive(false);
-        stealCardsScreen.SetActive(false);
-        stageScreen.SetActive(true);
+    public void ClearBattleState()
+    {
+        filledSlots = 0;
+        currentTurn = Owner.None;
         BoardManager.Instance.HideTurnArrow();
-        // Limpa o estado da batalha (opcional)
-        filledSlots = 0;
-        currentTurn = Owner.None;
-        BattleSetupManager.Instance.playerActiveDeck.Clear();
-        BattleSetupManager.Instance.enemyActiveDeck.Clear();
 
         foreach (Transform child in playerHandArea) Destroy(child.gameObject);
         foreach (Transform child in enemyHandArea) Destroy(child.gameObject);
         foreach (Transform slot in boardArea)
         {
-            foreach (Transform card in slot)
-            {
-                Destroy(card.gameObject); // só destrói a carta dentro do slot
-            }
+            foreach (Transform card in slot) Destroy(card.gameObject);
         }
-        
-    }
-    void ClearBattleState()
-    {
-        filledSlots = 0;
-        currentTurn = Owner.None;
-
-        foreach (Transform child in playerHandArea) Destroy(child.gameObject);
-        foreach (Transform child in enemyHandArea) Destroy(child.gameObject);
-        foreach (Transform slot in boardArea)
-        {
-            foreach (Transform card in slot)
-            {
-                Destroy(card.gameObject); // só destrói a carta dentro do slot
-            }
-        }
-        if (currentRoullet != null)
-        {
-            Destroy(currentRoullet);
-        }
+        if (currentRoullet != null)  Destroy(currentRoullet);
+       
     }
 
    

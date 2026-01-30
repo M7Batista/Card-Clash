@@ -257,6 +257,7 @@ public class BoardManager : MonoBehaviour
     private IEnumerator ShowPanelEndGame(int result)
     {
         yield return new WaitForSeconds(1.5f);
+        BattleCardScreen.Instance.ClearBattleState();
         BattleResultScreen.instance.ShowEndGame(result);
     }
 

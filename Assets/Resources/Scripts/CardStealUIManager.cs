@@ -14,7 +14,7 @@ public class CardStealUIManager : MonoBehaviour
     public TMP_Text titleText;
     public Button confirmYesButton;
     public Button confirmNoButton;
-    public Button skipButtom;
+    public Button ButtonTakeCoins;
 
     [Header("Dados")]
     private List<CardData> playerCards = new List<CardData>();
@@ -33,7 +33,7 @@ public class CardStealUIManager : MonoBehaviour
     }
     void Start()
     {
-         skipButtom.onClick.AddListener(() => EndStealScreen());
+         ButtonTakeCoins.onClick.AddListener(() => TakeCoinsReward());
     }
 
     // Inicialização da tela de roubo
@@ -52,11 +52,11 @@ public class CardStealUIManager : MonoBehaviour
         if (playerWon)
         {
             titleText.text = "Select 1 card you want!";
-            skipButtom.gameObject.SetActive(true);
+            ButtonTakeCoins.gameObject.SetActive(true);
         }
         else
         {
-            skipButtom.gameObject.SetActive(false);
+            ButtonTakeCoins.gameObject.SetActive(false);
             titleText.text = "You lost a card to the enemy!";
             // Derrota → inimigo rouba automaticamente
             Invoke(nameof(EnemyStealsCard), 2.5f);
@@ -107,7 +107,7 @@ public class CardStealUIManager : MonoBehaviour
         selectedCardGO.transform.localPosition += Vector3.up * 40f;
 
         confirmModal.SetActive(true);
-        confirmText.text = "Do you wish to choose this Card?";
+        confirmText.text = "Select a card from your opponent to steal!";
 
         confirmYesButton.onClick.RemoveAllListeners();
         confirmYesButton.onClick.AddListener(() => ConfirmSteal());
@@ -119,6 +119,7 @@ public class CardStealUIManager : MonoBehaviour
 
     private void ConfirmSteal()
     {
+        ButtonTakeCoins.interactable = false;
         Debug.Log($"Jogador roubou: {selectedCard.cardName} ({selectedCard.rarity})");
         // Faz um flip na carta para mostrar a frente
         CardUI cardUI = selectedCardGO.GetComponent<CardUI>();
@@ -129,7 +130,8 @@ public class CardStealUIManager : MonoBehaviour
         confirmModal.SetActive(false);
         StartCoroutine(AnimateStolenCard(selectedCardGO, true, () =>
          {
-             EndStealScreen();
+            //Desativa a tela de roubo
+            gameObject.SetActive(false);
          }));
     }
 
@@ -144,6 +146,14 @@ public class CardStealUIManager : MonoBehaviour
         selectedCardGO = null;
     }
 
+    private void TakeCoinsReward()
+    {
+        Debug.Log("Jogador recebeu 10 moedas");
+
+        GameManager.Instance.AddCoins(10);
+        gameObject.SetActive(false);
+    }
+
 
     private void EnemyStealsCard()
     {
@@ -152,7 +162,7 @@ public class CardStealUIManager : MonoBehaviour
         if (playerCollection.Count <= 5)
         {
             Debug.Log("Jogador tem apenas 5 cartas ou menos, inimigo não rouba");
-            EndStealScreen();
+            gameObject.SetActive(false);
             return;
         }
         else
@@ -174,7 +184,7 @@ public class CardStealUIManager : MonoBehaviour
                 : GameObject.Instantiate(cardPrefab, stealCardContainer);
             StartCoroutine(AnimateStolenCard(stolenCard, false, () =>
             {
-                EndStealScreen();
+                gameObject.SetActive(false);
             }));
 
         }
@@ -204,13 +214,6 @@ public class CardStealUIManager : MonoBehaviour
 
         return weighted[Random.Range(0, weighted.Count)];
     }
-
-    private void EndStealScreen()
-    {
-        BattleCardScreen.Instance.OnScreenClosed();
-
-    }
-
 
     private IEnumerator AnimateStolenCard(GameObject cardGO, bool playerStole, System.Action onComplete)
     {
