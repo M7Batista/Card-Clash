@@ -91,8 +91,6 @@ public class BattleCardScreen : MonoBehaviour
 
         // 🔹 Agora instancia a roleta após as cartas serem distribuídas
         currentRoullet = Instantiate(roulletPrefab, mainCanvas.transform);
-
-        BoardManager.Instance.UpdateBoardCounts(); // Atualiza contadores iniciais
         AudioManager.Instance.PlayMusic(AudioManager.Instance.battleMusic);
     }
 

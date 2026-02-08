@@ -15,6 +15,7 @@ public class StageMapGenerator : MonoBehaviour
     public int currentStage = 1;
     public Color unlockedColor = new Color32(255, 117, 194, 255);
     public Color lockedColor = new Color32(150, 150, 150, 255);
+    public Color currentStageColor = new Color32(50, 150, 255, 255); // Azul para estágio atual
 
     public static StageMapGenerator Instance;
 
@@ -52,7 +53,18 @@ public class StageMapGenerator : MonoBehaviour
             var image = newButton.GetComponent<Image>();
             var button = newButton.GetComponent<Button>();
 
-            if (i <= unlockedStage)
+            if (i == currentStage)
+            {
+                // Estágio atual - marca em azul
+                if (image != null) image.color = currentStageColor;
+                if (button != null)
+                {
+                    button.interactable = true;
+                    int stageIndex = i;
+                    button.onClick.AddListener(() => OnStageClicked(stageIndex));
+                }
+            }
+            else if (i <= unlockedStage)
             {
                 // desbloqueado
                 if (image != null) image.color = unlockedColor;
@@ -69,13 +81,7 @@ public class StageMapGenerator : MonoBehaviour
                 if (image != null) image.color = lockedColor;
                 if (button != null) button.interactable = false;
             }
-            // Chefes em destaque
-            if (i % 10 == 0)
-            {
-                Image img = newButton.GetComponent<Image>();
-                if (img != null)
-                    img.color = Color.blue;
-            }
+            
         }
     }
     void OnStageClicked(int index)

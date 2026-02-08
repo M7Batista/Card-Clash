@@ -54,18 +54,7 @@ public class CardZoom : MonoBehaviour, IScrollHandler, IDragHandler, IBeginDragH
             lastTouchDistance = 0;
         }
 
-        // --- Simular Pinch Zoom no Editor com Ctrl + Mouse Wheel ---
-#if UNITY_EDITOR
-        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
-        {
-            float scrollDelta = Input.GetAxis("Mouse ScrollWheel");
-            if (scrollDelta != 0)
-            {
-                Debug.Log("Simulating pinch zoom with Ctrl + Mouse Wheel: " + scrollDelta);
-                ApplyZoom(scrollDelta * zoomSpeed * 5f);
-            }
-        }
-#endif
+
     }
 
     public void OnPointerDown(PointerEventData eventData)

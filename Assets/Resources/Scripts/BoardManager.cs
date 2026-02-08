@@ -33,6 +33,8 @@ public class BoardManager : MonoBehaviour
     {
         ruleSame = BattleSetupManager.Instance.ruleSame;
         rulePlus = BattleSetupManager.Instance.rulePlus;
+        playerCountText.text = "5";
+        enemyCountText.text = "5";
     }
 
     // ===============================
@@ -193,7 +195,7 @@ public class BoardManager : MonoBehaviour
     {
         playerCount = 0;
         enemyCount = 0;
-
+        // Contar cartas no tabuleiro
         for (int i = 0; i < boardArea.childCount; i++)
         {
             var slot = boardArea.GetChild(i);
@@ -207,22 +209,24 @@ public class BoardManager : MonoBehaviour
                 }
             }
         }
-
+        // Contar cartas nas mãos do jogador
         for (int i = 0; i < playerHandArea.childCount; i++)
         {
             var cardUI = playerHandArea.GetChild(i).GetComponent<CardUI>();
             if (cardUI != null && cardUI.owner == Owner.Player) playerCount++;
         }
-
+        // Contar cartas nas mãos do inimigo
         for (int i = 0; i < enemyHandArea.childCount; i++)
         {
             var cardUI = enemyHandArea.GetChild(i).GetComponent<CardUI>();
             if (cardUI != null && cardUI.owner == Owner.Enemy) enemyCount++;
         }
+        Debug.Log($"Contagem do tabuleiro - Jogador: {playerCount}, Inimigo: {enemyCount}");
     }
 
     public void UpdateBoardCounts()
     {
+        Debug.Log("Atualizando contagem do tabuleiro na UI");
         GetBoardCounts(out int playerCount, out int enemyCount);
 
         if (playerCountText != null)

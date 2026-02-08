@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class CardStealUIManager : MonoBehaviour
 {
@@ -15,6 +16,13 @@ public class CardStealUIManager : MonoBehaviour
     public Button confirmYesButton;
     public Button confirmNoButton;
     public Button ButtonTakeCoins;
+
+    [Header("Efeito de Moedas")]
+    public Image coinImagePrefab; // Prefab de uma moeda (Image)
+    public Sprite coinSprite; // Sprite da moeda
+    public AudioClip coinCollectSound; // Som de coleta de moeda
+    public float coinAnimationDuration = 1.5f;
+    public float coinSpreadRadius = 100f; // Raio de dispersão das moedas
 
     [Header("Dados")]
     private List<CardData> playerCards = new List<CardData>();
@@ -29,11 +37,18 @@ public class CardStealUIManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        //gameObject.SetActive(false);
     }
     void Start()
     {
-         ButtonTakeCoins.onClick.AddListener(() => TakeCoinsReward());
+        ButtonTakeCoins.onClick.AddListener(() => TakeCoinsReward());
+    }
+
+    void OnEnable()
+    {
+        // Reseta variáveis
+        selectedCard = null;
+        selectedCardGO = null;
+        ButtonTakeCoins.interactable = true;
     }
 
     // Inicialização da tela de roubo
@@ -99,7 +114,7 @@ public class CardStealUIManager : MonoBehaviour
     {
         // Se o modal de confirmação já está ativo, ignora cliques adicionais
         if (confirmModal != null && confirmModal.activeSelf) return;
-        
+
         selectedCard = card;
         selectedCardGO = go;
 
@@ -130,8 +145,8 @@ public class CardStealUIManager : MonoBehaviour
         confirmModal.SetActive(false);
         StartCoroutine(AnimateStolenCard(selectedCardGO, true, () =>
          {
-            //Desativa a tela de roubo
-            gameObject.SetActive(false);
+             //Desativa a tela de roubo
+             gameObject.SetActive(false);
          }));
     }
 
@@ -149,9 +164,114 @@ public class CardStealUIManager : MonoBehaviour
     private void TakeCoinsReward()
     {
         Debug.Log("Jogador recebeu 10 moedas");
-
         GameManager.Instance.AddCoins(10);
+        // Iniciar animação de moedas
+        StartCoroutine(AnimateCoinsFlyUp(10));
+    }
+
+    private IEnumerator AnimateCoinsFlyUp(int coinCount)
+    {
+        Canvas canvas = ButtonTakeCoins.GetComponentInParent<Canvas>();
+        RectTransform buttonRect = ButtonTakeCoins.GetComponent<RectTransform>();
+        Camera uiCamera = canvas.renderMode == RenderMode.ScreenSpaceCamera ? canvas.worldCamera : null;
+
+        if (canvas == null)
+        {
+            Debug.LogError("Canvas não encontrado!");
+            yield break;
+        }
+
+        // Desabilitar interação do botão
+        ButtonTakeCoins.interactable = false;
+
+        for (int i = 0; i < coinCount; i++)
+        {
+            // Criar uma imagem de moeda simples se não tiver prefab
+            Image coinImage = Instantiate(coinImagePrefab, canvas.transform);
+            AudioManager.Instance.PlaySFX("coin_collect");
+
+            RectTransform coinRect = coinImage.GetComponent<RectTransform>();
+            coinRect.anchoredPosition = buttonRect.anchoredPosition; // Usar anchoredPosition no lugar de position
+            //coinRect.sizeDelta = new Vector2(40, 40);
+
+            // Adicionar CanvasGroup se não tiver
+            CanvasGroup canvasGroup = coinImage.GetComponent<CanvasGroup>();
+            if (canvasGroup == null)
+            {
+                canvasGroup = coinImage.gameObject.AddComponent<CanvasGroup>();
+            }
+
+            // Elevar acima de outros elementos
+            coinImage.transform.SetAsLastSibling();
+
+            Debug.Log($"Moeda {i} criada em: {coinRect.anchoredPosition}");
+
+            // Calcular direção aleatória de dispersão
+            float angle = (360f / coinCount) * i + Random.Range(-15f, 15f);
+            Vector2 direction = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)).normalized;
+            Vector2 spreadEnd = buttonRect.anchoredPosition + (direction * coinSpreadRadius);
+
+            // Posição final no topo da tela (em coordenadas de canvas)
+            Vector2 screenTopCenter = new Vector2(0, canvas.GetComponent<RectTransform>().rect.height / 2f + 50);
+
+            // Animar moeda
+            StartCoroutine(AnimateSingleCoin(coinRect, buttonRect.anchoredPosition, spreadEnd, screenTopCenter, coinAnimationDuration));
+
+
+            // Pequeno delay entre cada moeda
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        // Esperar todas as moedas terminarem
+        yield return new WaitForSeconds(coinAnimationDuration + 0.5f);
+
+        // Fechar tela
         gameObject.SetActive(false);
+    }
+
+    private IEnumerator AnimateSingleCoin(RectTransform coinRect, Vector2 startPos, Vector2 spreadTarget, Vector2 finalTarget, float duration)
+    {
+        // Fase 1: Espalhamento (primeiro 30% da animação)
+        float spreadDuration = duration * 0.3f;
+        float elapsed = 0f;
+
+        while (elapsed < spreadDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / spreadDuration;
+
+            // Interpolação quadrática para efeito mais suave
+            float easeOut = 1f - (1f - t) * (1f - t);
+            coinRect.anchoredPosition = Vector2.Lerp(startPos, spreadTarget, easeOut);
+
+            yield return null;
+        }
+
+        // Fase 2: Voo até o topo (70% da animação)
+        float flyDuration = duration * 0.7f;
+        elapsed = 0f;
+
+        while (elapsed < flyDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / flyDuration;
+
+            // Interpolação suave (ease-in)
+            float easeIn = t * t;
+            coinRect.anchoredPosition = Vector2.Lerp(spreadTarget, finalTarget, easeIn);
+
+            // Fade out
+            CanvasGroup canvasGroup = coinRect.GetComponent<CanvasGroup>();
+            if (canvasGroup != null)
+            {
+                canvasGroup.alpha = Mathf.Lerp(1f, 0f, t);
+            }
+
+            yield return null;
+        }
+
+        // Destruir moeda
+        Destroy(coinRect.gameObject);
     }
 
 

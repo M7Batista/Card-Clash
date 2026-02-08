@@ -1,0 +1,42 @@
+using UnityEngine;
+
+public class PuzzleCompletionController : MonoBehaviour
+{
+    public static PuzzleCompletionController Instance;
+
+    private PuzzlePiece[] allPieces;
+    private int fixedCount;
+
+    void Awake()
+    {
+        Instance = this;
+    }
+
+    void Start()
+    {
+        allPieces = FindObjectsOfType<PuzzlePiece>();
+        fixedCount = 0;
+    }
+
+    public void OnPieceFixed()
+    {
+        fixedCount++;
+
+        if (fixedCount == allPieces.Length)
+        {
+            PuzzleCompleted();
+        }
+    }
+
+    void PuzzleCompleted()
+    {
+        Debug.Log("🎉 PUZZLE COMPLETO!");
+
+        // Aqui você pode:
+        // - bloquear input
+        // - tocar som
+        // - animar
+        // - salvar progresso
+        // - mostrar popup
+    }
+}
