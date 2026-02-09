@@ -55,6 +55,11 @@ public class PuzzlePieceDrag : MonoBehaviour,
             Debug.Log("Peça colocada no slot correto!");
             SnapToSlot(slot);
         }
+        else
+        {
+            Debug.Log("Peça não encaixada. Retornando à posição inicial.");
+            ReturnToStart();
+        }
        
     }
 

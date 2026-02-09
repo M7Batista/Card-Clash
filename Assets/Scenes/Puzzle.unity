@@ -550,6 +550,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PuzzleGameUIManager
   puzzleSelectionScreen: {fileID: 1954582670}
   puzzleAssemblyScreen: {fileID: 1794290298}
+  boardArea: {fileID: 1034056301}
+  scrollArea: {fileID: 329466109}
 --- !u!4 &350511399
 Transform:
   m_ObjectHideFlags: 0
@@ -828,13 +830,13 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 0
+    m_Top: 50
     m_Bottom: 0
   m_ChildAlignment: 1
   m_StartCorner: 0
-  m_StartAxis: 1
-  m_CellSize: {x: 420, y: 300}
-  m_Spacing: {x: 24, y: 24}
+  m_StartAxis: 0
+  m_CellSize: {x: 500, y: 500}
+  m_Spacing: {x: 50, y: 50}
   m_Constraint: 1
   m_ConstraintCount: 2
 --- !u!114 &752557807
@@ -2599,27 +2601,27 @@ MonoBehaviour:
   puzzleCardPrefab: {fileID: 5450328084738823516, guid: e59870bdbc9f7fe459bc2b1155bdc2ae, type: 3}
   puzzles:
   - id: 0
-    previewImage: {fileID: 21300000, guid: dd03054fac37e6d43b23d78d6628d8f6, type: 3}
+    previewImage: {fileID: 21300000, guid: 5504735923b78a54f90be1d854dcf92d, type: 3}
     state: 1
     progress: 0
   - id: 1
-    previewImage: {fileID: 21300000, guid: f70c14e8e69f1a74f827ed98300fab57, type: 3}
+    previewImage: {fileID: 21300000, guid: c3123ceacc9e06c4c93448aa94f58d52, type: 3}
     state: 1
     progress: 0
   - id: 2
-    previewImage: {fileID: 21300000, guid: 754a6a65df5027d45aa91c4e81f380bc, type: 3}
-    state: 0
+    previewImage: {fileID: 21300000, guid: 282fb61ab9a5ee747b5ec53d17587063, type: 3}
+    state: 2
     progress: 0
   - id: 3
-    previewImage: {fileID: 21300000, guid: 4f3cffb50bff6144594cfc589643b7c3, type: 3}
-    state: 0
+    previewImage: {fileID: 21300000, guid: 1b53bd4f4e328904ea3f490f8954666b, type: 3}
+    state: 2
     progress: 0
   - id: 4
-    previewImage: {fileID: 21300000, guid: ce79292e5916a3e4db900775c94721d8, type: 3}
+    previewImage: {fileID: 21300000, guid: 561d3eb6d443c6445a53ac92a533c8e9, type: 3}
     state: 0
     progress: 0
   - id: 5
-    previewImage: {fileID: 21300000, guid: c9b39a1fc29e5e6499157fc5bff4271f, type: 3}
+    previewImage: {fileID: 21300000, guid: 5d6d1942a0b0bd14fb07f8d1b98bdca0, type: 3}
     state: 0
     progress: 0
   backButton: {fileID: 1411404272}

@@ -8,6 +8,9 @@ public class PuzzleGameUIManager : MonoBehaviour
 
     public static PuzzleGameUIManager Instance;
 
+    public GameObject boardArea; // Referência ao GameObject do tabuleiro
+    public GameObject scrollArea; // Referência ao GameObject da área de scroll
+
     private int currentPuzzleId;
 
     void Awake()
@@ -30,8 +33,23 @@ public class PuzzleGameUIManager : MonoBehaviour
 
     public void BackToSelection()
     {
+        CleanUpAssemblyScreen();
         puzzleAssemblyScreen.SetActive(false);
         puzzleSelectionScreen.SetActive(true);
+    }
+    void CleanUpAssemblyScreen()
+    {
+        // Limpa os filhos do boardArea
+        foreach (Transform child in boardArea.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // Limpa os filhos do scrollArea
+        foreach (Transform child in scrollArea.transform)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
     public int GetCurrentPuzzleId()

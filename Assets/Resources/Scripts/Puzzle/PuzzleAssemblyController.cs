@@ -17,10 +17,11 @@ public class PuzzleAssemblyController : MonoBehaviour
     public Transform piecesParent;
 
     private List<Sprite> puzzlePieces = new List<Sprite>();
-        public RectTransform boardArea;
+    public RectTransform boardArea;
 
     void OnEnable()
     {
+        SetSpritePuzzle();
         GenerateSprites();
         GeneratePieces();
     }
@@ -28,6 +29,19 @@ public class PuzzleAssemblyController : MonoBehaviour
     {
         yield return null; // espera 1 frame
         AssignCorrectSlots();
+    }
+    void SetSpritePuzzle()
+    {
+        puzzleImage = PuzzleGameUIManager.Instance.GetCurrentPuzzleId() switch
+        {
+            0 => Resources.Load<Sprite>("Art/Puzzles/Marine"),
+            1 => Resources.Load<Sprite>("Art/Puzzles/Milcow"),
+            2 => Resources.Load<Sprite>("Art/Puzzles/Octanea"),
+            3 => Resources.Load<Sprite>("Art/Puzzles/Pameli"),
+            4 => Resources.Load<Sprite>("Art/Puzzles/Ravenn"),
+            5 => Resources.Load<Sprite>("Art/Puzzles/Sara"),
+            _ => null
+        };
     }
 
     void GenerateSprites()
@@ -81,7 +95,7 @@ public class PuzzleAssemblyController : MonoBehaviour
                 row,
                 column
             );
-            
+
         }
     }
     void AssignCorrectSlots()

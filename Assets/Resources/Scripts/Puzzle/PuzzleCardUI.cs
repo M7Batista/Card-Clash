@@ -5,7 +5,6 @@ public class PuzzleCardUI : MonoBehaviour
 {
     [Header("UI")]
     public Image previewImage;
-    public GameObject overlay;
     public Button playButton;
     public GameObject lockIcon;
     public GameObject checkIcon;
@@ -14,6 +13,7 @@ public class PuzzleCardUI : MonoBehaviour
     [Header("Materials")]
     public Material grayscaleMaterial;
     public Material normalMaterial;
+    public Material blurMaterial;
 
     private PuzzleData data;
 
@@ -30,24 +30,24 @@ public class PuzzleCardUI : MonoBehaviour
         playButton.gameObject.SetActive(false);
         lockIcon.SetActive(false);
         checkIcon.SetActive(false);
-        overlay.SetActive(true);
-
         previewImage.material = normalMaterial;
 
         switch (data.state)
         {
             case PuzzleState.Available:
+                previewImage.material = grayscaleMaterial;
                 playButton.gameObject.SetActive(true);
                 playButton.onClick.AddListener(OnCardClicked);
                 break;
 
             case PuzzleState.Locked:
+                previewImage.material = blurMaterial;
+                //previewImage.color =  new Color(0.5f, 0.5f, 0.5f, 1.0f); 
                 lockIcon.SetActive(true);
-                previewImage.material = grayscaleMaterial;
                 break;
 
             case PuzzleState.Completed:
-                overlay.SetActive(false);
+                previewImage.material = normalMaterial;
                 checkIcon.SetActive(true);
                 break;
         }
