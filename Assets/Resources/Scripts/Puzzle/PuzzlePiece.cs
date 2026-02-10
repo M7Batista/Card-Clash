@@ -6,17 +6,17 @@ public class PuzzlePiece : MonoBehaviour
     public int index;
     public int row;
     public int column;
-    public Image image;
     public bool isFixed = false;
     public PuzzleSlot correctSlot;
 
+    [Header("UI")]
+    public Image pieceImage;
 
-    public void Setup(Sprite sprite, int index, int row, int column)
+    public void Setup(Sprite pieceSprite, int index, int row, int column)
     {
         this.index = index;
         this.row = row;
         this.column = column;
-
-        image.sprite = sprite;
+        pieceImage.sprite = pieceSprite;
     }
 }

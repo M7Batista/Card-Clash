@@ -2,9 +2,12 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
+using UnityEngine.UI;
 
 public class PuzzleAssemblyController : MonoBehaviour
 {
+    [Header("Puzzle Masks")]
+    public List<Sprite> puzzleMasks = new List<Sprite>();
     [Header("Puzzle Image")]
     public Sprite puzzleImage;
 
@@ -18,6 +21,7 @@ public class PuzzleAssemblyController : MonoBehaviour
 
     private List<Sprite> puzzlePieces = new List<Sprite>();
     public RectTransform boardArea;
+    public ScrollRect piecesScrollRect;
 
     void OnEnable()
     {
@@ -25,6 +29,7 @@ public class PuzzleAssemblyController : MonoBehaviour
         GenerateSprites();
         GeneratePieces();
     }
+    
     IEnumerator Start()
     {
         yield return null; // espera 1 frame
@@ -43,7 +48,7 @@ public class PuzzleAssemblyController : MonoBehaviour
             _ => null
         };
     }
-
+   
     void GenerateSprites()
     {
         puzzlePieces.Clear();
@@ -89,15 +94,17 @@ public class PuzzleAssemblyController : MonoBehaviour
             PuzzlePiece piece =
                 Instantiate(piecePrefab, piecesParent);
 
+            // 👉 INJEÇÃO DO SCROLL RECT
+            piece.GetComponent<PuzzlePieceDrag>().pieceScroll = piecesScrollRect;
             piece.Setup(
                 puzzlePieces[i],
                 i,
                 row,
                 column
             );
-
         }
     }
+
     void AssignCorrectSlots()
     {
         PuzzleSlot[] slots =
