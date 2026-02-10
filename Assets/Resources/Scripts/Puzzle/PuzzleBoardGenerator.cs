@@ -12,21 +12,30 @@ public class PuzzleBoardGenerator : MonoBehaviour
     public RectTransform boardRect;
     public PuzzleSlot slotPrefab;
 
-    void Start()
+    void OnEnable()
     {
        GenerateBoard();
+       Debug.Log($"Generated board with {Slots.Length} slots.");
     }
 
 
     void GenerateBoard()
     {
-        float boardWidth = boardRect.rect.width;
-        float boardHeight = boardRect.rect.height;
+        const float horizontalPadding = 20f;
 
-        float cellSize = Mathf.Min(
-            boardWidth / columns,
-            boardHeight / rows
+        float boardWidth = Screen.width - (horizontalPadding * 2f);
+        float boardHeight = boardWidth;
+
+        boardRect.SetSizeWithCurrentAnchors(
+            RectTransform.Axis.Horizontal,
+            boardWidth
         );
+        boardRect.SetSizeWithCurrentAnchors(
+            RectTransform.Axis.Vertical,
+            boardHeight
+        );
+
+        float cellSize = boardWidth / columns;
 
         float startX = -boardWidth / 2 + cellSize / 2;
         float startY = boardHeight / 2 - cellSize / 2;

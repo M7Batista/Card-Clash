@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class PuzzleAssemblyController : MonoBehaviour
 {
+    public static PuzzleAssemblyController Instance;
     [Header("Puzzle Masks")]
     public List<Sprite> puzzleMasks = new List<Sprite>();
     [Header("Puzzle Image")]
@@ -23,6 +24,13 @@ public class PuzzleAssemblyController : MonoBehaviour
     public RectTransform boardArea;
     public ScrollRect piecesScrollRect;
 
+    void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
     void OnEnable()
     {
         SetSpritePuzzle();
@@ -80,7 +88,7 @@ public class PuzzleAssemblyController : MonoBehaviour
         }
     }
 
-    void GeneratePieces()
+    /*void GeneratePieces()
     {
         // Limpa peças anteriores
         foreach (Transform child in piecesParent)
@@ -103,7 +111,46 @@ public class PuzzleAssemblyController : MonoBehaviour
                 column
             );
         }
+    }*/
+    void GeneratePieces()
+{
+    // Limpa peças anteriores
+    foreach (Transform child in piecesParent)
+        Destroy(child.gameObject);
+
+    // 1️⃣ Cria lista de índices
+    List<int> indices = new List<int>();
+    for (int i = 0; i < puzzlePieces.Count; i++)
+        indices.Add(i);
+
+    // 2️⃣ Embaralha (Fisher-Yates)
+    for (int i = indices.Count - 1; i > 0; i--)
+    {
+        int rand = Random.Range(0, i + 1);
+        (indices[i], indices[rand]) = (indices[rand], indices[i]);
     }
+
+    // 3️⃣ Instancia na ordem aleatória
+    foreach (int i in indices)
+    {
+        int row = i / columns;
+        int column = i % columns;
+
+        PuzzlePiece piece =
+            Instantiate(piecePrefab, piecesParent);
+
+        // Scroll injection
+        piece.GetComponent<PuzzlePieceDrag>().pieceScroll = piecesScrollRect;
+
+        piece.Setup(
+            puzzlePieces[i], // sprite correto
+            i,               // index lógico preservado
+            row,
+            column
+        );
+    }
+}
+
 
     void AssignCorrectSlots()
     {
@@ -124,5 +171,5 @@ public class PuzzleAssemblyController : MonoBehaviour
             }
         }
     }
-
+   
 }

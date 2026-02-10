@@ -3,9 +3,6 @@ using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-
-
-
 public class PuzzlePieceDrag : MonoBehaviour,
     IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -42,8 +39,6 @@ public class PuzzlePieceDrag : MonoBehaviour,
         pieceScroll.OnBeginDrag(eventData);
     }
 
-
-
     public void OnDrag(PointerEventData eventData)
     {
         if (piece.isFixed) return;
@@ -72,7 +67,6 @@ public class PuzzlePieceDrag : MonoBehaviour,
         }
     }
 
-
     void StartPieceDrag()
     {
         startParent = rectTransform.parent;
@@ -87,8 +81,6 @@ public class PuzzlePieceDrag : MonoBehaviour,
         canvasGroup.blocksRaycasts = false;
         canvasGroup.alpha = 0.85f;
     }
-
-
 
     public void OnEndDrag(PointerEventData eventData)
     {
@@ -143,12 +135,7 @@ public class PuzzlePieceDrag : MonoBehaviour,
         Debug.Log("Peça encaixada corretamente!");
         PuzzleCompletionController.Instance.OnPieceFixed();
     }
-
-
-
-
-
-    void ReturnToStart()
+    public void ReturnToStart()
     {
         rectTransform.SetParent(startParent);
 
@@ -162,14 +149,10 @@ public class PuzzlePieceDrag : MonoBehaviour,
         rectTransform.anchoredPosition = startPosition;
     }
 
-
-
     void ResetAnchorsToCenter()
     {
         rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
         rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
         rectTransform.pivot = new Vector2(0.5f, 0.5f);
     }
-
-
 }
