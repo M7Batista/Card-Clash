@@ -37,7 +37,7 @@ public class PuzzleAssemblyController : MonoBehaviour
         GenerateSprites();
         GeneratePieces();
     }
-    
+
     IEnumerator Start()
     {
         yield return null; // espera 1 frame
@@ -56,7 +56,7 @@ public class PuzzleAssemblyController : MonoBehaviour
             _ => null
         };
     }
-   
+
     void GenerateSprites()
     {
         puzzlePieces.Clear();
@@ -113,43 +113,43 @@ public class PuzzleAssemblyController : MonoBehaviour
         }
     }*/
     void GeneratePieces()
-{
-    // Limpa peças anteriores
-    foreach (Transform child in piecesParent)
-        Destroy(child.gameObject);
-
-    // 1️⃣ Cria lista de índices
-    List<int> indices = new List<int>();
-    for (int i = 0; i < puzzlePieces.Count; i++)
-        indices.Add(i);
-
-    // 2️⃣ Embaralha (Fisher-Yates)
-    for (int i = indices.Count - 1; i > 0; i--)
     {
-        int rand = Random.Range(0, i + 1);
-        (indices[i], indices[rand]) = (indices[rand], indices[i]);
+        // Limpa peças anteriores
+        foreach (Transform child in piecesParent)
+            Destroy(child.gameObject);
+
+        // 1️⃣ Cria lista de índices
+        List<int> indices = new List<int>();
+        for (int i = 0; i < puzzlePieces.Count; i++)
+            indices.Add(i);
+
+        // 2️⃣ Embaralha (Fisher-Yates)
+        for (int i = indices.Count - 1; i > 0; i--)
+        {
+            int rand = Random.Range(0, i + 1);
+            (indices[i], indices[rand]) = (indices[rand], indices[i]);
+        }
+
+        // 3️⃣ Instancia na ordem aleatória
+        foreach (int i in indices)
+        {
+            int row = i / columns;
+            int column = i % columns;
+
+            PuzzlePiece piece =
+                Instantiate(piecePrefab, piecesParent);
+
+            // Scroll injection
+            piece.GetComponent<PuzzlePieceDrag>().pieceScroll = piecesScrollRect;
+
+            piece.Setup(
+                puzzlePieces[i], // sprite correto
+                i,               // index lógico preservado
+                row,
+                column
+            );
+        }
     }
-
-    // 3️⃣ Instancia na ordem aleatória
-    foreach (int i in indices)
-    {
-        int row = i / columns;
-        int column = i % columns;
-
-        PuzzlePiece piece =
-            Instantiate(piecePrefab, piecesParent);
-
-        // Scroll injection
-        piece.GetComponent<PuzzlePieceDrag>().pieceScroll = piecesScrollRect;
-
-        piece.Setup(
-            puzzlePieces[i], // sprite correto
-            i,               // index lógico preservado
-            row,
-            column
-        );
-    }
-}
 
 
     void AssignCorrectSlots()
@@ -161,7 +161,6 @@ public class PuzzleAssemblyController : MonoBehaviour
         {
             PuzzlePiece piece = child.GetComponent<PuzzlePiece>();
 
-            //piece.correctSlot = slots.First(s => s.index == piece.index);
             var slot = slots.FirstOrDefault(s => s.index == piece.index);
 
             if (slot == null)
@@ -169,7 +168,10 @@ public class PuzzleAssemblyController : MonoBehaviour
                 Debug.LogError($"Slot não encontrado para peça {piece.index}");
                 continue;
             }
+            // 🔥 ESSA LINHA ESTAVA FALTANDO
+            piece.correctSlot = slot;
         }
+
     }
-   
+
 }

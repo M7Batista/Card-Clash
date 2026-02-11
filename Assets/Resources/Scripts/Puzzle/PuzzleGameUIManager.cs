@@ -54,7 +54,7 @@ public class PuzzleGameUIManager : MonoBehaviour
     void CleanUpAssemblyScreen()
     {
         // Limpa os filhos do boardArea
-        foreach (Transform child in boardArea.transform)
+        foreach (Transform child in boardArea.transform.GetChild(0)) // Acessa o primeiro filho do boardArea, que é o container das peças
         {
             Destroy(child.gameObject);
         }

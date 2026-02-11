@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 4
   bottom: 1
   left: 3
-  artwork: {fileID: 21300000, guid: 4718815e36a4b604a890f7cbe602f5fd, type: 3}
-  cardName: Bony
+  artwork: {fileID: 21300000, guid: f4b799de414ca3f4a8ad6bf9bd571802, type: 3}
+  cardName: Candy

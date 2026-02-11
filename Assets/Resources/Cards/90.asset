@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 10
   bottom: 8
   left: 11
-  artwork: {fileID: 21300000, guid: d54674a8f3f8bd74f9856425868a0e47, type: 3}
-  cardName: unknown
+  artwork: {fileID: 21300000, guid: c29b47a65fd982742986afa5a09c7d28, type: 3}
+  cardName: Ravenn

@@ -9,7 +9,7 @@ public class PuzzleBoardGenerator : MonoBehaviour
     public int columns = 6;
 
     [Header("References")]
-    public RectTransform boardRect;
+    public RectTransform slotsArea;
     public PuzzleSlot slotPrefab;
 
     void OnEnable()
@@ -26,11 +26,11 @@ public class PuzzleBoardGenerator : MonoBehaviour
         float boardWidth = Screen.width - (horizontalPadding * 2f);
         float boardHeight = boardWidth;
 
-        boardRect.SetSizeWithCurrentAnchors(
+        slotsArea.SetSizeWithCurrentAnchors(
             RectTransform.Axis.Horizontal,
             boardWidth
         );
-        boardRect.SetSizeWithCurrentAnchors(
+        slotsArea.SetSizeWithCurrentAnchors(
             RectTransform.Axis.Vertical,
             boardHeight
         );
@@ -47,7 +47,7 @@ public class PuzzleBoardGenerator : MonoBehaviour
             for (int c = 0; c < columns; c++)
             {
                 PuzzleSlot slot =
-                    Instantiate(slotPrefab, boardRect);
+                    Instantiate(slotPrefab, slotsArea);
 
                 RectTransform slotRect =
                     slot.GetComponent<RectTransform>();

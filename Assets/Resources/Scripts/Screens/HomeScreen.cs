@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using System.Collections;
 using TMPro;
 
@@ -12,15 +11,6 @@ public class HomeScreen : MonoBehaviour
 
     [Header("Transições")]
     public float fadeDuration = 0.8f;
-    public Button puzzleButton;
-
-    void Start()
-    {
-        if (puzzleButton != null)
-        {
-            puzzleButton.onClick.AddListener(GoToPuzzleScreen);
-        }
-    }
     
     void OnEnable()
     {
@@ -71,10 +61,6 @@ public class HomeScreen : MonoBehaviour
         color.a = 1f;
         characterImage.color = color;
     }
-    void GoToPuzzleScreen()
-    {
-       UnityEngine.SceneManagement.SceneManager.LoadScene("Puzzle");
-       
-    }
+    
     
 }

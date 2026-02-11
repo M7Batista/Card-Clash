@@ -167,6 +167,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PuzzlePieceDrag
   pieceScroll: {fileID: 0}
+  magnetRadius: 0.5
+  magnetStrength: 5
 --- !u!114 &-7766535256590717336
 MonoBehaviour:
   m_ObjectHideFlags: 0

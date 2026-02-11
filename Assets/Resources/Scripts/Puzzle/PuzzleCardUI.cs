@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PuzzleCardUI : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class PuzzleCardUI : MonoBehaviour
     public Button playButton;
     public GameObject lockIcon;
     public GameObject checkIcon;
-    public Text progressText;
+    public TextMeshProUGUI idText;
 
     [Header("Materials")]
     public Material grayscaleMaterial;
@@ -49,11 +50,12 @@ public class PuzzleCardUI : MonoBehaviour
             case PuzzleState.Completed:
                 previewImage.material = normalMaterial;
                 checkIcon.SetActive(true);
+                playButton.gameObject.SetActive(true);
                 break;
         }
 
-        if (progressText != null)
-            progressText.text = data.progress > 0 ? $"{data.progress}%" : "";
+        if (idText != null)
+            idText.text = data.id.ToString("D2"); // Exibe o ID com dois dígitos (ex: 01, 02, etc.)
     }
 
 

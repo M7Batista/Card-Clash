@@ -9,7 +9,6 @@ public class PuzzleSelectionController : MonoBehaviour
     public PuzzleCardUI puzzleCardPrefab;
 
     public List<PuzzleData> puzzles = new List<PuzzleData>();
-    public Button backButton;
 
     void Awake()
     {
@@ -21,7 +20,6 @@ public class PuzzleSelectionController : MonoBehaviour
     void Start()
     {
         GeneratePuzzleList();
-        backButton.onClick.AddListener(RetornToMainMenu);
     }
 
     void GeneratePuzzleList()
@@ -33,10 +31,5 @@ public class PuzzleSelectionController : MonoBehaviour
 
             card.Setup(puzzle);
         }
-    }
-    void RetornToMainMenu()
-    {
-        // volta pra cena do jogo principal
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
     }
 }
