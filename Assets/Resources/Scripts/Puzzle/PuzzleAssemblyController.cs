@@ -36,9 +36,10 @@ public class PuzzleAssemblyController : MonoBehaviour
         SetSpritePuzzle();
         GenerateSprites();
         GeneratePieces();
+        StartCoroutine(LoadAssignCorrectSlots());
     }
 
-    IEnumerator Start()
+    IEnumerator LoadAssignCorrectSlots()
     {
         yield return null; // espera 1 frame
         AssignCorrectSlots();
@@ -88,30 +89,7 @@ public class PuzzleAssemblyController : MonoBehaviour
         }
     }
 
-    /*void GeneratePieces()
-    {
-        // Limpa peças anteriores
-        foreach (Transform child in piecesParent)
-            Destroy(child.gameObject);
-
-        for (int i = 0; i < puzzlePieces.Count; i++)
-        {
-            int row = i / columns;
-            int column = i % columns;
-
-            PuzzlePiece piece =
-                Instantiate(piecePrefab, piecesParent);
-
-            // 👉 INJEÇÃO DO SCROLL RECT
-            piece.GetComponent<PuzzlePieceDrag>().pieceScroll = piecesScrollRect;
-            piece.Setup(
-                puzzlePieces[i],
-                i,
-                row,
-                column
-            );
-        }
-    }*/
+    
     void GeneratePieces()
     {
         // Limpa peças anteriores

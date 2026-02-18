@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b6bede6c1e13a41409fbb99837ce1fca
+guid: 65920bc0a1356e84cba45ddf217242bb
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8146684817623730601
-    second: Penelope_0
+      213: 6005835919443745487
+    second: Geise_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -98,7 +98,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: Android
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 50
     textureCompression: 1
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Penelope_0
+      name: Geise_0
       rect:
         serializedVersion: 2
-        x: 43
-        y: 4
-        width: 1322
-        height: 2020
+        x: 21
+        y: 0
+        width: 2027
+        height: 2048
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7563874425921fe80800000000000000
-      internalID: -8146684817623730601
+      spriteID: fcad9bdc2f3095350800000000000000
+      internalID: 6005835919443745487
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Penelope_0: -8146684817623730601
+      Geise_0: 6005835919443745487
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

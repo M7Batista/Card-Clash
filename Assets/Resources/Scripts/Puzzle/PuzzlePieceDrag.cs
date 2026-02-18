@@ -84,29 +84,10 @@ public class PuzzlePieceDrag : MonoBehaviour,
         RectTransform slotRect =
             piece.correctSlot.GetComponent<RectTransform>();
 
-        RectTransform canvasRect =
-            canvas.transform as RectTransform;
+        Vector2 distanceVector = slotRect.localPosition - rectTransform.localPosition;
+        float distance = distanceVector.magnitude;
 
-        Vector2 pieceLocalPos;
-        Vector2 slotLocalPos;
-
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvasRect,
-            rectTransform.position,
-            canvas.worldCamera,
-            out pieceLocalPos
-        );
-
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvasRect,
-            slotRect.position,
-            canvas.worldCamera,
-            out slotLocalPos
-        );
-
-        float distance = Vector2.Distance(pieceLocalPos, slotLocalPos);
-
-        bool insideMagnet = distance <= magnetRadius;
+        bool insideMagnet = distance <= magnetRadius && distance > 0.1f;
 
         // 🔆 Highlight
         if (insideMagnet && highlightedSlot != piece.correctSlot)
@@ -120,8 +101,8 @@ public class PuzzlePieceDrag : MonoBehaviour,
             ClearHighlight();
         }
 
-        // 🧲 Magnetismo real
-        if (insideMagnet)
+        // 🧲 Atração suave apenas quando muito perto (últimos pixels)
+        if (insideMagnet && distance < magnetRadius * 0.5f)
         {
             rectTransform.localPosition = Vector2.Lerp(
                 rectTransform.localPosition,
@@ -155,13 +136,16 @@ public class PuzzlePieceDrag : MonoBehaviour,
         canvasGroup.blocksRaycasts = false;
         canvasGroup.alpha = 0.85f;
 
-        // 🔥 calcula offset correto do toque
+        // 🔥 calcula offset correto do toque em relação ao canvas
+        RectTransform canvasRect = canvas.transform as RectTransform;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            rectTransform,
+            canvasRect,
             eventData.position,
             eventData.pressEventCamera,
             out pointerOffset
         );
+        // Subtrai a posição atual para obter o offset relativo ao centro da peça
+        pointerOffset -= (Vector2)rectTransform.localPosition;
     }
 
     void DragPiece(PointerEventData eventData)

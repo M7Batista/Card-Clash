@@ -19,7 +19,7 @@ id,rarity,top,right,bottom,left,cardName
 18,Common,4,2,1,5,Ravena
 19,Common,2,1,5,4,Sate
 20,Common,5,1,2,3,Lavinia
-21,Uncommon,3,5,4,6,Penelope 
+21,Uncommon,3,5,4,6,Agatha
 22,Uncommon,5,6,3,4,Catia
 23,Uncommon,4,3,6,5,Kohako
 24,Uncommon,6,4,5,3,Sonia
@@ -27,7 +27,7 @@ id,rarity,top,right,bottom,left,cardName
 26,Uncommon,7,4,5,3,Lucy
 27,Uncommon,5,3,7,4,Samira
 28,Uncommon,4,5,3,7,Arat
-29,Uncommon,6,5,7,4,Agatha
+29,Uncommon,6,5,7,4,Tilene
 30,Uncommon,7,6,4,5,Talia
 31,Uncommon,5,7,6,4,Viola
 32,Uncommon,4,6,7,5,Pameli
@@ -49,12 +49,12 @@ id,rarity,top,right,bottom,left,cardName
 48,Rare,6,7,8,9,Zoe
 49,Rare,8,6,9,7,Zaria
 50,Rare,9,7,8,6,Pompeia
-51,Rare,6,9,7,8,unknown
+51,Rare,6,9,7,8,Jackal
 52,Rare,7,8,9,6,Farath
 53,Rare,9,5,8,7,Melian
 54,Rare,5,8,7,9,Dalia
 55,Rare,8,9,5,7,Bunnyli
-56,Rare,7,5,9,8,unknown
+56,Rare,7,5,9,8,Geise
 57,Rare,9,6,7,8,Sadica
 58,Rare,6,8,9,7,Trish
 59,Rare,8,7,6,9,unknown
@@ -70,7 +70,7 @@ id,rarity,top,right,bottom,left,cardName
 69,Epic,9,7,8,A,Damia
 70,Epic,8,9,7,A,Morgana
 71,Epic,7,A,9,8,Nymp
-72,Epic,A,8,9,7,unknown
+72,Epic,A,8,9,7,Nevi
 73,Epic,9,8,A,7,unknown
 74,Epic,8,7,A,9,unknown
 75,Epic,A,9,8,7,unknown
