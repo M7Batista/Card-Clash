@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 8
   bottom: 9
   left: 7
-  artwork: {fileID: 21300000, guid: 1a47e3723a9321c4aafdab52a5db566c, type: 3}
-  cardName: Trish
+  artwork: {fileID: 21300000, guid: d766c2150f9b40a46b29520d686caadf, type: 3}
+  cardName: Talia

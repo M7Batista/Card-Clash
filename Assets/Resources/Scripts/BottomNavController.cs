@@ -57,11 +57,28 @@ public class BottomNavController : MonoBehaviour
         if (targetScreen == currentScreen) return;
 
         nextScreen = targetScreen;
-        nextScreen.gameObject.SetActive(true);
-        StartCoroutine(FadeTransition(currentScreen, nextScreen));
+        // Mostra tela de loading
+        if (LoadingScreenController.Instance != null)
+            LoadingScreenController.Instance.Show();
+        StartCoroutine(FadeTransitionWithLoading(currentScreen, nextScreen, clickedButton));
+    }
+   
+    IEnumerator FadeTransitionWithLoading(RectTransform fromScreen, RectTransform toScreen, Button clickedButton)
+    {
+        // Simula um pequeno delay para garantir que a tela de loading apareça (opcional)
+        //yield return new WaitForSeconds(0.1f);
+
+        // Executa a transição normalmente
+        yield return StartCoroutine(FadeTransition(fromScreen, toScreen));
+
         // Atualiza botões
         UpdateAllButtons(clickedButton);
+
+        // Esconde tela de loading
+        if (LoadingScreenController.Instance != null)
+            LoadingScreenController.Instance.Hide();
     }
+
     IEnumerator FadeTransition(RectTransform fromScreen, RectTransform toScreen)
     {
         CanvasGroup fromGroup = fromScreen.GetComponent<CanvasGroup>();
@@ -100,7 +117,6 @@ public class BottomNavController : MonoBehaviour
         toGroup.blocksRaycasts = true;
 
         currentScreen = toScreen;
-        
     }
 
     void UpdateAllButtons(Button selectedButton)
@@ -134,5 +150,6 @@ public class BottomNavController : MonoBehaviour
         var selectable = button as Selectable;
         selectable.OnDeselect(null);
     }
+
 
 }

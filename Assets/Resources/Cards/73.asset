@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 8
   bottom: 10
   left: 7
-  artwork: {fileID: 21300000, guid: d54674a8f3f8bd74f9856425868a0e47, type: 3}
-  cardName: unknown
+  artwork: {fileID: -5727070424343938199, guid: ec2557b1cce93314f94ff25910d8adbc, type: 3}
+  cardName: Persania

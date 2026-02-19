@@ -28,7 +28,7 @@ id,rarity,top,right,bottom,left,cardName
 27,Uncommon,5,3,7,4,Samira
 28,Uncommon,4,5,3,7,Arat
 29,Uncommon,6,5,7,4,Tilene
-30,Uncommon,7,6,4,5,Talia
+30,Uncommon,7,6,4,5,Trish
 31,Uncommon,5,7,6,4,Viola
 32,Uncommon,4,6,7,5,Pameli
 33,Uncommon,7,5,6,3,Tayumi
@@ -56,9 +56,9 @@ id,rarity,top,right,bottom,left,cardName
 55,Rare,8,9,5,7,Bunnyli
 56,Rare,7,5,9,8,Geise
 57,Rare,9,6,7,8,Sadica
-58,Rare,6,8,9,7,Trish
-59,Rare,8,7,6,9,unknown
-60,Rare,7,9,6,8,unknown
+58,Rare,6,8,9,7,Talia
+59,Rare,8,7,6,9,Sandy
+60,Rare,7,9,6,8,Wendy
 61,Epic,8,9,A,7,Brytri
 62,Epic,9,A,7,8,Ohana
 63,Epic,A,7,8,9,Sara
@@ -71,7 +71,7 @@ id,rarity,top,right,bottom,left,cardName
 70,Epic,8,9,7,A,Morgana
 71,Epic,7,A,9,8,Nymp
 72,Epic,A,8,9,7,Nevi
-73,Epic,9,8,A,7,unknown
+73,Epic,9,8,A,7,Persania
 74,Epic,8,7,A,9,unknown
 75,Epic,A,9,8,7,unknown
 76,Epic,9,A,7,8,unknown

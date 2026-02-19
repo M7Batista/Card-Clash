@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 7
   bottom: 6
   left: 9
-  artwork: {fileID: 21300000, guid: d54674a8f3f8bd74f9856425868a0e47, type: 3}
-  cardName: unknown
+  artwork: {fileID: 21300000, guid: 8db8b6163a7e3c347af1d2c1511f2c80, type: 3}
+  cardName: Sandy
