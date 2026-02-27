@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ec2557b1cce93314f94ff25910d8adbc
+guid: 7765f527ff7331d4eb25a7e8e498c8d7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5727070424343938199
-    second: Persania_0
+      213: 467233522135196609
+    second: Lafana_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Persania_0
+      name: Lafana_0
       rect:
         serializedVersion: 2
-        x: 193
-        y: 13
-        width: 1453
-        height: 2015
+        x: 170
+        y: 40
+        width: 1839
+        height: 1985
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 96b7559dacb5580b0800000000000000
-      internalID: -5727070424343938199
+      spriteID: 1c3e502b962fb7600800000000000000
+      internalID: 467233522135196609
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Persania_0: -5727070424343938199
+      Lafana_0: 467233522135196609
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

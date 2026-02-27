@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ec2557b1cce93314f94ff25910d8adbc
+guid: c03646c85f1876443adad43119c279f9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5727070424343938199
-    second: Persania_0
+      213: -8442429063280712404
+    second: Mazira_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Persania_0
+      name: Mazira_0
       rect:
         serializedVersion: 2
-        x: 193
-        y: 13
-        width: 1453
-        height: 2015
+        x: 33
+        y: 75
+        width: 1965
+        height: 1777
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 96b7559dacb5580b0800000000000000
-      internalID: -5727070424343938199
+      spriteID: c2528b13f7776da80800000000000000
+      internalID: -8442429063280712404
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Persania_0: -5727070424343938199
+      Mazira_0: -8442429063280712404
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
