@@ -475,6 +475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64d3a0d66dbd8f14b83874f31a4f737e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardUI
+  maskArea: {fileID: 4462387818318901213}
   backgroundImage: {fileID: 8910186866258222967}
   artworkImage: {fileID: 64414298158590307}
   frameImage: {fileID: 3506125302651392393}

@@ -182,6 +182,8 @@ public class PuzzlePieceDrag : MonoBehaviour,
         //if (slot != null && slot.index == piece.index && !slot.isOccupied)
         {
             SnapToSlot(slot);
+            // O tamanho da peça recebe o mesmo tamanho do slot para garantir encaixe perfeito
+            rectTransform.sizeDelta = slot.GetComponent<RectTransform>().sizeDelta;
         }
         else
         {

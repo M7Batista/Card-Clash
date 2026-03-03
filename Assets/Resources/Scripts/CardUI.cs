@@ -7,6 +7,7 @@ public enum Owner { None, Player, Enemy }
 public class CardUI : MonoBehaviour
 {
     [Header("Referências Visuais")]
+    public RectTransform maskArea; // arraste o MaskArea aqui
     public Image backgroundImage;
     public Image artworkImage;
     public Image frameImage;
@@ -30,6 +31,8 @@ public class CardUI : MonoBehaviour
     {
         cardData = data;
         artworkImage.sprite = data.artwork;
+        // Ajusta o pivot do RectTransform para coincidir com o pivot do Sprite
+        AdjustPivot(artworkImage);
         txtName.text = data.cardName;
         numTop.text = ConvertToString(data.top);
         numRight.text = ConvertToString(data.right);
@@ -118,5 +121,41 @@ public class CardUI : MonoBehaviour
     {
         if (isFaceUp) ShowBack();
         else ShowFront();
+    }
+    public void AdjustPivot(Image img)
+    {
+    
+
+        if (img.sprite == null || maskArea == null)
+            return;
+
+        RectTransform rt = img.rectTransform;
+        Sprite sprite = img.sprite;
+
+        // 1️⃣ Pivot do sprite normalizado (0–1)
+        Vector2 spritePivot = new Vector2(
+            sprite.pivot.x / sprite.rect.width,
+            sprite.pivot.y / sprite.rect.height
+        );
+
+        // 2️⃣ Tamanho real da imagem na UI
+        Vector2 imageSize = rt.rect.size;
+        Vector2 maskSize = maskArea.rect.size;
+
+        // 3️⃣ Converter pivot para posição relativa ao centro
+        Vector2 imageLocalPivotPos = new Vector2(
+            (spritePivot.x - 0.5f) * imageSize.x,
+            (spritePivot.y - 0.5f) * imageSize.y
+        );
+
+        Vector2 maskLocalPivotPos = new Vector2(
+            (spritePivot.x - 0.5f) * maskSize.x,
+            (spritePivot.y - 0.5f) * maskSize.y
+        );
+
+        // 4️⃣ Offset necessário
+        Vector2 finalOffset = maskLocalPivotPos - imageLocalPivotPos;
+
+        rt.anchoredPosition = finalOffset;
     }
 }
