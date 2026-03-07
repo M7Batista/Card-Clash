@@ -28,7 +28,7 @@ public class PuzzleSelectionController : MonoBehaviour
         {
             PuzzleCardUI card =
                 Instantiate(puzzleCardPrefab, contentParent);
-
+            puzzle.state = PuzzleState.Available; // TESTE - REMOVER DEPOIS
             card.Setup(puzzle);
         }
     }

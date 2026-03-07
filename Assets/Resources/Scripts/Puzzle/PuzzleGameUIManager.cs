@@ -38,11 +38,8 @@ public class PuzzleGameUIManager : MonoBehaviour
     public void OpenPuzzleAssembly(int puzzleId)
     {
         currentPuzzleId = puzzleId;
-
         puzzleSelectionScreen.SetActive(false);
         puzzleAssemblyScreen.SetActive(true);
-
-        Debug.Log("Abrindo Puzzle ID: " + puzzleId);
     }
 
     public void BackToSelection()

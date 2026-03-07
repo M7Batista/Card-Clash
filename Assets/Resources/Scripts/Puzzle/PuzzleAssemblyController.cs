@@ -7,8 +7,6 @@ using UnityEngine.UI;
 public class PuzzleAssemblyController : MonoBehaviour
 {
     public static PuzzleAssemblyController Instance;
-    [Header("Puzzle Masks")]
-    public List<Sprite> puzzleMasks = new List<Sprite>();
     [Header("Puzzle Image")]
     public Sprite puzzleImage;
 
@@ -46,16 +44,8 @@ public class PuzzleAssemblyController : MonoBehaviour
     }
     void SetSpritePuzzle()
     {
-        puzzleImage = PuzzleGameUIManager.Instance.GetCurrentPuzzleId() switch
-        {
-            0 => Resources.Load<Sprite>("Art/Puzzles/Marine"),
-            1 => Resources.Load<Sprite>("Art/Puzzles/Milcow"),
-            2 => Resources.Load<Sprite>("Art/Puzzles/Octanea"),
-            3 => Resources.Load<Sprite>("Art/Puzzles/Pameli"),
-            4 => Resources.Load<Sprite>("Art/Puzzles/Ravenn"),
-            5 => Resources.Load<Sprite>("Art/Puzzles/Sara"),
-            _ => null
-        };
+        List<Sprite> puzzleImageList = Resources.LoadAll<Sprite>("Art/Puzzles").ToList();
+        puzzleImage = puzzleImageList[PuzzleGameUIManager.Instance.GetCurrentPuzzleId()]; 
     }
 
     void GenerateSprites()

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 282fb61ab9a5ee747b5ec53d17587063
+guid: 060f1123c8f39fb41b203ac013a70b41
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 57250732224826441
-    second: Octanea_0
+      213: -1491129389758080815
+    second: 07_lactia_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -24,7 +24,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 1
+  isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -48,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -126,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Octanea_0
+      name: 07_lactia_0
       rect:
         serializedVersion: 2
         x: 0
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 94c4465dc356bc000800000000000000
-      internalID: 57250732224826441
+      spriteID: 1d8135968b17e4be0800000000000000
+      internalID: -1491129389758080815
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Octanea_0: 57250732224826441
+      07_lactia_0: -1491129389758080815
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

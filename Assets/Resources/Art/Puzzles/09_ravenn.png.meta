@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1b53bd4f4e328904ea3f490f8954666b
+guid: 7a10362dd11e71c4796c215501aa64b0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -9029603126685789608
-    second: Pameli_0
+      213: 1005198284449825757
+    second: 10_ravenn_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -24,7 +24,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 1
+  isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -48,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -126,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Pameli_0
+      name: 10_ravenn_0
       rect:
         serializedVersion: 2
         x: 0
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 85213231cc760b280800000000000000
-      internalID: -9029603126685789608
+      spriteID: dd3c671938e23fd00800000000000000
+      internalID: 1005198284449825757
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Pameli_0: -9029603126685789608
+      10_ravenn_0: 1005198284449825757
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

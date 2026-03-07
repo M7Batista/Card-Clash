@@ -179,7 +179,6 @@ public class PuzzlePieceDrag : MonoBehaviour,
 
         PuzzleSlot slot = GetSlotUnderPointer(eventData);
         if (slot != null && slot == piece.correctSlot && !slot.isOccupied)
-        //if (slot != null && slot.index == piece.index && !slot.isOccupied)
         {
             SnapToSlot(slot);
             // O tamanho da peça recebe o mesmo tamanho do slot para garantir encaixe perfeito

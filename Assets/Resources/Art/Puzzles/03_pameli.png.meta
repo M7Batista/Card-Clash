@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: cf51c08d137880943a3a9161dc8ce40c
+guid: 25620548968d34c41b1e6dcb8c632f12
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -9029603126685789608
-    second: Pameli_0
+      213: -8777094270571945947
+    second: 04_pameli_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,7 +49,7 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 0
-  alignment: 4
+  alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
@@ -98,7 +98,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: Android
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: 50
     textureCompression: 1
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Pameli_0
+      name: 04_pameli_0
       rect:
         serializedVersion: 2
-        x: 13
-        y: 40
-        width: 2035
-        height: 1934
+        x: 0
+        y: 0
+        width: 2048
+        height: 2048
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 85213231cc760b280800000000000000
-      internalID: -9029603126685789608
+      spriteID: 5206172934f713680800000000000000
+      internalID: -8777094270571945947
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Pameli_0: -9029603126685789608
+      04_pameli_0: -8777094270571945947
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

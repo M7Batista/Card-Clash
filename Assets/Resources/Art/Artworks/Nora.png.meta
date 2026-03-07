@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 5d6d1942a0b0bd14fb07f8d1b98bdca0
+guid: 6fd59a263039a7946b567485db18bec4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5381368962363567767
-    second: Sara_0
+      213: -1484238308011752727
+    second: Nora_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -24,7 +24,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 1
+  isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -48,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Sara_0
+      name: Nora_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 2048
-        height: 2048
+        x: 179
+        y: 8
+        width: 1121
+        height: 2031
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 961d101c0798155b0800000000000000
-      internalID: -5381368962363567767
+      spriteID: 9e2cee86f1de66be0800000000000000
+      internalID: -1484238308011752727
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Sara_0: -5381368962363567767
+      Nora_0: -1484238308011752727
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

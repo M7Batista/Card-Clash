@@ -15,7 +15,6 @@ public class PuzzleBoardGenerator : MonoBehaviour
     void OnEnable()
     {
        GenerateBoard();
-       Debug.Log($"Generated board with {Slots.Length} slots.");
     }
 
 

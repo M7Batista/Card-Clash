@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 561d3eb6d443c6445a53ac92a533c8e9
+guid: a28de182890cdb845a5994831f0c0864
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1687786872134131605
-    second: Ravenn_0
+      213: 6476782299268342023
+    second: 08_mimosa_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -24,7 +24,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 1
+  isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -48,7 +48,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -126,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Ravenn_0
+      name: 08_mimosa_0
       rect:
         serializedVersion: 2
         x: 0
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b60a0e538c6c398e0800000000000000
-      internalID: -1687786872134131605
+      spriteID: 7016d6b8f2722e950800000000000000
+      internalID: 6476782299268342023
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Ravenn_0: -1687786872134131605
+      08_mimosa_0: 6476782299268342023
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

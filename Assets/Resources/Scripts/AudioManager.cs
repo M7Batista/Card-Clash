@@ -74,6 +74,8 @@ public class AudioManager : MonoBehaviour
         musicSource.volume = 0f;
 
         musicSource.clip = newClip;
+        // Coloca a musica em loop para não parar quando terminar
+        musicSource.loop = true;
         musicSource.Play();
 
         // Fade in até o volume alvo (targetMusicVolume), não até startVolume antigo

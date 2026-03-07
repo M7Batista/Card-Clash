@@ -54,8 +54,8 @@ public class PuzzleCardUI : MonoBehaviour
                 break;
         }
 
-        if (idText != null)
-            idText.text = data.id.ToString("D2"); // Exibe o ID com dois dígitos (ex: 01, 02, etc.)
+        //if (idText != null)
+            //idText.text = data.id.ToString("D2"); // Exibe o ID com dois dígitos (ex: 01, 02, etc.)
     }
 
 

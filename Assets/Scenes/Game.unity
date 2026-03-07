@@ -21244,28 +21244,44 @@ MonoBehaviour:
   puzzleCardPrefab: {fileID: 5450328084738823516, guid: e59870bdbc9f7fe459bc2b1155bdc2ae, type: 3}
   puzzles:
   - id: 0
-    previewImage: {fileID: 21300000, guid: 5504735923b78a54f90be1d854dcf92d, type: 3}
+    previewImage: {fileID: 21300000, guid: fe68a6db60ca17145b0a1bbe77a65619, type: 3}
     state: 1
     progress: 0
   - id: 1
-    previewImage: {fileID: 21300000, guid: c3123ceacc9e06c4c93448aa94f58d52, type: 3}
-    state: 1
+    previewImage: {fileID: 21300000, guid: c7328c73fb1162b4f8761283e78c4981, type: 3}
+    state: 0
     progress: 0
   - id: 2
-    previewImage: {fileID: 21300000, guid: 282fb61ab9a5ee747b5ec53d17587063, type: 3}
-    state: 1
+    previewImage: {fileID: 21300000, guid: d8f5870ef63825f4fa414c6f3f1ffe5d, type: 3}
+    state: 0
     progress: 0
   - id: 3
-    previewImage: {fileID: 21300000, guid: 1b53bd4f4e328904ea3f490f8954666b, type: 3}
+    previewImage: {fileID: 21300000, guid: 25620548968d34c41b1e6dcb8c632f12, type: 3}
     state: 1
     progress: 0
   - id: 4
-    previewImage: {fileID: 21300000, guid: 561d3eb6d443c6445a53ac92a533c8e9, type: 3}
-    state: 2
+    previewImage: {fileID: 21300000, guid: e001de52660278541885f110b683d8a9, type: 3}
+    state: 0
     progress: 0
   - id: 5
-    previewImage: {fileID: 21300000, guid: 5d6d1942a0b0bd14fb07f8d1b98bdca0, type: 3}
-    state: 1
+    previewImage: {fileID: 21300000, guid: 5aaab5f24e5860441ac2dbb1e01e94ef, type: 3}
+    state: 0
+    progress: 0
+  - id: 6
+    previewImage: {fileID: 21300000, guid: 5aaab5f24e5860441ac2dbb1e01e94ef, type: 3}
+    state: 0
+    progress: 0
+  - id: 7
+    previewImage: {fileID: 21300000, guid: a28de182890cdb845a5994831f0c0864, type: 3}
+    state: 0
+    progress: 0
+  - id: 8
+    previewImage: {fileID: 21300000, guid: 4cab8ead10c17654aba36520f82e2c34, type: 3}
+    state: 0
+    progress: 0
+  - id: 9
+    previewImage: {fileID: 21300000, guid: 7a10362dd11e71c4796c215501aa64b0, type: 3}
+    state: 0
     progress: 0
 --- !u!114 &1699446047
 MonoBehaviour:
@@ -23827,6 +23843,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1865021728}
   - component: {fileID: 1865021730}
+  - component: {fileID: 1865021731}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -23877,6 +23894,20 @@ MonoBehaviour:
   m_Spacing: {x: 50, y: 50}
   m_Constraint: 1
   m_ConstraintCount: 2
+--- !u!114 &1865021731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865021727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &1867474684
 GameObject:
   m_ObjectHideFlags: 0
@@ -26652,7 +26683,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c35f04e8c83fb3640bb4133a13fd16ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PuzzleAssemblyController
-  puzzleMasks: []
   puzzleImage: {fileID: 21300000, guid: 5504735923b78a54f90be1d854dcf92d, type: 3}
   rows: 6
   columns: 6
