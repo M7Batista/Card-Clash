@@ -1,22 +1,10 @@
 fileFormatVersion: 2
-guid: 2bc86a05d11c34d4ca46dd48adbba290
+guid: bff2bb71d58272f4f9dc1bc2f5baf5d0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -674092465207539140
-    second: Vanessa_0
-  - first:
-      213: -7613697737063741000
-    second: Vanessa_1
-  - first:
-      213: -253992926545226054
-    second: Vanessa_2
-  - first:
-      213: -2591520456948558922
-    second: Vanessa_3
-  - first:
-      213: 2932716484595822262
-    second: Vanessa_4
+      213: 6126225977653088430
+    second: Minerva_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -138,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Vanessa_0
+      name: Minerva_0
       rect:
         serializedVersion: 2
-        x: 261
-        y: 1449
-        width: 237
-        height: 519
+        x: 3
+        y: 13
+        width: 2029
+        height: 2002
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,96 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c3a8981797425a6f0800000000000000
-      internalID: -674092465207539140
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Vanessa_1
-      rect:
-        serializedVersion: 2
-        x: 304
-        y: 75
-        width: 1656
-        height: 1885
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8b9ce1b4f36b65690800000000000000
-      internalID: -7613697737063741000
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Vanessa_2
-      rect:
-        serializedVersion: 2
-        x: 493
-        y: 1885
-        width: 57
-        height: 95
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ab65fcd67c2a97cf0800000000000000
-      internalID: -253992926545226054
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Vanessa_3
-      rect:
-        serializedVersion: 2
-        x: 232
-        y: 1711
-        width: 55
-        height: 84
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6b35c67ffd1190cd0800000000000000
-      internalID: -2591520456948558922
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Vanessa_4
-      rect:
-        serializedVersion: 2
-        x: 224
-        y: 1588
-        width: 41
-        height: 85
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6be2443ca1a13b820800000000000000
-      internalID: 2932716484595822262
+      spriteID: ea058cb811ab40550800000000000000
+      internalID: 6126225977653088430
       vertices: []
       indices: 
       edges: []
@@ -261,11 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Vanessa_0: -674092465207539140
-      Vanessa_1: -7613697737063741000
-      Vanessa_2: -253992926545226054
-      Vanessa_3: -2591520456948558922
-      Vanessa_4: 2932716484595822262
+      Minerva_0: 6126225977653088430
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

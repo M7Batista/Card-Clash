@@ -35,6 +35,7 @@ public class PuzzleAssemblyController : MonoBehaviour
         GenerateSprites();
         GeneratePieces();
         StartCoroutine(LoadAssignCorrectSlots());
+        
     }
 
     IEnumerator LoadAssignCorrectSlots()

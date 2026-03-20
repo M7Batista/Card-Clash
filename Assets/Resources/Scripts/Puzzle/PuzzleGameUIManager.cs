@@ -33,6 +33,7 @@ public class PuzzleGameUIManager : MonoBehaviour
         resetButton.onClick.AddListener(ResetPuzzle);
         previewImage.gameObject.SetActive(false);
         SetupPreviewButtonPressEvents();
+        
     }
 
     public void OpenPuzzleAssembly(int puzzleId)

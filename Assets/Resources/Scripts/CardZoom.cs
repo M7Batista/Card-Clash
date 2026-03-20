@@ -9,7 +9,7 @@ public class CardZoom : MonoBehaviour, IScrollHandler, IDragHandler, IBeginDragH
     public float zoomSpeed = 0.1f;
     public float minScale = 1f;
     public float maxScale = 3f;
-    
+
     private bool isDragging = false;
     private Dictionary<int, Vector2> touchPositions = new Dictionary<int, Vector2>();
     private float lastTouchDistance = 0f;
@@ -28,7 +28,7 @@ public class CardZoom : MonoBehaviour, IScrollHandler, IDragHandler, IBeginDragH
 
     void Update()
     {
-        // --- Detectar Pinch Zoom com múltiplos toques ---
+
         if (touchPositions.Count == 2)
         {
             Vector2[] positions = new Vector2[2];
@@ -39,11 +39,10 @@ public class CardZoom : MonoBehaviour, IScrollHandler, IDragHandler, IBeginDragH
             }
 
             float currentDistance = Vector2.Distance(positions[0], positions[1]);
-            
+
             if (lastTouchDistance > 0)
             {
                 float difference = currentDistance - lastTouchDistance;
-                Debug.Log($"Pinch zoom detected - LastDistance: {lastTouchDistance}, CurrentDistance: {currentDistance}, Difference: {difference}");
                 ApplyZoom(difference * zoomSpeed * 0.01f);
             }
 
@@ -59,18 +58,15 @@ public class CardZoom : MonoBehaviour, IScrollHandler, IDragHandler, IBeginDragH
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log($"PointerDown - PointerId: {eventData.pointerId}, Position: {eventData.position}");
         touchPositions[eventData.pointerId] = eventData.position;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        Debug.Log($"PointerUp - PointerId: {eventData.pointerId}");
         touchPositions.Remove(eventData.pointerId);
         lastTouchDistance = 0;
     }
 
-    // --- Zoom com scroll (PC) ---
     public void OnScroll(PointerEventData eventData)
     {
         ApplyZoom(eventData.scrollDelta.y * zoomSpeed);
@@ -85,14 +81,14 @@ public class CardZoom : MonoBehaviour, IScrollHandler, IDragHandler, IBeginDragH
     public void OnDrag(PointerEventData eventData)
     {
         Debug.Log($"OnDrag - PointerId: {eventData.pointerId}, Delta: {eventData.delta}, ActiveTouches: {touchPositions.Count}");
-        
+
         // Só arrasta se houver apenas 1 toque
         if (touchPositions.Count == 1)
         {
             target.anchoredPosition += eventData.delta;
             Debug.Log("New position: " + target.anchoredPosition);
         }
-        
+
         // Atualizar posição do toque
         touchPositions[eventData.pointerId] = eventData.position;
     }
@@ -144,7 +140,7 @@ public class CardZoom : MonoBehaviour, IScrollHandler, IDragHandler, IBeginDragH
         target.anchoredPosition = clampedPos;
         Debug.Log($"ClampToBounds - Max Offset: ({maxOffsetX}, {maxOffsetY}), Clamped Pos: {clampedPos}");
     }
-    
+
     public void ResetZoom()
     {
         target.localScale = Vector3.one;

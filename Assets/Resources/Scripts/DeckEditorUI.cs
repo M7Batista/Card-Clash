@@ -157,10 +157,7 @@ public class DeckEditorUI : MonoBehaviour
         cardUI.ShowCheckmark(selected);
     }
 
-    /// <summary>
-    /// Atualiza corretamente as marcas (checkmarks) para um determinado card ID,
-    /// levando em conta cópias repetidas.
-    /// </summary>
+
     private void RefreshMarksForCardID(int cardId)
     {
         // Conta quantas cópias desse ID estão no deck

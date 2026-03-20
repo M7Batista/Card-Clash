@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 10
   bottom: 9
   left: 8
-  artwork: {fileID: 21300000, guid: dcd5150257d87bb448d171a51ef66a30, type: 3}
-  cardName: Nymp
+  artwork: {fileID: 21300000, guid: 6fd59a263039a7946b567485db18bec4, type: 3}
+  cardName: Nora
