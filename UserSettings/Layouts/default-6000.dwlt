@@ -437,7 +437,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 242
-    y: 87
+    y: 24
     width: 275
     height: 848
   m_SerializedDataModeController:
@@ -480,7 +480,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: eafd0100
     m_LastClickedID: 130538
-    m_ExpandedIDs: 00000000fed40000bad500001eda000020da000022da000024da000026da0000
+    m_ExpandedIDs: 0000000002d50000bed500001eda000020da000022da0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -509,7 +509,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: ffffffff00000000fed40000bad500001eda000020da000022da0000
+    m_ExpandedIDs: 0000000002d50000bed500001eda000020da000022da0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -589,7 +589,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 1422
-    y: 87
+    y: 24
     width: 494
     height: 848
   m_SerializedDataModeController:
@@ -637,8 +637,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Hierarchy\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 1
-    y: 87
+    x: 0
+    y: 24
     width: 240
     height: 848
   m_SerializedDataModeController:
@@ -657,7 +657,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 00fafeff12fafeff100bfffffcfaffffacc8000016c90000eec90000bccd0000dccd000038ce000084cf0000d6d000003ed1000050d10000
+      m_ExpandedIDs: fcfaffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1384,8 +1384,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Console\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 1
-    y: 961
+    x: 0
+    y: 898
     width: 1916
     height: 24
   m_SerializedDataModeController:
@@ -1421,7 +1421,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 519
-    y: 87
+    y: 24
     width: 901
     height: 848
   m_SerializedDataModeController:
@@ -1451,7 +1451,7 @@ MonoBehaviour:
   m_UseMipMap: 0
   m_SimulatorState:
     controlPanelVisible: 0
-    controlPanelWidth: 0
+    controlPanelWidth: NaN
     controlPanelFoldoutKeys:
     - UnityEditor.DeviceSimulation.ApplicationSettingsPlugin
     controlPanelFoldoutValues: 01
@@ -1461,7 +1461,7 @@ MonoBehaviour:
     pluginStates:
     - '{}'
     - '{}'
-    scale: 33
+    scale: 10
     fitToScreenEnabled: 1
     rotationDegree: 0
     highlightSafeAreaEnabled: 0
