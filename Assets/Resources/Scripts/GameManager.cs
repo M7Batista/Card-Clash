@@ -24,4 +24,13 @@ public class GameManager : MonoBehaviour
         TopPanelController.Instance?.UpdateCoinsDisplay();
     }
 
+    public void SpendCoins(int amount)
+    {
+        if (amount <= 0) return;
+
+        coins = Mathf.Max(0, coins - amount);
+        PlayerPrefs.SetInt("Coins", coins);
+        TopPanelController.Instance?.UpdateCoinsDisplay();
+    }
+
 }

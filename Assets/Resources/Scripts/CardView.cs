@@ -11,6 +11,7 @@ public class CardView : MonoBehaviour
     public TextMeshProUGUI characterName, characterRarity, txtID;
     public RadarPolygon radarPolygon;
     public Button buttonView;
+    public Button buttonSetHomeScreen; //Atribui o personagem a tela inicial do jogo
     string currentCardName;
     public Image backgroundImage;
 
@@ -79,6 +80,7 @@ public class CardView : MonoBehaviour
         var zoom = gameObject.transform.GetChild(1).GetComponent<CardZoom>();
         if (zoom != null) zoom.ResetZoom();
         buttonView.onClick.AddListener(FullScreen);
+        buttonSetHomeScreen.onClick.AddListener(() => SetHomeScreen(cardData));
     }
 
 
@@ -94,5 +96,10 @@ public class CardView : MonoBehaviour
     {
         panelTop.SetActive(!panelTop.activeSelf);
         panelBottom.SetActive(!panelBottom.activeSelf);
+    }
+    void SetHomeScreen(CardData cardData)
+    {
+        PlayerPrefs.SetString("HomeScreenCharacter", cardData.cardName);
+        Debug.Log($"Home screen character set to: {cardData.cardName}");
     }
 }

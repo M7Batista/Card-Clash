@@ -14,6 +14,7 @@ public class BattleCardScreen : MonoBehaviour
     public GameObject roulletPrefab;
     public GameObject cardPrefab;
     public Canvas mainCanvas;
+    public GameObject coinPrefab;
 
     public Button exitBattleButton;
     public Button restartBattleButton;
@@ -21,8 +22,6 @@ public class BattleCardScreen : MonoBehaviour
     [Header("Telas")]
     public GameObject battleScreen;
     public GameObject boardScreen;
-    public GameObject stealCardsScreen;
-
 
     private GameObject currentRoullet;
 
@@ -167,24 +166,45 @@ public class BattleCardScreen : MonoBehaviour
 
     public void PosBattleSetup(int result)
     {
-        // Configurações pós-batalha, se necessário
+        // Configurações pós-batalha
         boardScreen.SetActive(false);
-        stealCardsScreen.SetActive(true);
+        
+        GrantBattleReward(result);
+        ExitBattle();
+    }
 
-        if (result == 0)
+    private void GrantBattleReward(int result)
+    {
+        int rewardCoins = result switch
         {
+            0 => 20,
+            2 => 10,
+            _ => 0
+        };
 
-            CardStealUIManager.Instance.OpenStealScreen(BattleSetupManager.Instance.playerActiveDeck, BattleSetupManager.Instance.enemyActiveDeck, true, false);
-        }
-        else if (result == 1)
+        ExitBattle();
+
+        if (rewardCoins > 0)
         {
-            CardStealUIManager.Instance.OpenStealScreen(BattleSetupManager.Instance.playerActiveDeck, BattleSetupManager.Instance.enemyActiveDeck, false, false);
+            GameManager.Instance.AddCoins(rewardCoins);
+            StartCoroutine(ShowRewardCoins(rewardCoins));
+            Debug.Log($"Recompensa de batalha concedida: {rewardCoins} moedas ({GetResultLabel(result)})");
         }
         else
         {
-            battleScreen.SetActive(true);
-            ExitBattle();
+            Debug.Log($"Nenhuma recompensa de moedas para o resultado: {GetResultLabel(result)}");
         }
+    }
+
+    private string GetResultLabel(int result)
+    {
+        return result switch
+        {
+            0 => "vitória",
+            1 => "derrota",
+            2 => "empate",
+            _ => "resultado desconhecido"
+        };
     }
     public void RestartBattle()
     {
@@ -197,7 +217,6 @@ public class BattleCardScreen : MonoBehaviour
         boardScreen.SetActive(false);
         battleScreen.SetActive(true);
         BoardManager.Instance.HideTurnArrow();
-        stealCardsScreen.SetActive(false);
         // interrompe qualquer música de batalha
         AudioManager.Instance.StopMusic();
     }
@@ -217,6 +236,117 @@ public class BattleCardScreen : MonoBehaviour
         if (currentRoullet != null)  Destroy(currentRoullet);
        
     }
+    private IEnumerator ShowRewardCoins(int rewardCoins)
+    {
+        if (mainCanvas == null)
+        {
+            Debug.LogWarning("mainCanvas não encontrado para animar moedas.");
+            yield break;
+        }
 
-   
+        Canvas canvas = mainCanvas;
+        RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+        Vector2 centerPos = Vector2.zero;
+        Vector2 topPos = new Vector2(0f, canvasRect.rect.height / 2f + 40f);
+        Sprite coinSprite = CreateCoinSprite();
+
+        for (int i = 0; i < rewardCoins; i++)
+        {
+            if (coinPrefab == null)
+            {
+                Debug.LogWarning("coinPrefab não foi atribuído. A animação de moedas não será exibida.");
+                yield break;
+            }
+
+            GameObject coinObject = Instantiate(coinPrefab, canvas.transform, false);
+            coinObject.transform.SetAsLastSibling();
+
+            RectTransform coinRect = coinObject.GetComponent<RectTransform>();
+            if (coinRect != null)
+            {
+                coinRect.anchoredPosition = centerPos;
+            }
+
+            CanvasGroup canvasGroup = coinObject.GetComponent<CanvasGroup>();
+            if (canvasGroup == null)
+            {
+                canvasGroup = coinObject.AddComponent<CanvasGroup>();
+            }
+            canvasGroup.alpha = 1f;
+
+            Vector2 spreadTarget = centerPos + new Vector2(Random.Range(-40f, 40f), Random.Range(20f, 60f));
+            StartCoroutine(AnimateSingleCoin(coinRect, centerPos, spreadTarget, topPos, 0.9f));
+
+            yield return new WaitForSeconds(0.03f);
+        }
+    }
+
+    private IEnumerator AnimateSingleCoin(RectTransform coinRect, Vector2 startPos, Vector2 spreadTarget, Vector2 finalTarget, float duration)
+    {
+        float spreadDuration = duration * 0.3f;
+        float elapsed = 0f;
+
+        while (elapsed < spreadDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / spreadDuration;
+            float easeOut = 1f - (1f - t) * (1f - t);
+            coinRect.anchoredPosition = Vector2.Lerp(startPos, spreadTarget, easeOut);
+            yield return null;
+        }
+
+        float flyDuration = duration * 0.7f;
+        elapsed = 0f;
+
+        while (elapsed < flyDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / flyDuration;
+            float easeIn = t * t;
+            coinRect.anchoredPosition = Vector2.Lerp(spreadTarget, finalTarget, easeIn);
+
+            CanvasGroup canvasGroup = coinRect.GetComponent<CanvasGroup>();
+            if (canvasGroup != null)
+            {
+                canvasGroup.alpha = Mathf.Lerp(1f, 0f, t);
+            }
+
+            yield return null;
+        }
+
+        Destroy(coinRect.gameObject);
+    }
+
+    private Sprite CreateCoinSprite()
+    {
+        int size = 64;
+        Texture2D texture = new Texture2D(size, size, TextureFormat.ARGB32, false);
+        Color[] pixels = new Color[size * size];
+
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                Vector2 center = new Vector2(size / 2f, size / 2f);
+                float dx = x - center.x;
+                float dy = y - center.y;
+                float distance = Mathf.Sqrt(dx * dx + dy * dy);
+                float radius = size * 0.45f;
+
+                if (distance <= radius)
+                {
+                    pixels[y * size + x] = new Color(1f, 0.85f, 0.15f, 1f);
+                }
+                else
+                {
+                    pixels[y * size + x] = Color.clear;
+                }
+            }
+        }
+
+        texture.SetPixels(pixels);
+        texture.Apply();
+        return Sprite.Create(texture, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f));
+    }
+
 }

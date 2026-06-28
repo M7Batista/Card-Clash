@@ -1,66 +1,319 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 using System.Collections;
-using TMPro;
 
 public class HomeScreen : MonoBehaviour
 {
-   
-    [Header("Personagem (Image UI)")]
-    public Image characterImage;              // personagem que deve ficar centralizado no background
+    [Header("Personagem (Vídeo UI)")]
+    [SerializeField] private RawImage characterVideoImage;
+    [SerializeField] private VideoPlayer characterVideoPlayer;
+    [SerializeField] private Image characterFallbackImage;
+    [SerializeField] private string characterVideoFolder = "Art/Videos";
+    [SerializeField] private string characterArtworkFolder = "Art/Artworks";
+    [SerializeField] private string defaultCharacterID = "Marine";
+    [SerializeField] private bool autoCreateVideoObjects = true;
 
     [Header("Transições")]
     public float fadeDuration = 0.8f;
-    
+
+    private RenderTexture characterRenderTexture;
+
     void OnEnable()
     {
         Debug.Log("HomeScreen OnEnable");
-        LoadCharacterImage();
+        LoadCharacterVideo();
         AudioManager.Instance?.PlayMusic(AudioManager.Instance.menuMusic);
     }
 
-    void LoadCharacterImage()
+    void OnDisable()
     {
-        if (characterImage == null) return;
-
-        if (!PlayerPrefs.HasKey("HomeCharacterID")) return;
-
-        string characterID = PlayerPrefs.GetString("HomeCharacterID");
-        if (string.IsNullOrEmpty(characterID)) return;
-
-        Sprite loadedSprite = Resources.Load<Sprite>($"Art/Artworks/{characterID}");
-        if (loadedSprite != null)
+        if (characterVideoPlayer != null)
         {
-            characterImage.sprite = loadedSprite;
-            characterImage.enabled = true;
+            characterVideoPlayer.Stop();
+        }
+    }
+
+    void LoadCharacterVideo()
+    {
+        EnsureVideoComponents();
+
+        if (characterVideoImage == null || characterVideoPlayer == null)
+        {
+            Debug.LogWarning("Componentes de vídeo não foram encontrados para a HomeScreen.");
+            return;
+        }
+        
+        string characterID = PlayerPrefs.HasKey("HomeScreenCharacter")
+            ? PlayerPrefs.GetString("HomeScreenCharacter")
+            : defaultCharacterID;
+
+        if (string.IsNullOrEmpty(characterID))
+        {
+            Debug.LogWarning("Nenhum personagem foi definido para a HomeScreen.");
+            return;
+        }
+
+        Debug.Log($"Tentando carregar vídeo para o personagem: {characterID}");
+        VideoClip loadedClip = Resources.Load<VideoClip>($"{characterVideoFolder}/{characterID}");
+        if (loadedClip != null)
+        {
+            PrepareVideoOutput(loadedClip);
+            characterVideoPlayer.Play();
+            characterVideoImage.enabled = true;
+            characterVideoImage.gameObject.SetActive(true);
+            DisableFallbackImage();
             StartCoroutine(FadeInImage());
         }
         else
         {
-            characterImage.enabled = false;
-            Debug.LogWarning($"Personagem não encontrado: {characterID}");
+            Debug.LogWarning($"Vídeo não encontrado: {characterVideoFolder}/{characterID}. Tentando carregar imagem como fallback...");
+            LoadCharacterImage(characterID);
         }
     }
 
-    IEnumerator FadeInImage()
+    void LoadCharacterImage(string characterID)
     {
-        if (characterImage == null) yield break;
-        Color color = characterImage.color;
+        Sprite loadedSprite = Resources.Load<Sprite>($"{characterArtworkFolder}/{characterID}");
+        if (loadedSprite != null)
+        {
+            if (characterFallbackImage == null)
+            {
+                CreateFallbackImage();
+            }
+
+            characterVideoImage.enabled = false;
+            characterVideoImage.gameObject.SetActive(false);
+            characterFallbackImage.sprite = loadedSprite;
+            characterFallbackImage.enabled = true;
+            StartCoroutine(DelayedResizeForImage(loadedSprite));
+            StartCoroutine(FadeInImage());
+            Debug.Log($"Imagem carregada com sucesso: {characterArtworkFolder}/{characterID}");
+        }
+        else
+        {
+            characterFallbackImage.enabled = false;
+            Debug.LogWarning($"Imagem não encontrada: {characterArtworkFolder}/{characterID}");
+        }
+    }
+
+    private void CreateFallbackImage()
+    {
+        if (characterFallbackImage != null) return;
+
+        GameObject fallbackObject = new GameObject("CharacterFallbackImage");
+        fallbackObject.transform.SetParent(transform, false);
+
+        RectTransform rectTransform = fallbackObject.AddComponent<RectTransform>();
+        rectTransform.anchorMin = Vector2.zero;
+        rectTransform.anchorMax = Vector2.one;
+        rectTransform.offsetMin = Vector2.zero;
+        rectTransform.offsetMax = Vector2.zero;
+
+        characterFallbackImage = fallbackObject.AddComponent<Image>();
+        characterFallbackImage.color = Color.white;
+        characterFallbackImage.raycastTarget = false;
+        characterFallbackImage.transform.SetAsFirstSibling();
+        characterFallbackImage.enabled = false;
+    }
+
+    private void DisableFallbackImage()
+    {
+        if (characterFallbackImage != null)
+        {
+            characterFallbackImage.enabled = false;
+        }
+    }
+
+    private void EnsureVideoComponents()
+    {
+        DisableLegacyImage();
+
+        if (characterVideoImage == null)
+        {
+            characterVideoImage = GetComponentInChildren<RawImage>(true);
+        }
+
+        if (characterVideoPlayer == null)
+        {
+            characterVideoPlayer = GetComponentInChildren<VideoPlayer>(true);
+        }
+
+        if (characterVideoImage == null && autoCreateVideoObjects)
+        {
+            GameObject videoObject = new GameObject("CharacterVideo");
+            videoObject.transform.SetParent(transform, false);
+
+            RectTransform rectTransform = videoObject.AddComponent<RectTransform>();
+            rectTransform.anchorMin = Vector2.zero;
+            rectTransform.anchorMax = Vector2.one;
+            rectTransform.offsetMin = Vector2.zero;
+            rectTransform.offsetMax = Vector2.zero;
+
+            characterVideoImage = videoObject.AddComponent<RawImage>();
+            characterVideoImage.color = Color.white;
+            characterVideoImage.raycastTarget = false;
+            characterVideoImage.transform.SetSiblingIndex(0);
+        }
+
+        if (characterVideoPlayer == null && autoCreateVideoObjects)
+        {
+            if (characterVideoImage != null)
+            {
+                characterVideoPlayer = characterVideoImage.gameObject.AddComponent<VideoPlayer>();
+            }
+            else
+            {
+                characterVideoPlayer = gameObject.AddComponent<VideoPlayer>();
+            }
+        }
+
+        if (characterVideoImage != null)
+        {
+            characterVideoImage.enabled = false;
+        }
+    }
+
+    private void DisableLegacyImage()
+    {
+        Image legacyImage = GetComponentInChildren<Image>(true);
+        if (legacyImage != null && legacyImage != characterVideoImage)
+        {
+            legacyImage.enabled = false;
+        }
+    }
+
+
+    private void PrepareVideoOutput(VideoClip clip)
+    {
+        if (characterVideoImage == null || characterVideoPlayer == null || clip == null)
+        {
+            return;
+        }
+
+        if (characterRenderTexture != null)
+        {
+            characterRenderTexture.Release();
+            Destroy(characterRenderTexture);
+        }
+
+        characterRenderTexture = new RenderTexture((int)clip.width, (int)clip.height, 0, RenderTextureFormat.ARGB32);
+        characterRenderTexture.Create();
+
+        characterVideoPlayer.source = VideoSource.VideoClip;
+        characterVideoPlayer.clip = clip;
+        characterVideoPlayer.playOnAwake = false;
+        characterVideoPlayer.renderMode = VideoRenderMode.RenderTexture;
+        characterVideoPlayer.targetTexture = characterRenderTexture;
+        characterVideoPlayer.isLooping = true;
+        characterVideoPlayer.audioOutputMode = VideoAudioOutputMode.None;
+        characterVideoPlayer.aspectRatio = VideoAspectRatio.FitInside;
+
+        characterVideoImage.texture = characterRenderTexture;
+        characterVideoImage.color = Color.white;
+        characterVideoImage.transform.SetAsFirstSibling();
+        StartCoroutine(DelayedResizeForVideo(clip));
+    }
+
+    private void ResizeVideoToFitScreen(VideoClip clip)
+    {
+        if (characterVideoImage == null) return;
+
+        RectTransform imageRect = characterVideoImage.rectTransform;
+        RectTransform parentRect = imageRect.parent as RectTransform;
+        if (parentRect == null) return;
+
+        float parentWidth = parentRect.rect.width;
+        float parentHeight = parentRect.rect.height;
+        float aspectRatio = (float)clip.width / Mathf.Max(1f, clip.height);
+
+        imageRect.anchorMin = new Vector2(0.5f, 0.5f);
+        imageRect.anchorMax = new Vector2(0.5f, 0.5f);
+        imageRect.pivot = new Vector2(0.5f, 0.5f);
+        imageRect.anchoredPosition = Vector2.zero;
+
+        // Force height to parent's height (using SetSizeWithCurrentAnchors to respect canvas scaling)
+        float targetHeight = parentHeight;
+        float targetWidth = targetHeight * aspectRatio;
+
+        // Apply size based on parent's height and original aspect ratio.
+        // Width may exceed parentWidth and overflow (will be clipped by parent if masked).
+        imageRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, targetHeight);
+        imageRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, targetWidth);
+    }
+
+    private void ResizeImageToFitScreen(Sprite sprite)
+    {
+        if (characterFallbackImage == null) return;
+
+        RectTransform imageRect = characterFallbackImage.rectTransform;
+        RectTransform parentRect = imageRect.parent as RectTransform;
+        if (parentRect == null) return;
+
+        float parentWidth = parentRect.rect.width;
+        float parentHeight = parentRect.rect.height;
+
+        if (sprite.rect.height == 0) return;
+        float aspectRatio = sprite.rect.width / sprite.rect.height;
+
+        imageRect.anchorMin = new Vector2(0.5f, 0.5f);
+        imageRect.anchorMax = new Vector2(0.5f, 0.5f);
+        imageRect.pivot = new Vector2(0.5f, 0.5f);
+        imageRect.anchoredPosition = Vector2.zero;
+
+        // Force height to parent's height and calculate width to preserve aspect
+        float targetHeight = parentHeight;
+        float targetWidth = targetHeight * aspectRatio;
+
+        // Apply size based on parent's height and original aspect ratio.
+        // Width may exceed parentWidth and overflow (will be clipped by parent if masked).
+        imageRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, targetHeight);
+        imageRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, targetWidth);
+    }
+
+    private IEnumerator DelayedResizeForVideo(VideoClip clip)
+    {
+        // Wait end of frame to ensure layout and canvas scaler applied
+        yield return new WaitForEndOfFrame();
+        ResizeVideoToFitScreen(clip);
+    }
+
+    private IEnumerator DelayedResizeForImage(Sprite sprite)
+    {
+        yield return new WaitForEndOfFrame();
+        ResizeImageToFitScreen(sprite);
+    }
+
+    private IEnumerator FadeInGraphic(Graphic graphic)
+    {
+        if (graphic == null) yield break;
+
+        Color color = graphic.color;
         color.a = 0f;
-        characterImage.color = color;
+        graphic.color = color;
 
         float elapsed = 0f;
         while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
             color.a = Mathf.Clamp01(elapsed / fadeDuration);
-            characterImage.color = color;
+            graphic.color = color;
             yield return null;
         }
 
         color.a = 1f;
-        characterImage.color = color;
+        graphic.color = color;
     }
-    
-    
+
+    IEnumerator FadeInImage()
+    {
+        if (characterVideoImage != null && characterVideoImage.enabled)
+        {
+            yield return StartCoroutine(FadeInGraphic(characterVideoImage));
+        }
+        else if (characterFallbackImage != null && characterFallbackImage.enabled)
+        {
+            yield return StartCoroutine(FadeInGraphic(characterFallbackImage));
+        }
+    }
 }

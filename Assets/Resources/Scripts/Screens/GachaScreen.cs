@@ -6,7 +6,6 @@ using TMPro;
 public class GachaScreen : MonoBehaviour
 {
     [Header("Referências de UI")]
-    public TextMeshProUGUI txtMoedas;
     public Button btnGacha1x;
     public Button btnGacha10x;
     public Transform resultadoArea;
@@ -20,8 +19,6 @@ public class GachaScreen : MonoBehaviour
     List<CardData> poolCartas;
     List<float> chancesPorRaridade;
 
-    private int moedas;
-   
     void Start()
     {
         // Carrega a lista poolCartas 
@@ -43,7 +40,7 @@ public class GachaScreen : MonoBehaviour
 
     void OnEnable()
     {
-        AtualizarMoedas();
+
         btnGacha1x.onClick.AddListener(() => TentarGacha(1));
         btnGacha10x.onClick.AddListener(() => TentarGacha(10));
         btnOk.onClick.AddListener(OnOkClick);
@@ -58,24 +55,24 @@ public class GachaScreen : MonoBehaviour
         ClearResult();
     }
 
-    void AtualizarMoedas()
-    {
-        moedas = PlayerPrefs.GetInt("Moedas", 0);
-        txtMoedas.text = moedas.ToString();
-    }
+    
 
     void TentarGacha(int quantidade)
     {
+        if (GameManager.Instance == null)
+        {
+            Debug.LogWarning("GameManager não encontrado para consumir moedas.");
+            return;
+        }
+
         int preco = quantidade == 1 ? preco1x : preco10x;
-        if (moedas < preco)
+        if (GameManager.Instance.coins < preco)
         {
             Debug.Log("Moedas insuficientes!");
-            //return;
+            return;
         }
-        // Não reduz as moedas em teste para facilitar o desenvolvimento, mas aqui é onde você faria isso:
-        // moedas -= preco;
-        // PlayerPrefs.SetInt("Moedas", moedas);
-        AtualizarMoedas();
+
+        GameManager.Instance.SpendCoins(preco);
         List<CardData> cartas = SortearCartas(quantidade);
         MostrarCartas(cartas);
     }
