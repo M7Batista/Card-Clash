@@ -77,7 +77,7 @@ public class DraggableCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
             var cardUI = GetComponent<CardUI>();
             OnCardPlaced?.Invoke(cardUI);
-            BattleCardScreen.Instance.OnPlayerCardPlaced(cardUI);
+            BattleSetupManager.Instance.OnPlayerCardPlaced(cardUI);
             AudioManager.Instance?.PlaySFX("card-slide-1");
 
             Destroy(this); // impede novo arraste após colocação

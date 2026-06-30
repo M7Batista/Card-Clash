@@ -23,7 +23,7 @@ public class CardDealer : MonoBehaviour
 
     private void Start()
     {
-        mainCanvas = FindFirstObjectByType<Canvas>();
+        mainCanvas = FindAnyObjectByType<Canvas>();
         if (mainCanvas != null && mainCanvas.renderMode == RenderMode.ScreenSpaceCamera)
             uiCamera = mainCanvas.worldCamera;
     }
@@ -94,7 +94,7 @@ public class CardDealer : MonoBehaviour
     {
         if (mainCanvas == null)
         {
-            mainCanvas = FindFirstObjectByType<Canvas>();
+            mainCanvas = FindAnyObjectByType<Canvas>();
             if (mainCanvas != null && mainCanvas.renderMode == RenderMode.ScreenSpaceCamera)
                 uiCamera = mainCanvas.worldCamera;
         }

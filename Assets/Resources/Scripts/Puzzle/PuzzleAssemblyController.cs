@@ -124,7 +124,7 @@ public class PuzzleAssemblyController : MonoBehaviour
     void AssignCorrectSlots()
     {
         PuzzleSlot[] slots =
-            FindFirstObjectByType<PuzzleBoardGenerator>().Slots;
+            FindAnyObjectByType<PuzzleBoardGenerator>().Slots;
 
         foreach (Transform child in piecesParent)
         {

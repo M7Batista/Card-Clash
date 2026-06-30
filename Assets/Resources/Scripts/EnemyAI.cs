@@ -38,12 +38,41 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
-            // Fallback para Hard se fora do range
             difficulty = EnemyDifficulty.Medium;
         }
 
-
         Debug.Log($"🎚️ Dificuldade da IA definida para estágio {stageNumber}: {difficulty}");
+    }
+
+    public void SetDifficultyByRank(string rankName)
+    {
+        RankInfo? rankInfo = RankSystem.GetRankInfo(rankName);
+        string league = rankInfo.HasValue ? rankInfo.Value.league : "Bronze";
+
+        switch (league)
+        {
+            case "Bronze":
+            case "Silver":
+                difficulty = EnemyDifficulty.Easy;
+                break;
+            case "Gold":
+            case "Platinum":
+            case "Diamond":
+                difficulty = EnemyDifficulty.Medium;
+                break;
+            case "Master":
+                difficulty = EnemyDifficulty.Hard;
+                break;
+            case "Grandmaster":
+            case "Legendary":
+                difficulty = EnemyDifficulty.Advanced;
+                break;
+            default:
+                difficulty = EnemyDifficulty.Medium;
+                break;
+        }
+
+        Debug.Log($"🎚️ Dificuldade da IA definida para rank {rankName}: {difficulty}");
     }
     public void SetEnemyDeck(List<CardData> deck)
     {
@@ -52,13 +81,10 @@ public class EnemyAI : MonoBehaviour
 
     public void PlayTurn()
     {
-        
-        var battle = BattleCardScreen.Instance;
-
         if (enemyDeckInBattle.Count == 0)
         {
             Debug.LogWarning("⚠️ EnemyAI não tem cartas para jogar!");
-
+            return;
         }
 
         CardData chosenCard = null;
@@ -68,16 +94,16 @@ public class EnemyAI : MonoBehaviour
         switch (difficulty)
         {
             case EnemyDifficulty.Easy:
-                (chosenCard, chosenSlot, chosenUI) = PlayEasy(battle);
+                (chosenCard, chosenSlot, chosenUI) = PlayEasy();
                 break;
             case EnemyDifficulty.Medium:
-                (chosenCard, chosenSlot, chosenUI) = PlayMedium(battle);
+                (chosenCard, chosenSlot, chosenUI) = PlayMedium();
                 break;
             case EnemyDifficulty.Hard:
-                (chosenCard, chosenSlot, chosenUI) = PlayHard(battle);
+                (chosenCard, chosenSlot, chosenUI) = PlayHard();
                 break;
             case EnemyDifficulty.Advanced:
-                (chosenCard, chosenSlot, chosenUI) = PlayAdvanced(battle);
+                (chosenCard, chosenSlot, chosenUI) = PlayAdvanced();
                 break;
         }
 
@@ -88,9 +114,9 @@ public class EnemyAI : MonoBehaviour
             {
                 int index = chosenSlot.GetSiblingIndex();
                 BoardManager.Instance.CheckCaptures(index);
-                battle.filledSlots++;
-                battle.currentTurn = Owner.Player;
-                battle.NextTurn();
+                BattleSetupManager.Instance.filledSlots++;
+                BattleSetupManager.Instance.currentTurn = Owner.Player;
+                BattleSetupManager.Instance.NextTurn();
             }));
         }
         else
@@ -103,12 +129,12 @@ public class EnemyAI : MonoBehaviour
     }
 
     // 🔹 Fácil: aleatória (mas evita jogadas suicidas)
-    private (CardData, Transform, CardUI) PlayEasy(BattleCardScreen battle)
+    private (CardData, Transform, CardUI) PlayEasy()
     {
         List<CardData> validCards = new List<CardData>(enemyDeckInBattle);
         List<Transform> emptySlots = new List<Transform>();
 
-        foreach (Transform slot in battle.boardArea)
+        foreach (Transform slot in BattleSetupManager.Instance.boardArea)
             if (slot.childCount == 0) emptySlots.Add(slot);
 
         if (validCards.Count == 0 || emptySlots.Count == 0)
@@ -116,13 +142,13 @@ public class EnemyAI : MonoBehaviour
 
         CardData card = validCards[Random.Range(0, validCards.Count)];
         Transform slotChosen = emptySlots[Random.Range(0, emptySlots.Count)];
-        CardUI ui = FindCardUI(battle, card);
+        CardUI ui = FindCardUI(card);
 
         return (card, slotChosen, ui);
     }
 
     // 🔹 Média: captura imediata > cantos > aleatório
-    private (CardData, Transform, CardUI) PlayMedium(BattleCardScreen battle)
+    private (CardData, Transform, CardUI) PlayMedium()
     {
         CardData bestCard = null;
         Transform bestSlot = null;
@@ -130,11 +156,11 @@ public class EnemyAI : MonoBehaviour
 
         foreach (var card in enemyDeckInBattle)
         {
-            foreach (Transform slot in battle.boardArea)
+            foreach (Transform slot in BattleSetupManager.Instance.boardArea)
             {
                 if (slot.childCount > 0) continue;
 
-                int captures = EvaluateMove(battle, card, slot);
+                int captures = EvaluateMove(card, slot);
                 if (captures > bestCaptures)
                 {
                     bestCaptures = captures;
@@ -145,13 +171,13 @@ public class EnemyAI : MonoBehaviour
         }
 
         if (bestCard == null)
-            return PlayEasy(battle); // fallback
+            return PlayEasy();
 
-        return (bestCard, bestSlot, FindCardUI(battle, bestCard));
+        return (bestCard, bestSlot, FindCardUI(bestCard));
     }
 
     // 🔹 Difícil: captura + defesa (evita se expor)
-    private (CardData, Transform, CardUI) PlayHard(BattleCardScreen battle)
+    private (CardData, Transform, CardUI) PlayHard()
     {
         CardData bestCard = null;
         Transform bestSlot = null;
@@ -159,13 +185,13 @@ public class EnemyAI : MonoBehaviour
 
         foreach (var card in enemyDeckInBattle)
         {
-            foreach (Transform slot in battle.boardArea)
+            foreach (Transform slot in BattleSetupManager.Instance.boardArea)
             {
                 if (slot.childCount > 0) continue;
 
-                int captures = EvaluateMove(battle, card, slot);
-                int risk = EvaluateRisk(battle, card, slot);
-                int score = captures * 2 - risk; // captura vale mais, mas risco pesa
+                int captures = EvaluateMove(card, slot);
+                int risk = EvaluateRisk(card, slot);
+                int score = captures * 2 - risk;
 
                 if (score > bestScore)
                 {
@@ -177,23 +203,21 @@ public class EnemyAI : MonoBehaviour
         }
 
         if (bestCard == null)
-            return PlayEasy(battle);
+            return PlayEasy();
 
-        return (bestCard, bestSlot, FindCardUI(battle, bestCard));
+        return (bestCard, bestSlot, FindCardUI(bestCard));
     }
 
     // 🔹 Avançada: simulação de 1 turno (simplificada)
-    private (CardData, Transform, CardUI) PlayAdvanced(BattleCardScreen battle)
+    private (CardData, Transform, CardUI) PlayAdvanced()
     {
-        // Aqui você pode expandir com "mini-minimax" de 1-2 turnos
-        // Por enquanto só chamei o Hard como placeholder
-        return PlayHard(battle);
+        return PlayHard();
     }
 
     // ✅ Funções auxiliares
-    private CardUI FindCardUI(BattleCardScreen battle, CardData card)
+    private CardUI FindCardUI(CardData card)
     {
-        foreach (Transform c in battle.enemyHandArea)
+        foreach (Transform c in BattleSetupManager.Instance.enemyHandArea)
         {
             var ui = c.GetComponent<CardUI>();
             if (ui != null && ui.cardData == card) return ui;
@@ -201,17 +225,16 @@ public class EnemyAI : MonoBehaviour
         return null;
     }
 
-    private int EvaluateMove(BattleCardScreen battle, CardData card, Transform slot)
+    private int EvaluateMove(CardData card, Transform slot)
     {
         int captures = 0;
         int index = slot.GetSiblingIndex();
         int row = index / 3;
         int col = index % 3;
 
-        // Cima
         if (row > 0)
         {
-            var neighbor = battle.boardArea.GetChild(index - 3);
+            var neighbor = BattleSetupManager.Instance.boardArea.GetChild(index - 3);
             if (neighbor.childCount > 0)
             {
                 var neighborUI = neighbor.GetChild(0).GetComponent<CardUI>();
@@ -223,10 +246,9 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-        // Baixo
         if (row < 2)
         {
-            var neighbor = battle.boardArea.GetChild(index + 3);
+            var neighbor = BattleSetupManager.Instance.boardArea.GetChild(index + 3);
             if (neighbor.childCount > 0)
             {
                 var neighborUI = neighbor.GetChild(0).GetComponent<CardUI>();
@@ -238,10 +260,9 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-        // Esquerda
         if (col > 0)
         {
-            var neighbor = battle.boardArea.GetChild(index - 1);
+            var neighbor = BattleSetupManager.Instance.boardArea.GetChild(index - 1);
             if (neighbor.childCount > 0)
             {
                 var neighborUI = neighbor.GetChild(0).GetComponent<CardUI>();
@@ -253,10 +274,9 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-        // Direita
         if (col < 2)
         {
-            var neighbor = battle.boardArea.GetChild(index + 1);
+            var neighbor = BattleSetupManager.Instance.boardArea.GetChild(index + 1);
             if (neighbor.childCount > 0)
             {
                 var neighborUI = neighbor.GetChild(0).GetComponent<CardUI>();
@@ -272,30 +292,26 @@ public class EnemyAI : MonoBehaviour
     }
 
 
-    private int EvaluateRisk(BattleCardScreen battle, CardData card, Transform slot)
+    private int EvaluateRisk(CardData card, Transform slot)
     {
         int risk = 0;
         int index = slot.GetSiblingIndex();
         int row = index / 3;
         int col = index % 3;
 
-        // Cima
         if (row > 0)
         {
-            var neighbor = battle.boardArea.GetChild(index - 3);
+            var neighbor = BattleSetupManager.Instance.boardArea.GetChild(index - 3);
             if (neighbor.childCount == 0)
             {
-                // Jogador pode colocar carta aqui no próximo turno
-                // Se existir alguma carta com "bottom > card.top", risco++
                 if (PlayerHasCounter(card.top, Side.Bottom))
                     risk++;
             }
         }
 
-        // Baixo
         if (row < 2)
         {
-            var neighbor = battle.boardArea.GetChild(index + 3);
+            var neighbor = BattleSetupManager.Instance.boardArea.GetChild(index + 3);
             if (neighbor.childCount == 0)
             {
                 if (PlayerHasCounter(card.bottom, Side.Top))
@@ -303,10 +319,9 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-        // Esquerda
         if (col > 0)
         {
-            var neighbor = battle.boardArea.GetChild(index - 1);
+            var neighbor = BattleSetupManager.Instance.boardArea.GetChild(index - 1);
             if (neighbor.childCount == 0)
             {
                 if (PlayerHasCounter(card.left, Side.Right))
@@ -314,10 +329,9 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-        // Direita
         if (col < 2)
         {
-            var neighbor = battle.boardArea.GetChild(index + 1);
+            var neighbor = BattleSetupManager.Instance.boardArea.GetChild(index + 1);
             if (neighbor.childCount == 0)
             {
                 if (PlayerHasCounter(card.right, Side.Left))
@@ -327,9 +341,10 @@ public class EnemyAI : MonoBehaviour
 
         return risk;
     }
+
     private bool PlayerHasCounter(int enemyValue, Side side)
     {
-        var playerHand = BattleCardScreen.Instance.playerHandArea;
+        var playerHand = BattleSetupManager.Instance.playerHandArea;
         foreach (Transform cardObj in playerHand)
         {
             var ui = cardObj.GetComponent<CardUI>();
@@ -354,8 +369,6 @@ public class EnemyAI : MonoBehaviour
 
     IEnumerator AnimateEnemyCard(CardUI cardUI, Transform targetSlot, System.Action onComplete)
     {
-        var battle = BattleCardScreen.Instance;
-
         Vector3 startPos = cardUI.transform.position;
         Vector3 endPos = targetSlot.position;
 
@@ -363,7 +376,10 @@ public class EnemyAI : MonoBehaviour
         float elapsed = 0f;
 
         // mantém no topo da UI
-        cardUI.transform.SetParent(battle.boardArea.parent, true);
+        if (BattleSetupManager.Instance != null && BattleSetupManager.Instance.boardArea != null)
+            cardUI.transform.SetParent(BattleSetupManager.Instance.boardArea.parent, true);
+        else
+            cardUI.transform.SetParent(targetSlot.parent, true);
 
         while (elapsed < duration)
         {

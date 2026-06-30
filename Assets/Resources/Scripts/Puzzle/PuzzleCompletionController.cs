@@ -14,7 +14,7 @@ public class PuzzleCompletionController : MonoBehaviour
 
     void Start()
     {
-        allPieces = FindObjectsByType<PuzzlePiece>(FindObjectsSortMode.None);
+        allPieces = FindObjectsByType<PuzzlePiece>();
         fixedCount = 0;
     }
 

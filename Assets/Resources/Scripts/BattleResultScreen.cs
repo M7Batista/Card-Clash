@@ -65,7 +65,7 @@ public class BattleResultScreen : MonoBehaviour
     public void ClosePanel()
     {
         panel.SetActive(false);
-        BattleCardScreen.Instance.PosBattleSetup(result);
+        BattleSetupManager.Instance.PosBattleSetup(result);
     }
 
 }

@@ -140,32 +140,32 @@ public class RouletteManager : MonoBehaviour
         {
             resultText.text = "Enemy starts!";
             Debug.Log("Vermelho → Inimigo começa!");
-            BattleCardScreen.Instance.StartEnemyTurn();
+            BattleSetupManager.Instance.StartEnemyTurn();
         }
         else if (angle >= 90 && angle < 180)
         {
             resultText.text = "You starts!";
             Debug.Log("Azul → Player começa!");
-            BattleCardScreen.Instance.StartPlayerTurn();
+            BattleSetupManager.Instance.StartPlayerTurn();
         }
         else if (angle >= 180 && angle < 270)
         {
             resultText.text = "Enemy starts!";
             Debug.Log("Vermelho → Inimigo começa!");
-            BattleCardScreen.Instance.StartEnemyTurn();
+            BattleSetupManager.Instance.StartEnemyTurn();
         }
         else
         {
             resultText.text = "You starts!";
             Debug.Log("Azul → Player começa!");
-            BattleCardScreen.Instance.StartPlayerTurn();
+            BattleSetupManager.Instance.StartPlayerTurn();
         }
 
         // ✅ Ativa as cartas
         DraggableCard.CanDrag = true;
 
         // ✅ Ativa os botões de controle
-        BattleCardScreen.Instance.EnableControlButtons();
+        BattleSetupManager.Instance.EnableControlButtons();
 
         // ✅ Destroi a roleta
         Destroy(gameObject, 2f);

@@ -95,6 +95,8 @@ public class BoardManager : MonoBehaviour
                 var flip = neighborCard.GetComponent<CardFlip>();
                 if (flip != null) flip.FlipCard(placedCard.owner, placedCard);
                 anyCapture = true;
+                //Faz uma vibração no dispositivo
+                Handheld.Vibrate();
             }
         }
 
@@ -242,7 +244,6 @@ public class BoardManager : MonoBehaviour
         turnArrow.SetActive(false);
         if (playerCount > enemyCount)
         {
-            StageMapGenerator.Instance.UnlockNextStage();
             Debug.Log($"Fim de jogo! Jogador venceu ({playerCount} x {enemyCount})");
             StartCoroutine(ShowPanelEndGame(0));
         }
@@ -261,7 +262,7 @@ public class BoardManager : MonoBehaviour
     private IEnumerator ShowPanelEndGame(int result)
     {
         yield return new WaitForSeconds(1.5f);
-        BattleCardScreen.Instance.ClearBattleState();
+        BattleSetupManager.Instance.ClearBattleState();
         BattleResultScreen.instance.ShowEndGame(result);
     }
 
