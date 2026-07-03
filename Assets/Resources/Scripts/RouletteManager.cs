@@ -167,6 +167,9 @@ public class RouletteManager : MonoBehaviour
         // ✅ Ativa os botões de controle
         BattleSetupManager.Instance.EnableControlButtons();
 
+        // ✅ Vibração do dispositivo (se suportado)
+        Handheld.Vibrate();
+
         // ✅ Destroi a roleta
         Destroy(gameObject, 2f);
     }

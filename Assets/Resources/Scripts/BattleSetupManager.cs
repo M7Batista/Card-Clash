@@ -312,9 +312,26 @@ public class BattleSetupManager : MonoBehaviour
         if (boardScreen != null)
             boardScreen.SetActive(false);
         if (battleScreen != null)
+        {
             battleScreen.SetActive(true);
+            RefreshRankUI();
+        }
         BoardManager.Instance.HideTurnArrow();
         AudioManager.Instance.StopMusic();
+    }
+
+    private void RefreshRankUI()
+    {
+        if (battleScreen == null)
+            return;
+
+        BattleScreen screen = battleScreen.GetComponent<BattleScreen>();
+        if (screen == null)
+            return;
+
+        screen.UpdateStarsDisplay();
+        screen.UpdateRankDisplay();
+        screen.UpdateRankNameDisplay();
     }
 
     public void ClearBattleState()

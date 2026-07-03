@@ -101,6 +101,57 @@ public static class RankSystem
         PlayerPrefs.Save();
     }
 
+    // Avança o jogador para o próximo rank disponível (se houver)
+    public static void PromotePlayerRank()
+    {
+        EnsureInitialized();
+        string current = GetPlayerRankName();
+        if (string.IsNullOrEmpty(current))
+            return;
+
+        // Encontra o índice do rank atual na lista ordenada
+        int index = rankList.FindIndex(r => string.Equals(r.rankName, current, StringComparison.OrdinalIgnoreCase));
+        if (index < 0)
+            return;
+
+        if (index >= rankList.Count - 1)
+        {
+            Debug.Log("RankSystem: jogador já está no rank máximo.");
+            return;
+        }
+
+        string nextRank = rankList[index + 1].rankName;
+        SetPlayerRankName(nextRank);
+        Debug.Log($"RankSystem: jogador promovido de '{current}' para '{nextRank}'.");
+    }
+
+    // Retorna a posição zero-based do rank na lista ordenada (0 = primeiro rank carregado)
+    public static int GetRankPosition(string rankName)
+    {
+        EnsureInitialized();
+        if (string.IsNullOrEmpty(rankName))
+            return 0;
+
+        string normalized = NormalizeRankName(rankName);
+        int idx = rankList.FindIndex(r => string.Equals(r.rankName, normalized, StringComparison.OrdinalIgnoreCase));
+        return idx >= 0 ? idx : 0;
+    }
+
+    // Retorna o índice da liga (league) para mapear sprites por categoria de liga.
+    // Exemplo: Bronze=0, Silver=1, Gold=2, Platinum=3, Diamond=4, Master=5, Grandmaster=6, Legendary=7
+    public static int GetLeagueIndex(string rankName)
+    {
+        EnsureInitialized();
+        string league = "Bronze";
+        RankInfo? info = GetRankInfo(rankName);
+        if (info.HasValue)
+            league = info.Value.league ?? "Bronze";
+
+        string[] leagueOrder = new[] { "Bronze", "Silver", "Gold", "Platinum", "Diamond", "Master", "Grandmaster", "Legendary" };
+        int idx = Array.IndexOf(leagueOrder, league);
+        return idx >= 0 ? idx : 0;
+    }
+
     public static RankInfo? GetRankInfo(string rankName)
     {
         EnsureInitialized();

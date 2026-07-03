@@ -133,6 +133,7 @@ public class BoardManager : MonoBehaviour
             }
 
             Debug.Log($"[MESMO] {placedCard.owner} capturou {sameMatches.Count} cartas!");
+            Handheld.Vibrate();
             return true;
         }
 
@@ -184,6 +185,7 @@ public class BoardManager : MonoBehaviour
             }
 
             Debug.Log($"[MAIS] {placedCard.owner} capturou {plusMatches.Count} cartas!");
+            Handheld.Vibrate();
             return true;
         }
 
@@ -288,9 +290,6 @@ public class BoardManager : MonoBehaviour
 
         if (specialRuleSFX != null && AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX("specialRuleSFX");
-
-        // Vibração no dispositivo
-        Handheld.Vibrate();
 
         StopAllCoroutines(); // evita sobreposição
         StartCoroutine(FadeRuleText());

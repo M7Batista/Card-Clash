@@ -37,15 +37,24 @@ public class GameManager : MonoBehaviour
     public void AddRankWin()
     {
         int currentWins = PlayerPrefs.GetInt(RANK_WINS_KEY, 0);
-        if (currentWins >= 4)
+
+        string currentRank = RankSystem.GetPlayerRankName();
+        RankInfo? rankInfo = RankSystem.GetRankInfo(currentRank);
+        int winsToPromote = rankInfo.HasValue && rankInfo.Value.winsToPromote > 0 ? rankInfo.Value.winsToPromote : 5;
+
+        // Se a próxima vitória atinge o limite, promove e reseta o contador
+        if (currentWins + 1 >= winsToPromote)
         {
-            Debug.LogWarning("O jogador já atingiu o número máximo de vitórias para o rank atual.");
-            Debug.LogWarning("Jogador avança para o próximo rank e o contador de vitórias é resetado.");
+            Debug.Log($"O jogador atingiu {currentWins + 1} vitórias em '{currentRank}'. Promovendo rank e resetando vitórias.");
+            RankSystem.PromotePlayerRank();
             ResetRankWins();
             return;
         }
+
         currentWins++;
         PlayerPrefs.SetInt(RANK_WINS_KEY, currentWins);
+        PlayerPrefs.Save();
+        Debug.Log($"Vitória contabilizada. Rank: {currentRank}, Vitórias: {currentWins}/{winsToPromote}");
     }
 
     public int GetRankWins()
