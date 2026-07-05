@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 59b37351d7ecb0d4eb4d80b11262a3a2
+guid: 3753d025aa04b3f449d2d4dc8ad478b3
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6217704916791252306
-    second: Melisa_0
+      213: 3520532602161927012
+    second: package_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -109,30 +109,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Melisa_0
+      name: package_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 2048
-        height: 2038
+        x: 93
+        y: 89
+        width: 314
+        height: 502
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 255da83dda9b94650800000000000000
-      internalID: 6217704916791252306
+      spriteID: 4631b04cfb17bd030800000000000000
+      internalID: 3520532602161927012
       vertices: []
       indices: 
       edges: []
@@ -161,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Melisa_0: 6217704916791252306
+      package_0: 3520532602161927012
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

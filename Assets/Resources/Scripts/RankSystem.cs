@@ -125,6 +125,29 @@ public static class RankSystem
         Debug.Log($"RankSystem: jogador promovido de '{current}' para '{nextRank}'.");
     }
 
+    // Rebaixa o jogador para o rank anterior disponível (se houver)
+    public static void DemotePlayerRank()
+    {
+        EnsureInitialized();
+        string current = GetPlayerRankName();
+        if (string.IsNullOrEmpty(current))
+            return;
+
+        int index = rankList.FindIndex(r => string.Equals(r.rankName, current, StringComparison.OrdinalIgnoreCase));
+        if (index < 0)
+            return;
+
+        if (index <= 0)
+        {
+            Debug.Log("RankSystem: jogador já está no rank mínimo.");
+            return;
+        }
+
+        string previousRank = rankList[index - 1].rankName;
+        SetPlayerRankName(previousRank);
+        Debug.Log($"RankSystem: jogador rebaixado de '{current}' para '{previousRank}'.");
+    }
+
     // Retorna a posição zero-based do rank na lista ordenada (0 = primeiro rank carregado)
     public static int GetRankPosition(string rankName)
     {

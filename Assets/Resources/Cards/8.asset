@@ -18,5 +18,5 @@ MonoBehaviour:
   right: 3
   bottom: 4
   left: 2
-  artwork: {fileID: 21300000, guid: 59b37351d7ecb0d4eb4d80b11262a3a2, type: 3}
-  cardName: Melisa
+  artwork: {fileID: 21300000, guid: 21ff70b8a0bbac34cad660d7f1ec3d06, type: 3}
+  cardName: Sherry

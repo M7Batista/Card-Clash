@@ -57,6 +57,26 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Vitória contabilizada. Rank: {currentRank}, Vitórias: {currentWins}/{winsToPromote}");
     }
 
+    public void RemoveRankWin()
+    {
+        int currentWins = PlayerPrefs.GetInt(RANK_WINS_KEY, 0);
+        string currentRank = RankSystem.GetPlayerRankName();
+
+        if (currentWins > 0)
+        {
+            currentWins--;
+            PlayerPrefs.SetInt(RANK_WINS_KEY, currentWins);
+            PlayerPrefs.Save();
+            Debug.Log($"Derrota: perdeu 1 ponto de vitória. Rank: {currentRank}, Vitórias: {currentWins}");
+            return;
+        }
+
+        RankSystem.DemotePlayerRank();
+        PlayerPrefs.SetInt(RANK_WINS_KEY, 0);
+        PlayerPrefs.Save();
+        Debug.Log($"Derrota: sem pontos de vitória para perder. Rank reduzido de '{currentRank}'.");
+    }
+
     public int GetRankWins()
     {
         return PlayerPrefs.GetInt(RANK_WINS_KEY, 0);
@@ -64,6 +84,7 @@ public class GameManager : MonoBehaviour
     public void ResetRankWins()
     {
         PlayerPrefs.SetInt(RANK_WINS_KEY, 0);
+        PlayerPrefs.Save();
     }
    
 }

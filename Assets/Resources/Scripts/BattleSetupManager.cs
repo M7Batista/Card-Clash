@@ -26,6 +26,10 @@ public class BattleSetupManager : MonoBehaviour
     public GameObject battleScreen;
     public GameObject boardScreen;
 
+    private const int RewardCoinsVictory = 30;
+    private const int RewardCoinsDraw = 15;
+    private const int RewardCoinsDefeat = 5;
+
     [Header("Battle State")]
     public Owner currentTurn = Owner.None;
     public int filledSlots = 0;
@@ -260,21 +264,22 @@ public class BattleSetupManager : MonoBehaviour
     {
         int rewardCoins = result switch
         {
-            0 => 20,
-            2 => 10,
-            _ => 0
+            0 => RewardCoinsVictory,
+            2 => RewardCoinsDraw,
+            _ => RewardCoinsDefeat
         };
 
         ExitBattle();
 
-        // Adiciona vitória ao contador de rank se ganhou
         if (result == 0)
         {
             GameManager.Instance.AddRankWin();
             Debug.Log($"Vitória contabilizada! Total: {GameManager.Instance.GetRankWins()}");
-            // Em qualquer classe que tenha acesso ao BattleScreen
-            //BattleScreen battleScreen = GetComponent<BattleScreen>();
-            //battleScreen.UpdateStarsDisplay();
+        }
+        else if (result == 1)
+        {
+            GameManager.Instance.RemoveRankWin();
+            Debug.Log($"Derrota aplicada ao rank! Total de pontos de vitória: {GameManager.Instance.GetRankWins()}");
         }
 
         if (rewardCoins > 0)

@@ -6,18 +6,39 @@ using TMPro;
 public class GachaScreen : MonoBehaviour
 {
     [Header("Referências de UI")]
-    public Button btnGacha1x;
-    public Button btnGacha10x;
-    public Transform resultadoArea;
+    
     public GameObject cartaPrefab;
+
+    [Header("Painel base")]
+    public GameObject basePanel;
+    public Button btnGacha1x;
+    public Button btnGacha5x;
+
+    [Header("Painel de Visualização de Carta")]
+    public GameObject viewCardPanel;
+    public Transform resultadoArea;
     public Button btnOk;
-    public GameObject cardViewPanel;
+
+    [Header("Painel de Probabilidades")]
+    public Button btnProbabilityInfo;
+    public GameObject probabilityPanel;
+    public Button btnCloseProbabilityPanel;
+    public TextMeshProUGUI txtProbabilityCommon;
+    public TextMeshProUGUI txtProbabilityUncommon;
+    public TextMeshProUGUI txtProbabilityRare;
+    public TextMeshProUGUI txtProbabilityEpic;
+    public TextMeshProUGUI txtProbabilityLegendary;
 
     [Header("Configuração do Gacha")]
-    int preco1x = 10;
-    int preco10x = 100;
+    int preco1x = 100;
+    int preco5x = 500;
     List<CardData> poolCartas;
     List<float> chancesPorRaridade;
+
+    void Awake()
+    {
+        InitializeGachaConfig();
+    }
 
     void Start()
     {
@@ -29,29 +50,42 @@ public class GachaScreen : MonoBehaviour
         {
             poolCartas.Add(card);
         }
-        // Configura as chances por raridade (exemplo)
-        chancesPorRaridade = new List<float>();
-        chancesPorRaridade.Add(0.70f); // Comum
-        chancesPorRaridade.Add(0.20f); // Incomum
-        chancesPorRaridade.Add(0.7f); // Rara
-        chancesPorRaridade.Add(0.25f); // Epica
-        chancesPorRaridade.Add(0.05f); // Lendária
     }
 
     void OnEnable()
     {
-
         btnGacha1x.onClick.AddListener(() => TentarGacha(1));
-        btnGacha10x.onClick.AddListener(() => TentarGacha(10));
+        btnGacha5x.onClick.AddListener(() => TentarGacha(5));
         btnOk.onClick.AddListener(OnOkClick);
         btnOk.gameObject.SetActive(false);
+
+        if (btnProbabilityInfo != null)
+            btnProbabilityInfo.onClick.AddListener(ShowProbabilityPanel);
+
+        if (btnCloseProbabilityPanel != null)
+            btnCloseProbabilityPanel.onClick.AddListener(HideProbabilityPanel);
+
+        HideProbabilityPanel();
+        UpdateProbabilityText();
+
+        if (basePanel != null)
+            basePanel.SetActive(true);
+        if (viewCardPanel != null)
+            viewCardPanel.SetActive(false);
     }
 
     void OnDisable()
     {
         btnGacha1x.onClick.RemoveAllListeners();
-        btnGacha10x.onClick.RemoveAllListeners();
+        btnGacha5x.onClick.RemoveAllListeners();
         btnOk.onClick.RemoveAllListeners();
+
+        if (btnProbabilityInfo != null)
+            btnProbabilityInfo.onClick.RemoveAllListeners();
+
+        if (btnCloseProbabilityPanel != null)
+            btnCloseProbabilityPanel.onClick.RemoveAllListeners();
+
         ClearResult();
     }
 
@@ -65,7 +99,7 @@ public class GachaScreen : MonoBehaviour
             return;
         }
 
-        int preco = quantidade == 1 ? preco1x : preco10x;
+        int preco = quantidade == 1 ? preco1x : preco5x;
         if (GameManager.Instance.coins < preco)
         {
             Debug.Log("Moedas insuficientes!");
@@ -114,8 +148,12 @@ public class GachaScreen : MonoBehaviour
     {
         // Desativa os botões de gacha para evitar cliques durante a animação
         btnGacha1x.interactable = false;
-        btnGacha10x.interactable = false;
+        btnGacha5x.interactable = false;
         foreach (Transform filho in resultadoArea) Destroy(filho.gameObject);
+        if (basePanel != null)
+            basePanel.SetActive(false);
+        if (viewCardPanel != null)
+            viewCardPanel.SetActive(true);
         StartCoroutine(MostrarCartasSequencial(cartas));
     }
 
@@ -155,14 +193,78 @@ public class GachaScreen : MonoBehaviour
     void OnOkClick()
     {
         ClearResult();
-        
+        if (basePanel != null)
+            basePanel.SetActive(true);
+        if (viewCardPanel != null)
+            viewCardPanel.SetActive(false);
     }
+
+    void ShowProbabilityPanel()
+    {
+        if (probabilityPanel == null)
+            return;
+
+        probabilityPanel.SetActive(true);
+    }
+
+    void HideProbabilityPanel()
+    {
+        if (probabilityPanel == null)
+            return;
+
+        probabilityPanel.SetActive(false);
+    }
+
+    void UpdateProbabilityText()
+    {
+        if (chancesPorRaridade == null || chancesPorRaridade.Count < 5)
+            return;
+
+        float total = 0f;
+        foreach (float chance in chancesPorRaridade)
+            total += Mathf.Max(chance, 0f);
+
+        if (total <= 0f)
+            return;
+
+        if (txtProbabilityCommon != null)
+            txtProbabilityCommon.text = $"Common: {FormatProbability(chancesPorRaridade[0] / total)}";
+        if (txtProbabilityUncommon != null)
+            txtProbabilityUncommon.text = $"Uncommon: {FormatProbability(chancesPorRaridade[1] / total)}";
+        if (txtProbabilityRare != null)
+            txtProbabilityRare.text = $"Rare: {FormatProbability(chancesPorRaridade[2] / total)}";
+        if (txtProbabilityEpic != null)
+            txtProbabilityEpic.text = $"Epic: {FormatProbability(chancesPorRaridade[3] / total)}";
+        if (txtProbabilityLegendary != null)
+            txtProbabilityLegendary.text = $"Legendary: {FormatProbability(chancesPorRaridade[4] / total)}";
+    }
+
+    string FormatProbability(float value)
+    {
+        return (value * 100f).ToString("F1") + "%";
+    }
+
+    void InitializeGachaConfig()
+    {
+        if (chancesPorRaridade != null && chancesPorRaridade.Count >= 5)
+            return;
+
+        chancesPorRaridade = new List<float>();
+        chancesPorRaridade.Add(0.70f); // Comum
+        chancesPorRaridade.Add(0.20f); // Incomum
+        chancesPorRaridade.Add(0.07f); // Rara
+        chancesPorRaridade.Add(0.02f); // Épica
+        chancesPorRaridade.Add(0.01f); // Lendária
+    }
+
     void OnCardClicked(CardUI cardUI)
     {
+        if (viewCardPanel != null)
+            viewCardPanel.SetActive(true);
+        if (basePanel != null)
+            basePanel.SetActive(false);
 
-        cardViewPanel.SetActive(true);
         CardView.Instance.ShowCard(cardUI.cardData);
-
     }
     void ClearResult()
     {
@@ -172,7 +274,7 @@ public class GachaScreen : MonoBehaviour
         }
         btnOk.gameObject.SetActive(false);
         btnGacha1x.interactable = true;
-        btnGacha10x.interactable = true;
+        btnGacha5x.interactable = true;
     }
 
 }
