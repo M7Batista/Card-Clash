@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 10
   artwork: {fileID: 21300000, guid: cae54a68d6cf4324bad57effb524263b, type: 3}
   cardName: Taran
+  hasAnimation: 0

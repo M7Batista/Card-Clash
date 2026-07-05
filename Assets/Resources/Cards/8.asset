@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 2
   artwork: {fileID: 21300000, guid: 21ff70b8a0bbac34cad660d7f1ec3d06, type: 3}
   cardName: Sherry
+  hasAnimation: 0

@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 6
   artwork: {fileID: 21300000, guid: 23f431fb7f1b3be47888294e481d8d97, type: 3}
   cardName: Gobhime
+  hasAnimation: 0

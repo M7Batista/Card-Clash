@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 10
   artwork: {fileID: 21300000, guid: bff2bb71d58272f4f9dc1bc2f5baf5d0, type: 3}
   cardName: Minerva
+  hasAnimation: 1

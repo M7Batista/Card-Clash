@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 8
   artwork: {fileID: 21300000, guid: 65920bc0a1356e84cba45ddf217242bb, type: 3}
   cardName: Geise
+  hasAnimation: 0

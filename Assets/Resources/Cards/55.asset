@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 7
   artwork: {fileID: 21300000, guid: 17a295430e4da4f4db707b2f41f4229e, type: 3}
   cardName: Bunnyli
+  hasAnimation: 0

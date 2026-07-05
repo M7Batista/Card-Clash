@@ -28,7 +28,7 @@ public class CardImporter : EditorWindow
         {
             string[] values = lines[i].Split(',');
 
-            if (values.Length < 7) continue; // Garante que a linha tem dados suficientes
+            if (values.Length < 8) continue; // Garante que a linha tem dados suficientes
 
             CardData card = ScriptableObject.CreateInstance<CardData>();
 
@@ -41,6 +41,7 @@ public class CardImporter : EditorWindow
             card.bottom = converteValues(values[4].Trim());
             card.left = converteValues(values[5].Trim());
             card.cardName = values[6].Trim();
+            card.hasAnimation = ParseBool(values[7].Trim());
 
             // --- NOVO: Carregando a imagem do Asset ---
             string artworkPath = artworksFolder + card.cardName + ".png"; // Constrói o caminho completo
@@ -65,6 +66,16 @@ public class CardImporter : EditorWindow
         AssetDatabase.Refresh();
         Debug.Log("Importação de cartas concluída!");
     }
+
+    static bool ParseBool(string valueString)
+    {
+        if (string.IsNullOrEmpty(valueString))
+            return false;
+
+        valueString = valueString.Trim().ToLowerInvariant();
+        return valueString == "true" || valueString == "1" || valueString == "yes" || valueString == "y";
+    }
+
     static int converteValues(string valueString)
     {
         int value = 0;

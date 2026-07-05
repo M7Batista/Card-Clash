@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 10
   artwork: {fileID: 21300000, guid: ce8bd24ec430ec946b31a0d5d5a808f6, type: 3}
   cardName: Sarina
+  hasAnimation: 1

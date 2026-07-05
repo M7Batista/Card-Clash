@@ -64,7 +64,16 @@ public class CharacterDisplayController : MonoBehaviour
         characterVideoImage.enabled = true;
         characterVideoImage.gameObject.SetActive(true);
         DisableFallbackImage();
-        
+        // Atribui os scripts CardZoom e CardShake ao objeto de vídeo
+        if (characterVideoImage.gameObject.GetComponent<CardZoom>() == null)
+        {
+            characterVideoImage.gameObject.AddComponent<CardZoom>();
+        }
+        if (characterVideoImage.gameObject.GetComponent<CardShake>() == null)
+        {
+            characterVideoImage.gameObject.AddComponent<CardShake>();
+        }
+
         StartCoroutine(FadeInGraphic(characterVideoImage));
     }
 
@@ -101,6 +110,13 @@ public class CharacterDisplayController : MonoBehaviour
             characterVideoPlayer.Stop();
             characterVideoPlayer.enabled = false;
         }
+    }
+
+    // Public wrapper to explicitly load only the image (skip attempting video first)
+    public void LoadImage(string characterID)
+    {
+        EnsureComponents();
+        DisplayImage(characterID);
     }
 
     private void EnsureComponents()
@@ -143,7 +159,7 @@ public class CharacterDisplayController : MonoBehaviour
 
             characterVideoImage = videoObject.AddComponent<RawImage>();
             characterVideoImage.color = Color.white;
-            characterVideoImage.raycastTarget = false;
+            characterVideoImage.raycastTarget = true;
             characterVideoImage.transform.SetAsFirstSibling();
         }
 
@@ -173,9 +189,19 @@ public class CharacterDisplayController : MonoBehaviour
 
         characterFallbackImage = fallbackObject.AddComponent<Image>();
         characterFallbackImage.color = Color.white;
-        characterFallbackImage.raycastTarget = false;
+        characterFallbackImage.raycastTarget = true;
         characterFallbackImage.transform.SetAsFirstSibling();
         characterFallbackImage.enabled = false;
+
+        // Atribui os scripts CardZoom e CardShake ao objeto de imagem
+        if (characterFallbackImage.gameObject.GetComponent<CardZoom>() == null)
+        {
+            characterFallbackImage.gameObject.AddComponent<CardZoom>();
+        }
+        if (characterFallbackImage.gameObject.GetComponent<CardShake>() == null)
+        {
+            characterFallbackImage.gameObject.AddComponent<CardShake>();
+        }
     }
 
     private void DisableFallbackImage()

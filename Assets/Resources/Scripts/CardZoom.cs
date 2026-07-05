@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class CardZoom : MonoBehaviour, IScrollHandler, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
 {
     public RectTransform target;      // O card exibido em tela cheia
-    public RectTransform viewport;    // Área visível (ex: o painel que mostra a carta)
+    private RectTransform viewport;   // Área visível, derivada automaticamente do próprio objeto
     public float zoomSpeed = 0.1f;
     public float minScale = 1f;
     public float maxScale = 3f;
@@ -18,6 +18,9 @@ public class CardZoom : MonoBehaviour, IScrollHandler, IDragHandler, IBeginDragH
     {
         if (target == null)
             target = GetComponent<RectTransform>();
+
+        if (viewport == null)
+            viewport = GetComponent<RectTransform>();
     }
 
     void OnEnable()

@@ -17,5 +17,6 @@ public class CardData : ScriptableObject
     [Header("Imagem")]
     public Sprite artwork;     // Imagem do card
     public string cardName;    // Nome exibido
+    public bool hasAnimation;
 
 }

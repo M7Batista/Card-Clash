@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 6
   artwork: {fileID: 21300000, guid: 324193acda9d401458da9caba63d68a4, type: 3}
   cardName: Tamara
+  hasAnimation: 1

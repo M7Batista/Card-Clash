@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 1
   artwork: {fileID: 21300000, guid: 6439359a7e5c7ec4f919e593a2a51f7f, type: 3}
   cardName: Marine
+  hasAnimation: 1

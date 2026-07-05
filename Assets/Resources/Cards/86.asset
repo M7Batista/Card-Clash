@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 10
   artwork: {fileID: 21300000, guid: 87437cd537ce54046bc139d5ac5efe57, type: 3}
   cardName: Darana
+  hasAnimation: 0

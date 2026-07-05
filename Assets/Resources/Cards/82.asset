@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 10
   artwork: {fileID: 21300000, guid: 73197f8629b58a3499a70cbf6028146c, type: 3}
   cardName: Scarlet
+  hasAnimation: 0

@@ -31,7 +31,7 @@ public class GachaScreen : MonoBehaviour
 
     [Header("Configuração do Gacha")]
     int preco1x = 100;
-    int preco5x = 500;
+    int preco5x = 450;
     List<CardData> poolCartas;
     List<float> chancesPorRaridade;
 

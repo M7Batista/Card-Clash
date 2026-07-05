@@ -21,6 +21,7 @@ public class CardUI : MonoBehaviour
     [Header("Outros")]
     [HideInInspector] public CardData cardData;
     [HideInInspector] public Owner owner;
+    [Tooltip("Indica se o card possui animação (usado pela UI para alternar entre sprite/anim) ")]
     public bool isChecked = false;
     public GameObject checkmark;
     public GameObject front;

@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 4
   artwork: {fileID: 21300000, guid: 30b07539161df1b46bc134859e43540b, type: 3}
   cardName: Samira
+  hasAnimation: 0

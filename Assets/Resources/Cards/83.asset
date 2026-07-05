@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 10
   artwork: {fileID: 21300000, guid: d8184f08e9bb50146bf75f97f55d4c68, type: 3}
   cardName: Serena
+  hasAnimation: 0

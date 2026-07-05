@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 8
   artwork: {fileID: 21300000, guid: abf42ca767833af45a603ff6917ce582, type: 3}
   cardName: Wendy
+  hasAnimation: 0

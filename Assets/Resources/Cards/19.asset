@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 4
   artwork: {fileID: 21300000, guid: fb5d9716c13b28d46988aa1f39531711, type: 3}
   cardName: Sate
+  hasAnimation: 0

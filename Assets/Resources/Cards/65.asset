@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 7
   artwork: {fileID: 21300000, guid: 61b1c3b8268550e4fb254fd732d5d275, type: 3}
   cardName: Maho
+  hasAnimation: 0

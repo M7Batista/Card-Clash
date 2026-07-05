@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 9
   artwork: {fileID: 21300000, guid: ce79292e5916a3e4db900775c94721d8, type: 3}
   cardName: Octania
+  hasAnimation: 0

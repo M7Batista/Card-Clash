@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 7
   artwork: {fileID: 21300000, guid: 76acff375c41e3d42beed29d537ef772, type: 3}
   cardName: Sabrina
+  hasAnimation: 0

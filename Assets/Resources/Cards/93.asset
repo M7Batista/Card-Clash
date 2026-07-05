@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 9
   artwork: {fileID: 21300000, guid: dcd5150257d87bb448d171a51ef66a30, type: 3}
   cardName: Nymp
+  hasAnimation: 0

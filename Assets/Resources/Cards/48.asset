@@ -20,3 +20,4 @@ MonoBehaviour:
   left: 9
   artwork: {fileID: 21300000, guid: 9bd3a9f36952c85478d0adf74e6a0b44, type: 3}
   cardName: Zoe
+  hasAnimation: 0
