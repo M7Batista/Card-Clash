@@ -34,15 +34,18 @@ public class GachaScreen : MonoBehaviour
     int preco5x = 450;
     List<CardData> poolCartas;
     List<float> chancesPorRaridade;
+    int cartasViradas;
+    int totalCartasExibidas;
 
+    // Inicializa as probabilidades do gacha ao criar a tela.
     void Awake()
     {
         InitializeGachaConfig();
     }
 
+    // Carrega as cartas disponíveis para sorteio a partir dos assets de recursos.
     void Start()
     {
-        // Carrega a lista poolCartas 
         poolCartas = new List<CardData>();
 
         CardData[] allCardsData = Resources.LoadAll<CardData>("cards");
@@ -52,12 +55,16 @@ public class GachaScreen : MonoBehaviour
         }
     }
 
+    // Vincula os eventos da interface e reseta o estado visual da tela ao entrar.
     void OnEnable()
     {
         btnGacha1x.onClick.AddListener(() => TentarGacha(1));
         btnGacha5x.onClick.AddListener(() => TentarGacha(5));
         btnOk.onClick.AddListener(OnOkClick);
         btnOk.gameObject.SetActive(false);
+        btnOk.interactable = false;
+        cartasViradas = 0;
+        totalCartasExibidas = 0;
 
         if (btnProbabilityInfo != null)
             btnProbabilityInfo.onClick.AddListener(ShowProbabilityPanel);
@@ -74,6 +81,7 @@ public class GachaScreen : MonoBehaviour
             viewCardPanel.SetActive(false);
     }
 
+    // Remove os listeners para evitar duplicação ao trocar de tela.
     void OnDisable()
     {
         btnGacha1x.onClick.RemoveAllListeners();
@@ -91,6 +99,7 @@ public class GachaScreen : MonoBehaviour
 
     
 
+    // Consome moedas e inicia o processo de sorteio das cartas do gacha.
     void TentarGacha(int quantidade)
     {
         if (GameManager.Instance == null)
@@ -111,6 +120,7 @@ public class GachaScreen : MonoBehaviour
         MostrarCartas(cartas);
     }
 
+    // Cria a lista de cartas sorteadas de acordo com a quantidade solicitada.
     List<CardData> SortearCartas(int quantidade)
     {
         List<CardData> resultado = new List<CardData>();
@@ -122,6 +132,7 @@ public class GachaScreen : MonoBehaviour
         return resultado;
     }
 
+    // Sorteia uma raridade com base nas chances configuradas e escolhe uma carta dessa raridade.
     CardData SortearCartaPorRaridade()
     {
         float total = 0f;
@@ -144,11 +155,16 @@ public class GachaScreen : MonoBehaviour
         return cartasDaRaridade[Random.Range(0, cartasDaRaridade.Count)];
     }
 
+    // Exibe as cartas sorteadas na área de resultado e prepara o estado da tela.
     void MostrarCartas(List<CardData> cartas)
     {
         // Desativa os botões de gacha para evitar cliques durante a animação
         btnGacha1x.interactable = false;
         btnGacha5x.interactable = false;
+        cartasViradas = 0;
+        totalCartasExibidas = cartas.Count;
+        btnOk.gameObject.SetActive(false);
+        btnOk.interactable = false;
         foreach (Transform filho in resultadoArea) Destroy(filho.gameObject);
         if (basePanel != null)
             basePanel.SetActive(false);
@@ -157,18 +173,35 @@ public class GachaScreen : MonoBehaviour
         StartCoroutine(MostrarCartasSequencial(cartas));
     }
 
+    // Instancia as cartas uma por vez com efeito de entrada e as deixa prontas para virar.
     System.Collections.IEnumerator MostrarCartasSequencial(List<CardData> cartas)
     {
         foreach (CardData carta in cartas)
         {
             GameObject obj = Instantiate(cartaPrefab, resultadoArea);
-            // Aqui você pode preencher a UI da carta com os dados de CardData
-            obj.GetComponent<CardUI>().SetCard(carta, Owner.Player);
+            CardUI cardUI = obj.GetComponent<CardUI>();
+            if (cardUI == null)
+                cardUI = obj.AddComponent<CardUI>();
+
+            cardUI.SetCard(carta, Owner.Player);
+            cardUI.ShowBack();
+
+            CardFlip cardFlip = obj.GetComponent<CardFlip>();
+            if (cardFlip == null)
+                cardFlip = obj.AddComponent<CardFlip>();
+
+            if (cardFlip.front == null)
+                cardFlip.front = cardUI.front;
+            if (cardFlip.back == null)
+                cardFlip.back = cardUI.back;
+
             // Adicona as cartas à coleção do jogador aqui, se necessário
             PlayerDeckManager.AddCardToCollection(carta.id); // Removido em testes
             Button btn = obj.GetComponent<Button>();
             if (btn == null) btn = obj.AddComponent<Button>();
-            btn.onClick.AddListener(() => OnCardClicked(obj.GetComponent<CardUI>()));
+            btn.interactable = true;
+            btn.onClick.RemoveAllListeners();
+            btn.onClick.AddListener(() => OnCardClicked(cardUI, btn));
 
             // Efeito de fade-in
             CanvasGroup cg = obj.GetComponent<CanvasGroup>();
@@ -186,10 +219,35 @@ public class GachaScreen : MonoBehaviour
 
             yield return new WaitForSeconds(0.1f);
         }
-        btnOk.gameObject.SetActive(true);
-    
     }
 
+    // Executa o flip da carta clicada e habilita o botão de confirmação quando todas estiverem viradas.
+    void OnCardClicked(CardUI cardUI, Button button)
+    {
+        if (cardUI == null || button == null || !button.interactable)
+            return;
+
+        CardFlip cardFlip = button.GetComponentInParent<CardFlip>();
+        if (cardFlip != null)
+        {
+            cardFlip.FlipCardForGacha(cardUI);
+        }
+        else
+        {
+            cardUI.Flip();
+        }
+
+        button.interactable = false;
+        cartasViradas++;
+
+        if (cartasViradas >= totalCartasExibidas && totalCartasExibidas > 0)
+        {
+            btnOk.gameObject.SetActive(true);
+            btnOk.interactable = true;
+        }
+    }
+
+    // Fecha a etapa de visualização e retorna à tela base do gacha.
     void OnOkClick()
     {
         ClearResult();
@@ -199,6 +257,7 @@ public class GachaScreen : MonoBehaviour
             viewCardPanel.SetActive(false);
     }
 
+    // Mostra o painel com as probabilidades do gacha.
     void ShowProbabilityPanel()
     {
         if (probabilityPanel == null)
@@ -207,6 +266,7 @@ public class GachaScreen : MonoBehaviour
         probabilityPanel.SetActive(true);
     }
 
+    // Esconde o painel com as probabilidades do gacha.
     void HideProbabilityPanel()
     {
         if (probabilityPanel == null)
@@ -215,6 +275,7 @@ public class GachaScreen : MonoBehaviour
         probabilityPanel.SetActive(false);
     }
 
+    // Atualiza os textos do painel de probabilidades com valores normalizados.
     void UpdateProbabilityText()
     {
         if (chancesPorRaridade == null || chancesPorRaridade.Count < 5)
@@ -239,11 +300,13 @@ public class GachaScreen : MonoBehaviour
             txtProbabilityLegendary.text = $"Legendary: {FormatProbability(chancesPorRaridade[4] / total)}";
     }
 
+    // Formata um valor decimal como porcentagem com uma casa decimal.
     string FormatProbability(float value)
     {
         return (value * 100f).ToString("F1") + "%";
     }
 
+    // Define as chances de raridade usadas pelo sistema de gacha.
     void InitializeGachaConfig()
     {
         if (chancesPorRaridade != null && chancesPorRaridade.Count >= 5)
@@ -257,15 +320,8 @@ public class GachaScreen : MonoBehaviour
         chancesPorRaridade.Add(0.01f); // Lendária
     }
 
-    void OnCardClicked(CardUI cardUI)
-    {
-        if (viewCardPanel != null)
-            viewCardPanel.SetActive(true);
-        if (basePanel != null)
-            basePanel.SetActive(false);
-
-        CardView.Instance.ShowCard(cardUI.cardData);
-    }
+    
+    // Limpa as cartas exibidas e retorna a tela ao estado inicial.
     void ClearResult()
     {
         foreach (Transform filho in resultadoArea)
@@ -273,6 +329,9 @@ public class GachaScreen : MonoBehaviour
             Destroy(filho.gameObject);
         }
         btnOk.gameObject.SetActive(false);
+        btnOk.interactable = false;
+        cartasViradas = 0;
+        totalCartasExibidas = 0;
         btnGacha1x.interactable = true;
         btnGacha5x.interactable = true;
     }
