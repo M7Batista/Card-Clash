@@ -19,6 +19,9 @@ public class GachaScreen : MonoBehaviour
     public Transform resultadoArea;
     public Button btnOk;
 
+    [Header("Atalho para virar todas as cartas")]
+    public TextMeshProUGUI txtFlipAll;
+
     [Header("Painel de Probabilidades")]
     public Button btnProbabilityInfo;
     public GameObject probabilityPanel;
@@ -36,6 +39,7 @@ public class GachaScreen : MonoBehaviour
     List<float> chancesPorRaridade;
     int cartasViradas;
     int totalCartasExibidas;
+    private Button btnFlipAll;
 
     // Inicializa as probabilidades do gacha ao criar a tela.
     void Awake()
@@ -74,12 +78,15 @@ public class GachaScreen : MonoBehaviour
 
         HideProbabilityPanel();
         UpdateProbabilityText();
+        txtFlipAll.GetComponent<Button>().onClick.AddListener(VirarTodasCartas);
 
         if (basePanel != null)
             basePanel.SetActive(true);
         if (viewCardPanel != null)
             viewCardPanel.SetActive(false);
     }
+
+    
 
     // Remove os listeners para evitar duplicação ao trocar de tela.
     void OnDisable()
@@ -170,6 +177,14 @@ public class GachaScreen : MonoBehaviour
             basePanel.SetActive(false);
         if (viewCardPanel != null)
             viewCardPanel.SetActive(true);
+
+        if (txtFlipAll != null)
+        {
+            txtFlipAll.gameObject.SetActive(true);
+            if (btnFlipAll != null)
+                btnFlipAll.interactable = true;
+        }
+
         StartCoroutine(MostrarCartasSequencial(cartas));
     }
 
@@ -239,6 +254,45 @@ public class GachaScreen : MonoBehaviour
 
         button.interactable = false;
         cartasViradas++;
+
+        if (cartasViradas >= totalCartasExibidas && totalCartasExibidas > 0)
+        {
+            btnOk.gameObject.SetActive(true);
+            btnOk.interactable = true;
+        }
+    }
+
+    void VirarTodasCartas()
+    {
+        if (totalCartasExibidas <= 0)
+            return;
+
+        if (btnFlipAll != null)
+            btnFlipAll.interactable = false;
+
+        if (txtFlipAll != null)
+            txtFlipAll.gameObject.SetActive(false);
+
+        foreach (Transform filho in resultadoArea)
+        {
+            Button button = filho.GetComponent<Button>();
+            if (button == null || !button.interactable)
+                continue;
+
+            CardFlip cardFlip = filho.GetComponent<CardFlip>();
+            CardUI cardUI = filho.GetComponent<CardUI>();
+            if (cardFlip != null)
+            {
+                cardFlip.FlipCardForGacha(cardUI);
+            }
+            else if (cardUI != null)
+            {
+                cardUI.Flip();
+            }
+
+            button.interactable = false;
+            cartasViradas++;
+        }
 
         if (cartasViradas >= totalCartasExibidas && totalCartasExibidas > 0)
         {
@@ -334,6 +388,9 @@ public class GachaScreen : MonoBehaviour
         totalCartasExibidas = 0;
         btnGacha1x.interactable = true;
         btnGacha5x.interactable = true;
+
+        if (txtFlipAll != null)
+            txtFlipAll.gameObject.SetActive(false);
     }
 
 }

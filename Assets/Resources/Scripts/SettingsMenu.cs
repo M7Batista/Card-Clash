@@ -53,6 +53,7 @@ public class SettingsMenu : MonoBehaviour
         PlayerPrefs.DeleteKey("HomeCharacterID");
         PlayerPrefs.DeleteKey("PLAYER_TICKETS");
         PlayerPrefs.DeleteKey("LAST_RECHARGE_DATE");
+        PlayerPrefs.DeleteKey("HomeScreenCharacter");
         PlayerPrefs.Save();
 
         GameObject go = Instantiate(floatingMessagePrefab, uiCanvas);

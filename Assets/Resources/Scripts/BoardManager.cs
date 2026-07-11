@@ -95,8 +95,6 @@ public class BoardManager : MonoBehaviour
                 var flip = neighborCard.GetComponent<CardFlip>();
                 if (flip != null) flip.FlipCard(placedCard.owner, placedCard);
                 anyCapture = true;
-                //Faz uma vibração no dispositivo
-                Handheld.Vibrate();
             }
         }
 
@@ -133,7 +131,6 @@ public class BoardManager : MonoBehaviour
             }
 
             Debug.Log($"[MESMO] {placedCard.owner} capturou {sameMatches.Count} cartas!");
-            Handheld.Vibrate();
             return true;
         }
 
@@ -185,7 +182,6 @@ public class BoardManager : MonoBehaviour
             }
 
             Debug.Log($"[MAIS] {placedCard.owner} capturou {plusMatches.Count} cartas!");
-            Handheld.Vibrate();
             return true;
         }
 

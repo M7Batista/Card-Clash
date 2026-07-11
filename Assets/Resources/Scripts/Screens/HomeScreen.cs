@@ -4,7 +4,7 @@ public class HomeScreen : MonoBehaviour
 {
     [Header("Personagem")]
     [SerializeField] private CharacterDisplayController characterDisplayController;
-    [SerializeField] private string defaultCharacterID = "Marine";
+    [SerializeField] private string defaultCharacterID = "Main";
 
     void OnEnable()
     {

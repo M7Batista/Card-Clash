@@ -83,6 +83,7 @@ public class CardFlip : MonoBehaviour
 
         if (front != null) front.SetActive(true);
         if (back != null) back.SetActive(false);
+        Handheld.Vibrate();
     }
 
     // Animação simples para a tela de gacha, com um único giro da carta.
@@ -126,6 +127,7 @@ public class CardFlip : MonoBehaviour
             if (front != null) front.SetActive(true);
             if (back != null) back.SetActive(false);
         }
+        Handheld.Vibrate();
     }
 
     // Reproduz o som do flip quando a animação passa por um ponto importante do giro.
