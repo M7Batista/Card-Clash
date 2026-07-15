@@ -11,13 +11,50 @@ public class BattleScreen : MonoBehaviour
     public GameObject rankDisplay; // Objeto que contém o sprite do rank atual
 
     public TextMeshProUGUI txtRankName; // Texto que exibe o nome do rank atual
+
     void OnEnable()
     {
         Debug.Log("BattleScreen OnEnable");
+        SetupRankDisplayShortcut();
         UpdateStarsDisplay();
         UpdateRankDisplay();
         UpdateRankNameDisplay();
     }
+
+    private void SetupRankDisplayShortcut()
+    {
+        if (rankDisplay == null)
+        {
+            Debug.LogWarning("rankDisplay não configurado corretamente em BattleScreen");
+            return;
+        }
+
+        Button rankButton = rankDisplay.GetComponent<Button>();
+        if (rankButton == null)
+        {
+            rankButton = rankDisplay.AddComponent<Button>();
+        }
+
+        rankButton.onClick.RemoveAllListeners();
+        rankButton.onClick.AddListener(HandleRankDisplayClick);
+    }
+
+    public void HandleRankDisplayClick()
+    {
+        if (GameManager.Instance == null)
+        {
+            Debug.LogWarning("GameManager.Instance não foi inicializado");
+            return;
+        }
+
+        GameManager.Instance.AddRankWin();
+        Debug.Log("Atalho de teste: vitória adicionada via clique no rank");
+
+        UpdateStarsDisplay();
+        UpdateRankDisplay();
+        UpdateRankNameDisplay();
+    }
+
     // Exibe o nome do rank atual no texto
     public void UpdateRankNameDisplay()
     {

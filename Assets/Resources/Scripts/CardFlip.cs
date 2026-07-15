@@ -19,6 +19,7 @@ public class CardFlip : MonoBehaviour
     public void FlipCard(Owner newOwner, CardUI cardUI)
     {
         StopAllCoroutines();
+        Handheld.Vibrate();
         StartCoroutine(FlipTwoTimesSameDirection());
     }
 
@@ -27,6 +28,7 @@ public class CardFlip : MonoBehaviour
     public void FlipCardForGacha(CardUI cardUI)
     {
         StopAllCoroutines();
+        Handheld.Vibrate();
         StartCoroutine(FlipSingleRotation(cardUI));
     }
 
@@ -41,7 +43,6 @@ public class CardFlip : MonoBehaviour
 
         bool switchedToBack = false;
         bool switchedToFrontAgain = false;
-
         while (elapsed < total)
         {
             elapsed += Time.deltaTime;
@@ -83,7 +84,7 @@ public class CardFlip : MonoBehaviour
 
         if (front != null) front.SetActive(true);
         if (back != null) back.SetActive(false);
-        Handheld.Vibrate();
+
     }
 
     // Animação simples para a tela de gacha, com um único giro da carta.
@@ -94,7 +95,6 @@ public class CardFlip : MonoBehaviour
 
         float elapsed = 0f;
         float total = Mathf.Max(0.01f, flipDuration/2f); // metade do tempo para um giro único
-
         while (elapsed < total)
         {
             elapsed += Time.deltaTime;
@@ -127,7 +127,7 @@ public class CardFlip : MonoBehaviour
             if (front != null) front.SetActive(true);
             if (back != null) back.SetActive(false);
         }
-        Handheld.Vibrate();
+        
     }
 
     // Reproduz o som do flip quando a animação passa por um ponto importante do giro.

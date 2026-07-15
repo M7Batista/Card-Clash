@@ -9,14 +9,12 @@ public class BottomNavController : MonoBehaviour
     public RectTransform homeScreen;
     public RectTransform collectionScreen;
     public RectTransform battleCardScreen;
-    public RectTransform puzzleScreen;
     public RectTransform gachaScreen; 
 
     [Header("Buttons")]
     public Button homeButton;
     public Button collectionButton;
     public Button battleCardButton;
-    public Button puzzleButton;
     public Button gachaButton;
     private RectTransform currentScreen;
     private RectTransform nextScreen;
@@ -36,7 +34,6 @@ public class BottomNavController : MonoBehaviour
             { homeButton, homeScreen },
             { collectionButton, collectionScreen },
             { battleCardButton, battleCardScreen },
-            { puzzleButton, puzzleScreen },
             {gachaButton, gachaScreen } 
         };
 
@@ -45,13 +42,11 @@ public class BottomNavController : MonoBehaviour
         homeScreen.gameObject.SetActive(true);
         collectionScreen.gameObject.SetActive(false);
         battleCardScreen.gameObject.SetActive(false);
-        puzzleScreen.gameObject.SetActive(false);
         gachaScreen.gameObject.SetActive(false);
         // Botões
         homeButton.onClick.AddListener(() => SwitchScreen(homeScreen, homeButton));
         collectionButton.onClick.AddListener(() => SwitchScreen(collectionScreen, collectionButton));
         battleCardButton.onClick.AddListener(() => SwitchScreen(battleCardScreen, battleCardButton));
-        puzzleButton.onClick.AddListener(() => SwitchScreen(puzzleScreen, puzzleButton));
         gachaButton.onClick.AddListener(() => SwitchScreen(gachaScreen, gachaButton));
         // Define estado inicial dos botões
         UpdateAllButtons(homeButton);

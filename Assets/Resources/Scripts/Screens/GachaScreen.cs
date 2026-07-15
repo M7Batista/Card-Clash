@@ -178,13 +178,6 @@ public class GachaScreen : MonoBehaviour
         if (viewCardPanel != null)
             viewCardPanel.SetActive(true);
 
-        if (txtFlipAll != null)
-        {
-            txtFlipAll.gameObject.SetActive(true);
-            if (btnFlipAll != null)
-                btnFlipAll.interactable = true;
-        }
-
         StartCoroutine(MostrarCartasSequencial(cartas));
     }
 
@@ -234,6 +227,12 @@ public class GachaScreen : MonoBehaviour
 
             yield return new WaitForSeconds(0.1f);
         }
+        if (txtFlipAll != null)
+        {
+            txtFlipAll.gameObject.SetActive(true);
+            if (btnFlipAll != null)
+                btnFlipAll.interactable = true;
+        }
     }
 
     // Executa o flip da carta clicada e habilita o botão de confirmação quando todas estiverem viradas.
@@ -254,7 +253,7 @@ public class GachaScreen : MonoBehaviour
 
         button.interactable = false;
         cartasViradas++;
-
+        AudioManager.Instance?.PlaySFX("card-slide-8");
         if (cartasViradas >= totalCartasExibidas && totalCartasExibidas > 0)
         {
             btnOk.gameObject.SetActive(true);
