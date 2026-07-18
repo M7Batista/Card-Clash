@@ -46,20 +46,14 @@ public class SettingsMenu : MonoBehaviour
 
     public void ClearData()
     {
-        // 🔹 Limpa PlayerPrefs (mesmo que já fazia)
-        PlayerPrefs.DeleteKey("PlayerDeck");
-        PlayerPrefs.DeleteKey("PlayerCollection");
-        PlayerPrefs.DeleteKey("UnlockedStage");
-        PlayerPrefs.DeleteKey("HomeCharacterID");
-        PlayerPrefs.DeleteKey("PLAYER_TICKETS");
-        PlayerPrefs.DeleteKey("LAST_RECHARGE_DATE");
-        PlayerPrefs.DeleteKey("HomeScreenCharacter");
+        // 🔹 Limpa todas as chaves salvas em PlayerPrefs
+        PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
 
         GameObject go = Instantiate(floatingMessagePrefab, uiCanvas);
         go.transform.localPosition = Vector3.zero;
         go.GetComponent<FloatingMessage>().Show("Dados do jogo apagados.");
         // Reinicia o jogo
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("LoadingScene");
     }
 }

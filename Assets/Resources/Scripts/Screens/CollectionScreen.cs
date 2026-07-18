@@ -38,6 +38,7 @@ public class CollectionScreen : MonoBehaviour
         }
 
         LoadCards();
+        TutorialManager.Instance?.NotifyCollectionScreenOpened();
     }
 
     private void OnDisable()

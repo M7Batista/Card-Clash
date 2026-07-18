@@ -84,6 +84,8 @@ public class GachaScreen : MonoBehaviour
             basePanel.SetActive(true);
         if (viewCardPanel != null)
             viewCardPanel.SetActive(false);
+
+        TutorialManager.Instance?.NotifyGachaScreenOpened();
     }
 
     
@@ -123,6 +125,10 @@ public class GachaScreen : MonoBehaviour
         }
 
         GameManager.Instance.SpendCoins(preco);
+
+        if (quantidade == 5)
+            TutorialManager.Instance?.NotifyGacha5xClicked();
+
         List<CardData> cartas = SortearCartas(quantidade);
         MostrarCartas(cartas);
     }
@@ -292,6 +298,8 @@ public class GachaScreen : MonoBehaviour
             button.interactable = false;
             cartasViradas++;
         }
+
+        TutorialManager.Instance?.NotifyRevealAllClicked();
 
         if (cartasViradas >= totalCartasExibidas && totalCartasExibidas > 0)
         {

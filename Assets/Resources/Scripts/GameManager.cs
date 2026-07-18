@@ -4,6 +4,8 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
+    private const int STARTING_COINS = 500;
+
     public int coins;
     public static GameManager Instance;
     private const string RANK_WINS_KEY = "RankWins";
@@ -16,7 +18,16 @@ public class GameManager : MonoBehaviour
 
     public void LoadGame()
     {
-        coins = PlayerPrefs.GetInt("Coins", 0);
+        if (!PlayerPrefs.HasKey("Coins"))
+        {
+            coins = STARTING_COINS;
+            PlayerPrefs.SetInt("Coins", coins);
+            PlayerPrefs.Save();
+        }
+        else
+        {
+            coins = PlayerPrefs.GetInt("Coins", 0);
+        }
     }
     public void AddCoins(int amount)
     {

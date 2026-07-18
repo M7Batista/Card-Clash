@@ -51,6 +51,7 @@ public class PrepareBattleScreen : MonoBehaviour
         {
             this.gameObject.SetActive(false);
             EditDeckScreen.SetActive(true);
+            TutorialManager.Instance?.NotifyDeckEditorOpened();
         });
     }
 

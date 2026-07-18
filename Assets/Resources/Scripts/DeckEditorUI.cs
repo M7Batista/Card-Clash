@@ -51,8 +51,21 @@ public class DeckEditorUI : MonoBehaviour
         PopulateCollection();
         StartCoroutine(LoadDeckWithDelay());
 
+        clearButton.onClick.RemoveAllListeners();
+        autoAssignButton.onClick.RemoveAllListeners();
+
         clearButton.onClick.AddListener(ClearSlot);
-        autoAssignButton.onClick.AddListener(AutoAssignStrongestCards);
+        autoAssignButton.onClick.AddListener(() =>
+        {
+            AutoAssignStrongestCards();
+            TutorialManager.Instance?.NotifyAutoEquipClicked();
+        });
+    }
+
+    private void OnDisable()
+    {
+        clearButton.onClick.RemoveAllListeners();
+        autoAssignButton.onClick.RemoveAllListeners();
     }
 
     private IEnumerator LoadDeckWithDelay()

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 4a3ed120605d205409f86e1008f448f9
+guid: 8d9efce7898741e4cb38394010f4053c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2286990173939626377
-    second: cat_hand_0
+      213: 6554736390298987251
+    second: cursor_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -98,7 +98,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: Android
-    maxTextureSize: 2048
+    maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: 50
     textureCompression: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: cat_hand_0
+      name: cursor_0
       rect:
         serializedVersion: 2
-        x: 25
-        y: 19
-        width: 261
-        height: 264
+        x: 94
+        y: 28
+        width: 318
+        height: 474
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 981fa7a32750dbf10800000000000000
-      internalID: 2286990173939626377
+      spriteID: 3fae81cb40a17fa50800000000000000
+      internalID: 6554736390298987251
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      cat_hand_0: 2286990173939626377
+      cursor_0: 6554736390298987251
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
