@@ -2545,7 +2545,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 150}
-  m_SizeDelta: {x: 300, y: 112}
+  m_SizeDelta: {x: 300, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &184621107
 MonoBehaviour:
@@ -2865,7 +2865,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7771124351185586512, guid: 912abffc35a48334a81c78977d9d7246, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 390
+      value: 350
       objectReference: {fileID: 0}
     - target: {fileID: 7771124351185586512, guid: 912abffc35a48334a81c78977d9d7246, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -3884,8 +3884,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -60}
-  m_SizeDelta: {x: 0, y: -120}
+  m_AnchoredPosition: {x: 20, y: -60}
+  m_SizeDelta: {x: -40, y: -160}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &282004240
 MonoBehaviour:
@@ -3934,8 +3934,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -5796,7 +5796,7 @@ GameObject:
   - component: {fileID: 470342638}
   - component: {fileID: 470342637}
   m_Layer: 5
-  m_Name: character
+  m_Name: Kraky
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5818,8 +5818,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 217, y: 229}
-  m_SizeDelta: {x: 350, y: 350}
+  m_AnchoredPosition: {x: 217, y: 281.3}
+  m_SizeDelta: {x: 384, y: 512}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &470342637
 MonoBehaviour:
@@ -5841,7 +5841,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: dfec641d710de854e901f0183a9b5ba7, type: 3}
+  m_Sprite: {fileID: -7303633845241874331, guid: 530835306e80b5941abab130c0394a3e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9737,7 +9737,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &720513935
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10324,7 +10324,7 @@ GameObject:
   - component: {fileID: 748303089}
   - component: {fileID: 748303088}
   m_Layer: 5
-  m_Name: Ballon
+  m_Name: Dialog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13418,7 +13418,7 @@ GameObject:
   - component: {fileID: 1008670572}
   - component: {fileID: 1008670574}
   m_Layer: 5
-  m_Name: Dialog
+  m_Name: PanelDialog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16079,7 +16079,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7771124351185586512, guid: 912abffc35a48334a81c78977d9d7246, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 600
+      value: 560
       objectReference: {fileID: 0}
     - target: {fileID: 7771124351185586512, guid: 912abffc35a48334a81c78977d9d7246, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -16181,7 +16181,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7771124351185586512, guid: 912abffc35a48334a81c78977d9d7246, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1020
+      value: 980
       objectReference: {fileID: 0}
     - target: {fileID: 7771124351185586512, guid: 912abffc35a48334a81c78977d9d7246, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -23516,6 +23516,7 @@ MonoBehaviour:
   messageText: {fileID: 282004240}
   overlayPanel: {fileID: 1240245005}
   tutorialCursor: {fileID: 1528741193}
+  currentStep: 0
 --- !u!4 &1785058662
 Transform:
   m_ObjectHideFlags: 0
@@ -23605,7 +23606,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7771124351185586512, guid: 912abffc35a48334a81c78977d9d7246, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 810
+      value: 770
       objectReference: {fileID: 0}
     - target: {fileID: 7771124351185586512, guid: 912abffc35a48334a81c78977d9d7246, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -29097,7 +29098,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7771124351185586512, guid: 912abffc35a48334a81c78977d9d7246, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 180
+      value: 140
       objectReference: {fileID: 0}
     - target: {fileID: 7771124351185586512, guid: 912abffc35a48334a81c78977d9d7246, type: 3}
       propertyPath: m_AnchoredPosition.y

@@ -38,7 +38,7 @@ public class TutorialManager : MonoBehaviour
     public GameObject tutorialCursor;
 
 
-    private TutorialStep currentStep = TutorialStep.None;
+    public TutorialStep currentStep = TutorialStep.None;
     private Button highlightedButton;
     private Image overlayImage;
     private RectTransform overlayRect;
@@ -126,23 +126,23 @@ public class TutorialManager : MonoBehaviour
 
     public void NotifyDeckEditorOpened()
     {
-        Debug.Log($"[Tutorial] NotifyDeckEditorOpened chamado. Step atual: {currentStep}");
+        
         TryAdvanceStep(TutorialStep.OpenDeckEditor);
     }
 
     public void NotifyAutoEquipClicked()
     {
-        Debug.Log($"[Tutorial] NotifyAutoEquipClicked chamado. Step atual: {currentStep}");
+       
         TryAdvanceStep(TutorialStep.AutoEquip);
     }
 
     private void TryAdvanceStep(TutorialStep expectedStep)
     {
-        Debug.Log($"[Tutorial] TryAdvanceStep chamado. currentStep={currentStep}, expectedStep={expectedStep}");
+       
 
         if (currentStep != expectedStep || currentStep == TutorialStep.Completed)
         {
-            Debug.Log($"[Tutorial] TryAdvanceStep bloqueado. currentStep={currentStep}, expectedStep={expectedStep}");
+            
             return;
         }
 
@@ -154,7 +154,7 @@ public class TutorialManager : MonoBehaviour
 
     private void ShowCurrentStep()
     {
-        Debug.Log($"[Tutorial] ShowCurrentStep executado para: {currentStep}");
+        
 
         if (currentStep == TutorialStep.Completed)
         {
@@ -169,27 +169,27 @@ public class TutorialManager : MonoBehaviour
         switch (currentStep)
         {
             case TutorialStep.OpenGacha:
-                SetMessage("Primeiro, abra a tela de gacha para invocar cartas.");
+                SetMessage("First, open the gacha screen to summon cards.");
                 HighlightTarget(gachaNavButton);
                 break;
             case TutorialStep.Pull5x:
-                SetMessage("Agora use o gacha 5x para invocar cinco cartas de uma vez.");
+                SetMessage("Now use the 5x gacha to summon five cards at once.");
                 HighlightTarget(gacha5xButton);
                 break;
             case TutorialStep.RevealAll:
-                SetMessage("Revele todas as cartas que você acabou de invocar.");
+                SetMessage("Reveal all the cards you just summoned.");
                 HighlightTarget(flipAllLabel);
                 break;
             case TutorialStep.OpenCollection:
-                SetMessage("Ótimo! Vá para sua coleção para montar o deck.");
+                SetMessage("Great! Now go to your collection to build your battle deck.");
                 HighlightTarget(collectionNavButton);
                 break;
             case TutorialStep.OpenDeckEditor:
-                SetMessage("Abra o editor de deck para organizar suas cartas.");
+                SetMessage("Open the deck editor to organize your cards.");
                 HighlightTarget(deckEditorButton);
                 break;
             case TutorialStep.AutoEquip:
-                SetMessage("Use Auto Equipar para montar rapidamente um deck com as melhores cartas.");
+                SetMessage("Use Auto-Equip to quickly assemble a deck with the best cards.");
                 HighlightTarget(autoEquipButton);
                 break;
             default:
@@ -230,11 +230,8 @@ public class TutorialManager : MonoBehaviour
 
         if (highlightedButton == null || highlightedTargetRect == null)
         {
-            Debug.Log($"[Tutorial] HighlightTarget falhou. target={target?.name ?? "null"}");
             return;
         }
-
-        Debug.Log($"[Tutorial] HighlightTarget definido para: {highlightedButton.name}");
 
         if (overlayPanel != null)
         {
@@ -325,14 +322,16 @@ public class TutorialManager : MonoBehaviour
         var pointerClickEntry = new EventTrigger.Entry { eventID = EventTriggerType.PointerClick };
         pointerClickEntry.callback.AddListener((BaseEventData eventData) =>
         {
-            Debug.Log($"[Tutorial] Clique na overlay detectado. Step atual: {currentStep}, alvo: {highlightedButton?.name ?? "null"}");
+            
             if (TryForwardTutorialClick((PointerEventData)eventData, targetRect))
             {
                 Debug.Log($"[Tutorial] Clique aceito para o alvo atual: {highlightedButton?.name ?? "null"}");
                 return;
+            }else{
+                Debug.Log($"[Tutorial] Clique ignorado. O clique não estava dentro do alvo: {highlightedButton?.name ?? "null"}");
             }
 
-            Debug.Log("[Tutorial] Clique ignorado pela overlay por não cair dentro do alvo esperado.");
+            
         });
 
         eventTrigger.triggers.Add(pointerClickEntry);
@@ -360,8 +359,6 @@ public class TutorialManager : MonoBehaviour
             localPoint.x <= targetRect.rect.width / 2f &&
             localPoint.y >= -targetRect.rect.height / 2f &&
             localPoint.y <= targetRect.rect.height / 2f;
-
-        Debug.Log($"[Tutorial] Verificando clique no alvo. insideTarget={insideTarget}; localPoint=({localPoint.x}, {localPoint.y}); targetRect=({targetRect.rect.width}, {targetRect.rect.height})");
 
         if (!insideTarget)
             return false;

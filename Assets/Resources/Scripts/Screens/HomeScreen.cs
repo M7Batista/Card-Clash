@@ -8,7 +8,6 @@ public class HomeScreen : MonoBehaviour
 
     void OnEnable()
     {
-        Debug.Log("HomeScreen OnEnable");
         LoadHomeCharacter();
         AudioManager.Instance?.PlayMusic(AudioManager.Instance.menuMusic);
     }

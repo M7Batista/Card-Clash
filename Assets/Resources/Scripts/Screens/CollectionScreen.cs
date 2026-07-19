@@ -23,7 +23,6 @@ public class CollectionScreen : MonoBehaviour
 
     void OnEnable()
     {
-        Debug.Log("CollectionScreen Start");
         cardViewPanel.SetActive(false);
 
         if (scrollRect != null)
