@@ -16,7 +16,7 @@ public class BoardManager : MonoBehaviour
     [Header("UI")]
     public TextMeshProUGUI playerCountText;
     public TextMeshProUGUI enemyCountText;
-    public GameObject turnArrow;
+    
 
     [Header("🔹 Regras Especiais (ativar no Inspector)")]
     public bool ruleSame;  // Regra "MESMO"
@@ -239,7 +239,6 @@ public class BoardManager : MonoBehaviour
     public void CheckEndGame()
     {
         GetBoardCounts(out int playerCount, out int enemyCount);
-        turnArrow.SetActive(false);
         if (playerCount > enemyCount)
         {
             Debug.Log($"Fim de jogo! Jogador venceu ({playerCount} x {enemyCount})");
@@ -263,18 +262,6 @@ public class BoardManager : MonoBehaviour
         BattleSetupManager.Instance.ClearBattleState();
         BattleResultScreen.instance.ShowEndGame(result);
     }
-
-    public void UpdateTurnArrow(Transform handArea)
-    {
-        if (turnArrow == null || handArea == null) return;
-        // turnArrow posiciona no eixo y do handAarea e no eixo x do canto direito da tela
-        var arrowRT = turnArrow.GetComponent<RectTransform>();
-        var handRT = handArea.GetComponent<RectTransform>();
-        arrowRT.anchoredPosition = new Vector2(450f, handRT.anchoredPosition.y);
-        turnArrow.SetActive(true);
-    }
-
-    public void HideTurnArrow() => turnArrow.SetActive(false);
 
     private void ShowSpecialRuleText(string ruleName)
     {

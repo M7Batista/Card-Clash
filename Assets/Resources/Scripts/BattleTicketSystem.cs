@@ -69,7 +69,7 @@ public class BattleTicketSystem : MonoBehaviour
             currentTickets = Mathf.Min(currentTickets + dailyRecharge, maxTickets);
             lastRechargeDate = now;
             SaveTickets();
-            Dialog.Instance.ShowMessage("You have received your daily battle tickets!");
+            DialogManager.Instance.ShowTemporary("You have received your daily battle tickets!", KrakenExpression.Happy);
             Debug.Log($"Tickets recarregados automaticamente! ({currentTickets}/{maxTickets})");
         }
     }

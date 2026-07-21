@@ -14,6 +14,7 @@ public class CollectionScreen : MonoBehaviour
     [Header("UI Extra")]
     public TextMeshProUGUI totalCardsText;
     public TMP_Dropdown sortDropdown;   // 🔹 Dropdown para escolher a ordenação
+    public Button buttonEditDeck;
     private int totalCards = 0;
     public List<CardData> playerOwnedCards = new List<CardData>();
 
@@ -35,9 +36,17 @@ public class CollectionScreen : MonoBehaviour
         {
             sortDropdown.onValueChanged.AddListener(OnSortChanged);
         }
-
+        
         LoadCards();
+        buttonEditDeck.onClick.AddListener(OpenEditDeckScreen);
         TutorialManager.Instance?.NotifyCollectionScreenOpened();
+
+    }
+    void OpenEditDeckScreen()
+    {
+        // Lógica para abrir a tela de edição do deck
+        Debug.Log("Abrindo tela de edição do deck...");
+        TutorialManager.Instance?.NotifyDeckEditorOpened();
     }
 
     private void OnDisable()

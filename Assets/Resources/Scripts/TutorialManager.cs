@@ -21,6 +21,7 @@ public class TutorialManager : MonoBehaviour
     }
 
     [Header("Targets")]
+    public Button skipButton;
     public Button gachaNavButton;
     public Button gacha5xButton;
     public TextMeshProUGUI flipAllLabel;
@@ -45,6 +46,7 @@ public class TutorialManager : MonoBehaviour
     private RectTransform highlightedTargetRect;
     private RectTransform cursorRect;
     private Image cursorImage;
+
 
     private void Awake()
     {
@@ -78,6 +80,7 @@ public class TutorialManager : MonoBehaviour
 
         currentStep = TutorialStep.OpenGacha;
         ShowCurrentStep();
+        skipButton?.onClick.AddListener(EndTutorial);
     }
 
 
@@ -93,6 +96,7 @@ public class TutorialManager : MonoBehaviour
         ClearHighlight();
         if (overlayPanel != null)
             overlayPanel.SetActive(false);
+        DialogManager.Instance.Hide();
     }
 
     public TutorialStep GetCurrentStep()
@@ -158,8 +162,8 @@ public class TutorialManager : MonoBehaviour
 
         if (currentStep == TutorialStep.Completed)
         {
-            SetMessage("Tutorial concluído! Você já pode usar o gacha e montar seu deck.");
-            ClearHighlight();
+            DialogManager.Instance.ShowPersistent("Excellent! Now you can participate in your first battle.",KrakenExpression.Proud);
+            EndTutorial();
             return;
         }
 
@@ -169,27 +173,27 @@ public class TutorialManager : MonoBehaviour
         switch (currentStep)
         {
             case TutorialStep.OpenGacha:
-                SetMessage("First, open the gacha screen to summon cards.");
+                DialogManager.Instance.ShowPersistent("First, open the gacha screen to summon cards.",KrakenExpression.Mischievous);
                 HighlightTarget(gachaNavButton);
                 break;
             case TutorialStep.Pull5x:
-                SetMessage("Now use the 5x gacha to summon five cards at once.");
+                DialogManager.Instance.ShowPersistent("Now use the 5x gacha to summon five cards at once.",KrakenExpression.Explaining);
                 HighlightTarget(gacha5xButton);
                 break;
             case TutorialStep.RevealAll:
-                SetMessage("Reveal all the cards you just summoned.");
+                DialogManager.Instance.ShowPersistent("Reveal all the cards you just summoned.",KrakenExpression.Cute);
                 HighlightTarget(flipAllLabel);
                 break;
             case TutorialStep.OpenCollection:
-                SetMessage("Great! Now go to your collection to build your battle deck.");
+                DialogManager.Instance.ShowPersistent("Great! Now go to your collection to build your battle deck.",KrakenExpression.Happy);
                 HighlightTarget(collectionNavButton);
                 break;
             case TutorialStep.OpenDeckEditor:
-                SetMessage("Open the deck editor to organize your cards.");
+                DialogManager.Instance.ShowPersistent("Open the deck editor to organize your cards.",KrakenExpression.Explaining);
                 HighlightTarget(deckEditorButton);
                 break;
             case TutorialStep.AutoEquip:
-                SetMessage("Use Auto-Equip to quickly assemble a deck with the best cards.");
+                DialogManager.Instance.ShowPersistent("Use Auto-Equip to quickly assemble a deck with the best cards.",KrakenExpression.Explaining);
                 HighlightTarget(autoEquipButton);
                 break;
             default:
@@ -206,7 +210,7 @@ public class TutorialManager : MonoBehaviour
         }
         else
         {
-            Dialog.Instance?.ShowMessage(message);
+            DialogManager.Instance.ShowPersistent(message,KrakenExpression.Explaining);
         }
     }
 

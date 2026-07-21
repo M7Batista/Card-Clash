@@ -343,5 +343,6 @@ public class DeckEditorUI : MonoBehaviour
         RefreshActiveDeckList();
         UpdateCombatPower();
         AutoSaveDeck();
+        DialogManager.Instance.ShowTemporary("Great, you've created a powerful deck.",KrakenExpression.Proud);
     }
 }

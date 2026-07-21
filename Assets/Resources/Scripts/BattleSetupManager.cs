@@ -17,15 +17,19 @@ public class BattleSetupManager : MonoBehaviour
     public Transform playerHandArea;
     public Transform enemyHandArea;
     public Transform boardArea;
+    [Header("Prefasbs")]
     public GameObject roulletPrefab;
     public GameObject cardPrefab;
+    public GameObject cursor;
+     public GameObject coinPrefab;
+
     public Canvas mainCanvas;
-    public GameObject coinPrefab;
     public Button exitBattleButton;
     public Button restartBattleButton;
     public GameObject battleScreen;
     public GameObject boardScreen;
 
+    [Header("Battle Parameters")]
     private const int RewardCoinsVictory = 30;
     private const int RewardCoinsDraw = 15;
     private const int RewardCoinsDefeat = 5;
@@ -98,21 +102,21 @@ public class BattleSetupManager : MonoBehaviour
     {
         if (!BattleTicketSystem.Instance.ConsumeTicket())
         {
-            Dialog.Instance.ShowMessage("You don't have enough tickets to start the game!");
+            DialogManager.Instance.ShowTemporary("You don't have enough tickets to start the game!",KrakenExpression.Warning);
             Debug.LogError("❌ Você não tem tickets suficientes! O jogo não pode iniciar!");
             return;
         }
 
         if (playerActiveDeck == null || playerActiveDeck.Count < 5)
         {
-            Dialog.Instance.ShowMessage("Choose your cards before starting the game!");
+            DialogManager.Instance.ShowTemporary("Choose your cards before starting the game!",KrakenExpression.Warning);
             Debug.LogError("❌ O jogador não possui 5 cartas definidas no deck. O jogo não pode iniciar!");
             return;
         }
 
         if (enemyActiveDeck == null || enemyActiveDeck.Count < 5)
         {
-            Dialog.Instance.ShowMessage("Enemy deck is not set! Cannot start the game.");
+            DialogManager.Instance.ShowTemporary("YEnemy deck is not set! Cannot start the game.",KrakenExpression.Warning);
             Debug.LogError("❌ O deck do inimigo não está definido. O jogo não pode iniciar!");
             return;
         }
@@ -173,8 +177,9 @@ public class BattleSetupManager : MonoBehaviour
 
         if (roulletPrefab != null && mainCanvas != null)
             Instantiate(roulletPrefab, mainCanvas.transform);
-
+        
         AudioManager.Instance.PlayMusic(AudioManager.Instance.battleMusic);
+
     }
 
     public void EnableControlButtons()
@@ -189,14 +194,23 @@ public class BattleSetupManager : MonoBehaviour
     {
         currentTurn = Owner.Player;
         SetPlayerHandDraggable(true);
-        BoardManager.Instance.UpdateTurnArrow(playerHandArea);
+        if(cursor != null)
+        {
+            cursor.gameObject.SetActive(true);
+            cursor?.GetComponent<Cursor>()?.MoveCursorTo(playerHandArea); // o curso é movido para um pouco abaixo do playerHandArea
+        }
+        
     }
 
     public void StartEnemyTurn()
     {
         currentTurn = Owner.Enemy;
         SetPlayerHandDraggable(false);
-        BoardManager.Instance.UpdateTurnArrow(enemyHandArea);
+        if(cursor != null)
+        {
+            cursor.gameObject.SetActive(true);
+            cursor?.GetComponent<Cursor>()?.MoveCursorTo(enemyHandArea);
+        }
         Invoke(nameof(CallEnemyAI), 2f);
     }
 
@@ -226,13 +240,13 @@ public class BattleSetupManager : MonoBehaviour
         if (currentTurn == Owner.Player)
         {
             SetPlayerHandDraggable(true);
-            BoardManager.Instance.UpdateTurnArrow(playerHandArea);
+            cursor?.GetComponent<Cursor>()?.MoveCursorTo(playerHandArea);
             Debug.Log("Turno do jogador!");
         }
         else if (currentTurn == Owner.Enemy)
         {
             SetPlayerHandDraggable(false);
-            BoardManager.Instance.UpdateTurnArrow(enemyHandArea);
+            cursor?.GetComponent<Cursor>()?.MoveCursorTo(enemyHandArea);
             Debug.Log("Turno do inimigo!");
             Invoke(nameof(CallEnemyAI), 1f);
         }
@@ -321,7 +335,6 @@ public class BattleSetupManager : MonoBehaviour
             battleScreen.SetActive(true);
             RefreshRankUI();
         }
-        BoardManager.Instance.HideTurnArrow();
         AudioManager.Instance.StopMusic();
     }
 
@@ -343,7 +356,6 @@ public class BattleSetupManager : MonoBehaviour
     {
         filledSlots = 0;
         currentTurn = Owner.None;
-        BoardManager.Instance.HideTurnArrow();
 
         if (playerHandArea != null)
         {
@@ -365,6 +377,7 @@ public class BattleSetupManager : MonoBehaviour
                     Destroy(card.gameObject);
             }
         }
+        cursor.gameObject.SetActive(false);
     }
 
     private IEnumerator ShowRewardCoins(int rewardCoins)
